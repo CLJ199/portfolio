@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intrinsic Designs | Custom 3D Printed Models</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="bg-slate-950 text-white selection:bg-cyan-400 selection:text-slate-950">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#" class="flex flex-col">
+          <span class="text-2xl font-bold tracking-wide text-cyan-400">Intrinsic Designs</span>
+          <span class="text-xs uppercase tracking-[0.25em] text-slate-400">Custom 3D Printed Models</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm text-slate-200">
+          <a href="#about" class="hover:text-cyan-400 transition">About</a>
+          <a href="#gallery" class="hover:text-cyan-400 transition">Showcase</a>
+          <a href="#pricing" class="hover:text-cyan-400 transition">Pricing</a>
+          <a href="#quote" class="hover:text-cyan-400 transition">Quote</a>
+          <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+        </nav>
+
+        <a
+          href="#quote"
+          class="hidden md:inline-flex bg-cyan-400 text-slate-950 font-semibold px-5 py-2.5 rounded-xl hover:bg-cyan-300 transition"
+        >
+          Get a Quote
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="relative overflow-hidden">
+        <div class="absolute inset-0 hero-mesh opacity-60"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.15),transparent_30%)]"></div>
+
+        <div class="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
+          <div class="grid lg:grid-cols-2 gap-14 items-center">
+            <div class="max-w-2xl">
+              <div class="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-cyan-300">
+                Precision • Custom • Professional
+              </div>
+
+              <h1 class="mt-6 text-4xl md:text-6xl font-extrabold leading-tight">
+                Bring your ideas to life with custom
+                <span class="text-cyan-400">3D printed models</span>.
+              </h1>
+
+              <p class="mt-6 text-lg leading-8 text-slate-300">
+                Intrinsic Designs creates custom 3D printed models for prototypes, miniatures,
+                display pieces, concept models, and functional parts — with a simple quote process,
+                clear starting prices, and print specifications tailored to your project.
+              </p>
+
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="#quote"
+                  class="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-6 py-3 font-semibold text-slate-950 hover:bg-cyan-300 transition"
+                >
+                  Request a Quote
+                </a>
+                <a
+                  href="#gallery"
+                  class="inline-flex items-center justify-center rounded-xl border border-white/15 px-6 py-3 font-medium text-white hover:border-cyan-400 hover:text-cyan-300 transition"
+                >
+                  View Showcase
+                </a>
+              </div>
+
+              <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="info-chip">
+                  <span class="info-chip-title">Fast Turnaround</span>
+                  <span class="info-chip-text">Clear communication from quote to print.</span>
+                </div>
+                <div class="info-chip">
+                  <span class="info-chip-title">Flexible Specs</span>
+                  <span class="info-chip-text">Material, finish, size, density, and detail.</span>
+                </div>
+                <div class="info-chip">
+                  <span class="info-chip-title">Custom Orders</span>
+                  <span class="info-chip-text">Designed around your exact project needs.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Image Space -->
+            <div class="relative">
+              <div class="showcase-panel min-h-[460px]">
+                <div class="showcase-grid">
+                  <div class="showcase-block large">
+                    <span>Hero Product Image / Featured Print</span>
+                  </div>
+                  <div class="showcase-block small">
+                    <span>Detail Shot</span>
+                  </div>
+                  <div class="showcase-block small">
+                    <span>Alternate Angle</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="absolute -bottom-6 -left-6 hidden md:block stat-card">
+                <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Starting From</p>
+                <p class="mt-2 text-3xl font-bold text-cyan-300">\$20</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Showcase -->
+      <section id="gallery" class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="max-w-2xl mb-12">
+            <p class="section-tag">Showcase Space</p>
+            <h2 class="section-title">Open layout for display pictures and featured work.</h2>
+            <p class="section-copy">
+              These panels are intentionally left spacious so the brand can later add high-quality
+              photos of prototypes, miniatures, prop pieces, and finished 3D printed products.
+            </p>
+          </div>
+
+          <div class="grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 image-placeholder tall">
+              <span>Large Product Display Image</span>
+            </div>
+            <div class="lg:col-span-5 grid gap-6">
+              <div class="image-placeholder medium">
+                <span>Process / Printer / Workbench Image</span>
+              </div>
+              <div class="image-placeholder medium">
+                <span>Finished Model Close-Up</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6 mt-6">
+            <div class="image-placeholder small"><span>Miniatures</span></div>
+            <div class="image-placeholder small"><span>Functional Parts</span></div>
+            <div class="image-placeholder small"><span>Display Models</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="py-20 border-t border-white/10 bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p class="section-tag">About Us</p>
+            <h2 class="section-title">Made for clients who want custom prints done properly.</h2>
+            <p class="section-copy mt-6">
+              Intrinsic Designs specialises in custom made 3D printed models for creators,
+              hobbyists, professionals, and businesses. From visually striking display pieces
+              to practical prototypes and replacement components, each project is produced
+              with attention to detail, material suitability, and print quality.
+            </p>
+            <p class="section-copy mt-4">
+              We work with key production details such as model dimensions, material type,
+              infill density, layer height, quantity, and finishing requirements so that the
+              final result matches both the intended use and the desired appearance.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="feature-card">
+              <h3>Custom Specifications</h3>
+              <p>Built around your size, detail, and material requirements.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Prototype Friendly</h3>
+              <p>Ideal for product concepts, mockups, and engineering ideas.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Display Quality</h3>
+              <p>Perfect for miniatures, collectibles, props, and presentation pieces.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Simple Ordering</h3>
+              <p>Send your details, receive a quote, and move forward quickly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing -->
+      <section id="pricing" class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="max-w-2xl mb-12">
+            <p class="section-tag">Pricing Catalogue</p>
+            <h2 class="section-title">Straightforward starting prices with room for custom work.</h2>
+            <p class="section-copy">
+              Final quotes depend on print size, model complexity, material choice, quantity,
+              infill density, and finishing options.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="price-card">
+              <p class="price-label">Small Prints</p>
+              <h3>\$20+</h3>
+              <ul>
+                <li>Miniatures and accessories</li>
+                <li>Up to 10 cm</li>
+                <li>PLA included</li>
+                <li>Basic cleanup</li>
+              </ul>
+            </div>
+
+            <div class="price-card featured">
+              <p class="price-label">Medium Prints</p>
+              <h3>\$45+</h3>
+              <ul>
+                <li>Prototype parts and display models</li>
+                <li>Up to 20 cm</li>
+                <li>Standard material choices</li>
+                <li>Optional sanding and finish upgrades</li>
+              </ul>
+            </div>
+
+            <div class="price-card">
+              <p class="price-label">Large / Complex Prints</p>
+              <h3>\$85+</h3>
+              <ul>
+                <li>Detailed commissions and multi-part prints</li>
+                <li>Over 20 cm</li>
+                <li>Complex support structures</li>
+                <li>Custom finishing available</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quote -->
+      <section id="quote" class="py-20 border-t border-white/10 bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="max-w-2xl mb-12">
+            <p class="section-tag">Request a Quote</p>
+            <h2 class="section-title">Share the print details and get a tailored estimate.</h2>
+            <p class="section-copy">
+              Include as much detail as possible so the print can be estimated more accurately.
+            </p>
+          </div>
+
+          <div class="grid lg:grid-cols-3 gap-8">
+            <form id="quoteForm" class="lg:col-span-2 modern-panel p-6 md:p-8 space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="form-label">Full Name</label>
+                  <input id="name" type="text" class="input-field" placeholder="Your name" required />
+                </div>
+                <div>
+                  <label for="email" class="form-label">Email Address</label>
+                  <input id="email" type="email" class="input-field" placeholder="you@example.com" required />
+                </div>
+              </div>
+
+              <div>
+                <label for="projectType" class="form-label">Project Type</label>
+                <input
+                  id="projectType"
+                  type="text"
+                  class="input-field"
+                  placeholder="Prototype, miniature, prop, display model, replacement part..."
+                />
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="material" class="form-label">Model Material</label>
+                  <select id="material" class="input-field">
+                    <option value="PLA">PLA</option>
+                    <option value="PETG">PETG</option>
+                    <option value="ABS">ABS</option>
+                    <option value="Resin">Resin</option>
+                    <option value="TPU">TPU</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="colour" class="form-label">Model Colour(s)</label>
+                  <input id="colour" type="text" class="input-field" placeholder="Black, white, grey, multi-colour..." />
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-6">
+                <div>
+                  <label for="infill" class="form-label">Infill Density (%)</label>
+                  <input id="infill" type="number" min="0" max="100" value="20" class="input-field" />
+                </div>
+                <div>
+                  <label for="layerHeight" class="form-label">Layer Height (mm)</label>
+                  <select id="layerHeight" class="input-field">
+                    <option value="0.12">0.12 mm</option>
+                    <option value="0.16">0.16 mm</option>
+                    <option value="0.20" selected>0.20 mm</option>
+                    <option value="0.28">0.28 mm</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input id="quantity" type="number" min="1" value="1" class="input-field" />
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-6">
+                <div>
+                  <label for="width" class="form-label">Width (cm)</label>
+                  <input id="width" type="number" min="1" value="10" class="input-field" />
+                </div>
+                <div>
+                  <label for="height" class="form-label">Height (cm)</label>
+                  <input id="height" type="number" min="1" value="10" class="input-field" />
+                </div>
+                <div>
+                  <label for="depth" class="form-label">Depth (cm)</label>
+                  <input id="depth" type="number" min="1" value="10" class="input-field" />
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="finish" class="form-label">Surface Finish</label>
+                  <select id="finish" class="input-field">
+                    <option value="Standard">Standard</option>
+                    <option value="Sanded">Sanded</option>
+                    <option value="Primed">Primed</option>
+                    <option value="Painted">Painted</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="supports" class="form-label">Support Removal</label>
+                  <select id="supports" class="input-field">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="notes" class="form-label">Design Notes / Special Requirements</label>
+                <textarea
+                  id="notes"
+                  rows="5"
+                  class="input-field"
+                  placeholder="Describe your model, intended use, detail requirements, available file types (.STL, .OBJ), deadlines, tolerances, or any special instructions..."
+                ></textarea>
+              </div>
+
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-2">
+                <div class="estimate-box">
+                  <p class="text-sm text-slate-400">Estimated starting price</p>
+                  <p id="estimate" class="text-3xl font-bold text-cyan-300">\$20.00</p>
+                </div>
+
+                <button
+                  type="submit"
+                  class="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-6 py-3 font-semibold text-slate-950 hover:bg-cyan-300 transition"
+                >
+                  Submit Quote Request
+                </button>
+              </div>
+            </form>
+
+            <aside class="modern-panel p-6 md:p-8 h-fit">
+              <h3 class="text-xl font-bold">Helpful project details</h3>
+              <p class="mt-3 text-slate-300 leading-7">
+                The more information you provide, the more accurate the quote can be.
+              </p>
+
+              <ul class="mt-6 space-y-4 text-sm text-slate-300">
+                <li class="tip-item">Intended use of the model</li>
+                <li class="tip-item">Preferred material and colour</li>
+                <li class="tip-item">Dimensions or scale needed</li>
+                <li class="tip-item">Strength and infill requirements</li>
+                <li class="tip-item">Required detail level</li>
+                <li class="tip-item">Quantity and deadline</li>
+                <li class="tip-item">Whether sanding, priming, or painting is needed</li>
+                <li class="tip-item">3D file availability (.STL / .OBJ / .3MF)</li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="modern-panel p-8 md:p-10 grid lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <p class="section-tag">Contact</p>
+              <h2 class="section-title">Let’s turn your concept into a finished print.</h2>
+              <p class="section-copy mt-4">
+                Reach out to Intrinsic Designs to discuss your project, request a quote,
+                or ask about print options and finishing.
+              </p>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div class="contact-card">
+                <p class="contact-label">Email</p>
+                <p class="contact-value">hello@intrinsicdesigns.com</p>
+              </div>
+              <div class="contact-card">
+                <p class="contact-label">Phone</p>
+                <p class="contact-value">(123) 456-7890</p>
+              </div>
+              <div class="contact-card">
+                <p class="contact-label">Availability</p>
+                <p class="contact-value">Online custom orders</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/10 py-6">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between gap-3 text-sm text-slate-400">
+        <p>© 2026 Intrinsic Designs. All rights reserved.</p>
+        <p>Custom 3D Printed Models • Prototypes • Miniatures • Functional Parts</p>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

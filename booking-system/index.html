@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Sign-in System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>📚 Library Sign-in System</h1>
+        </header>
+        <p style="background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:6px;margin:12px 0;">
+            <strong>Demo only.</strong> There are no real accounts. Type any name and a password of 4+ characters. Everything stays in your own browser and is never sent anywhere. Please do not enter a real password.
+        </p>
+
+        <!-- Main Content -->
+        <main>
+            <!-- LEFT SIDE: Student Login Section -->
+            <section class="login-section">
+                <h2>Student Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit" id="loginBtn" class="btn-login">Login</button>
+                </form>
+                <p id="loginMessage"></p>
+            </section>
+
+            <!-- RIGHT SIDE: Booking Section (Hidden until login) -->
+            <section class="booking-section" id="bookingSection" style="display:none;">
+                <h2>Book a Title</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="bookTitle">Title/Book Number:</label>
+                        <input type="text" id="bookTitle" name="bookTitle" placeholder="Enter book title or ID" required>
+                    </div>
+
+                    <button type="submit" id="bookOutBtn" class="btn-book-out">Book-out</button>
+                </form>
+                <p id="bookingMessage"></p>
+            </section>
+        </main>
+
+        <!-- Personal Collection (Hidden until login) -->
+        <section class="personal-collection" id="personalCollection" style="display:none;">
+            <h2>Personal Collection</h2>
+            <p>Books currently booked-out by <strong id="studentName"></strong>:</p>
+            <table id="booksTable">
+                <thead>
+                    <tr>
+                        <th>Book Title/ID</th>
+                        <th>Date Booked</th>
+                        <th>Return Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+            <button id="logoutBtn" class="btn-logout">Logout</button>
+        </section>
+    </div>
+
+    <!-- Link to external JavaScript files -->
+    <script src="login.js"></script>
+    <script src="booking.js"></script>
+</body>
+</html>

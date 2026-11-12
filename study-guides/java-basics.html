@@ -1,0 +1,3740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Java Basics — Study Guide & Interactive Quiz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #2d3748;
+      line-height: 1.8;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1a365d, #2a4a8a, #3b82f6);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 5px 18px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ── Info Bar ── */
+    .info-bar {
+      background: white;
+      border-bottom: 3px solid #93c5fd;
+      padding: 14px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      justify-content: center;
+    }
+
+    .info-bar span strong { color: #1d4ed8; }
+
+    /* ── Notice ── */
+    .notice {
+      background: #fffbeb;
+      border-left: 5px solid #f59e0b;
+      border-radius: 8px;
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      font-size: 0.93rem;
+    }
+
+    .notice .notice-title {
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 6px;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ── Section Block ── */
+    .section-block {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+
+    /* ── Section Header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .section-label {
+      background: linear-gradient(135deg, #1a365d, #2a4a8a);
+      color: white;
+      border-radius: 10px;
+      padding: 6px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #1a365d;
+      font-weight: 700;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 3px solid #93c5fd;
+      margin: 12px 0 20px;
+    }
+
+    /* ── Question Group ── */
+    .question-group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      border-left: 4px solid #3b82f6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Answer / Info Item ── */
+    .answer-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+
+    .answer-item:hover {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .answer-number {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .answer-content {
+      flex: 1;
+      font-size: 0.97rem;
+      padding-top: 5px;
+    }
+
+    .answer-content .question-ref {
+      color: #718096;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+
+    .answer-content .answer-main {
+      font-weight: 700;
+      color: #1a365d;
+      font-size: 1rem;
+    }
+
+    .answer-content .answer-sub {
+      color: #4a5568;
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .correct-tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1a365d;
+      border-radius: 6px;
+      padding: 1px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .reason-tag {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.82rem;
+      margin-top: 6px;
+    }
+
+    /* ── Marks Badge ── */
+    .marks {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 1px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    /* ── Table ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 16px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    thead tr {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+    }
+
+    thead th {
+      padding: 13px 18px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) { background: #eff6ff; }
+    tbody tr:hover { background: #dbeafe; }
+
+    tbody td {
+      padding: 12px 18px;
+      border-bottom: 1px solid #bfdbfe;
+    }
+
+    .ans-cell {
+      font-weight: 700;
+      color: #1a365d;
+    }
+
+    /* ── Code Block ── */
+    .code-block {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.9;
+      margin: 14px 0;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .code-block .code-label {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      color: #93c5fd;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .kw   { color: #93c5fd; font-weight: 700; }   /* keywords */
+    .cls  { color: #fbbf24; font-weight: 700; }   /* class names */
+    .str  { color: #86efac; }                      /* strings */
+    .com  { color: #6b7280; font-style: italic; } /* comments */
+    .num  { color: #f9a8d4; }                      /* numbers */
+    .met  { color: #c084fc; }                      /* methods */
+    .typ  { color: #34d399; font-weight: 600; }   /* types */
+
+    /* ── Concept Card ── */
+    .concept-card {
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+
+    .concept-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .concept-icon { font-size: 1.6rem; }
+
+    .concept-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a365d;
+    }
+
+    .concept-body {
+      font-size: 0.95rem;
+      color: #2d3748;
+      line-height: 1.7;
+    }
+
+    .concept-example {
+      background: white;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: #4a5568;
+    }
+
+    /* ── Model Answer ── */
+    .model-answer {
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+    }
+
+    .model-answer-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .model-num {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .model-q {
+      font-size: 0.88rem;
+      color: #718096;
+      font-style: italic;
+      padding-top: 8px;
+    }
+
+    .model-body { padding-left: 48px; }
+
+    .model-body p {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .model-body .highlight {
+      background: #dbeafe;
+      color: #1a365d;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .model-body .java-type {
+      background: #dcfce7;
+      color: #14532d;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      margin-left: 4px;
+    }
+
+    .rubric-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+
+    .rubric-box strong { color: #78350f; }
+
+    /* ── Marking Scheme ── */
+    .marking-scheme {
+      background: linear-gradient(135deg, #1a365d, #2a4a8a);
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+
+    .marking-scheme h3 {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .mark-item {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .mark-item .sec { font-size: 0.82rem; opacity: 0.8; margin-bottom: 4px; }
+    .mark-item .val { font-size: 1.4rem; font-weight: 700; }
+    .mark-item .out { font-size: 0.82rem; opacity: 0.7; }
+
+    .total-bar {
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .total-bar .t-label { font-size: 1rem; }
+    .total-bar .t-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 18px;
+      border-radius: 8px;
+    }
+
+    /* ── Nav Tabs ── */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: #f0f4f8;
+      color: #4a5568;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active,
+    .nav-tab:hover {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+    }
+
+    /* ════════════════════════
+       QUIZ STYLES
+    ════════════════════════ */
+    .quiz-progress-bar-container {
+      background: #e2e8f0;
+      border-radius: 50px;
+      height: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+      height: 100%;
+      border-radius: 50px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .quiz-progress-label {
+      font-size: 0.82rem;
+      color: #718096;
+      margin-bottom: 6px;
+      text-align: right;
+    }
+
+    .score-tracker {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .score-box {
+      background: #eff6ff;
+      border: 2px solid #93c5fd;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .score-box .sb-label {
+      font-size: 0.75rem;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-box .sb-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1d4ed8;
+    }
+
+    .quiz-question-card {
+      background: white;
+      border: 1px solid #93c5fd;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .quiz-q-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-q-num {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .quiz-q-type {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #93c5fd;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .quiz-q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a365d;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .quiz-q-text code {
+      background: #1a1a2e;
+      color: #93c5fd;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.92rem;
+    }
+
+    /* MC */
+    .mc-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .mc-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f7fafc;
+    }
+
+    .mc-option:hover { border-color: #3b82f6; background: #eff6ff; }
+    .mc-option.selected { border-color: #1d4ed8; background: #eff6ff; }
+    .mc-option.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .mc-option.incorrect { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    .mc-option input[type="radio"] {
+      accent-color: #1d4ed8;
+      width: 18px; height: 18px; flex-shrink: 0;
+    }
+
+    .mc-option label { cursor: pointer; font-size: 0.95rem; flex: 1; }
+    .mc-option label code {
+      background: #1a1a2e;
+      color: #93c5fd;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+    }
+
+    /* TF */
+    .tf-options { display: flex; gap: 12px; }
+
+    .tf-btn {
+      flex: 1; padding: 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #f7fafc;
+      color: #4a5568;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .tf-btn:hover   { border-color: #3b82f6; background: #eff6ff; }
+    .tf-btn.selected{ border-color: #1d4ed8; background: #eff6ff; color: #1a365d; }
+    .tf-btn.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .tf-btn.incorrect{ border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    /* FITB */
+    .fitb-wrapper {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.97rem;
+      line-height: 2.4;
+    }
+
+    .fitb-wrapper code {
+      background: #1a1a2e;
+      color: #93c5fd;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .fitb-input {
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      font-family: 'Courier New', monospace;
+      color: #1a365d;
+      min-width: 160px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .fitb-input:focus   { border-color: #1d4ed8; }
+    .fitb-input.correct { border-color: #22c55e; background: #dcfce7; }
+    .fitb-input.incorrect{ border-color: #ef4444; background: #fef2f2; }
+
+    /* Short Answer */
+    .short-answer-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #93c5fd;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #2d3748;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #f7fafc;
+    }
+
+    .short-answer-textarea:focus { border-color: #1d4ed8; background: white; }
+
+    .short-answer-code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    /* Match */
+    .match-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #2d3748;
+      background: white;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .match-select:focus     { border-color: #1d4ed8; }
+    .match-select.correct   { border-color: #22c55e; background: #dcfce7; }
+    .match-select.incorrect { border-color: #ef4444; background: #fef2f2; }
+
+    /* Feedback */
+    .feedback-msg {
+      display: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback-msg.show      { display: flex; }
+    .feedback-msg.correct-fb  { background: #dcfce7; color: #14532d; border: 1px solid #22c55e; }
+    .feedback-msg.incorrect-fb{ background: #fef2f2; color: #991b1b; border: 1px solid #ef4444; }
+    .feedback-msg.info-fb   { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+
+    /* Buttons */
+    .quiz-btn-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
+    .btn-check {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white; border: none; border-radius: 10px;
+      padding: 12px 28px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-check:hover  { opacity: 0.9; transform: translateY(-1px); }
+    .btn-check:active { transform: translateY(0); }
+    .btn-check:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-hint {
+      background: #fffbeb; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+
+    .btn-hint:hover { opacity: 0.8; }
+
+    .btn-reset {
+      background: #f7fafc; color: #4a5568;
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+
+    .btn-reset:hover { background: #edf2f7; }
+
+    .hint-box {
+      display: none;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #92400e;
+      margin-top: 10px;
+    }
+
+    .hint-box.show { display: block; }
+
+    /* Results */
+    .quiz-results-panel {
+      display: none;
+      background: linear-gradient(135deg, #1a365d, #2a4a8a);
+      color: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .quiz-results-panel.show { display: block; }
+    .results-score { font-size: 4rem; font-weight: 700; margin: 16px 0; }
+    .results-label { font-size: 1rem; opacity: 0.8; }
+
+    .results-grade {
+      font-size: 1.4rem; font-weight: 700; margin: 10px 0;
+      background: rgba(255,255,255,0.15);
+      display: inline-block; padding: 6px 24px; border-radius: 10px;
+    }
+
+    .btn-submit-all {
+      background: white; color: #1a365d; border: none;
+      border-radius: 12px; padding: 16px 40px;
+      font-size: 1.05rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 20px; display: block; width: 100%;
+    }
+
+    .btn-submit-all:hover { background: #dbeafe; }
+
+    .btn-retake {
+      background: rgba(255,255,255,0.15); color: white;
+      border: 2px solid rgba(255,255,255,0.4); border-radius: 12px;
+      padding: 14px 36px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 14px; display: block; width: 100%;
+    }
+
+    .btn-retake:hover { background: rgba(255,255,255,0.25); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #718096;
+      font-size: 0.88rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1   { font-size: 1.8rem; }
+      .section-block { padding: 20px; }
+      .results-score { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="badge">☕ JAVA FUNDAMENTALS — STUDY GUIDE & INTERACTIVE QUIZ</div>
+  <h1>Introduction to Java</h1>
+  <p>Java Basics · Program Structure · Data Types · Variables · Operators · JGrasp IDE</p>
+</div>
+
+<!-- ══ INFO BAR ══ -->
+<div class="info-bar">
+  <span>📋 <strong>Subject:</strong> Introduction to Java Programming</span>
+  <span>🛠️ <strong>IDE:</strong> JGrasp</span>
+  <span>⭐ <strong>Quiz Marks:</strong> 55</span>
+  <span>📌 <strong>Level:</strong> Absolute Beginner</span>
+</div>
+
+<div class="container">
+
+  <!-- ══ NOTICE ══ -->
+  <div class="notice">
+    <div class="notice-title">📌 Before You Begin</div>
+    This guide is designed for learners who are <strong>brand-new to Java</strong> and will be
+    using <strong>JGrasp</strong> as their development environment. Before writing a single line of
+    code, it is essential to understand what Java is, how it works, and what its core building
+    blocks are. Study each section carefully, then test yourself in the Interactive Quiz below.
+  </div>
+
+  <!-- ══ NAV TABS ══ -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollToSection('what-is-java')">☕ What is Java?</button>
+    <button class="nav-tab" onclick="scrollToSection('jgrasp')">🛠️ JGrasp IDE</button>
+    <button class="nav-tab" onclick="scrollToSection('structure')">🏗️ Program Structure</button>
+    <button class="nav-tab" onclick="scrollToSection('datatypes')">🔢 Data Types</button>
+    <button class="nav-tab" onclick="scrollToSection('variables')">📦 Variables</button>
+    <button class="nav-tab" onclick="scrollToSection('operators')">➕ Operators</button>
+    <button class="nav-tab" onclick="scrollToSection('io')">📤 Input / Output</button>
+    <button class="nav-tab" onclick="scrollToSection('comments')">💬 Comments</button>
+    <button class="nav-tab" onclick="scrollToSection('quiz')">🎯 Quiz</button>
+  </div>
+
+  <!-- ══ MARK ALLOCATION ══ -->
+  <div class="marking-scheme">
+    <h3>📊 Quiz Mark Allocation Summary</h3>
+    <div class="mark-grid">
+      <div class="mark-item">
+        <div class="sec">Section A</div>
+        <div class="val">10</div>
+        <div class="out">MCQ marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section B</div>
+        <div class="val">10</div>
+        <div class="out">True/False marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section C</div>
+        <div class="val">10</div>
+        <div class="out">Fill-in marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section D</div>
+        <div class="val">10</div>
+        <div class="out">Matching marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section E</div>
+        <div class="val">15</div>
+        <div class="out">Short answer</div>
+      </div>
+    </div>
+    <div class="total-bar">
+      <div class="t-label">TOTAL</div>
+      <div class="t-val">55 marks</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 1 — WHAT IS JAVA?
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="what-is-java">
+    <div class="section-header">
+      <div class="section-label">Section 1</div>
+      <div class="section-title">☕ What is Java?</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Overview, History & Key Features</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">☕</span>
+        <span class="concept-title">Definition</span>
+      </div>
+      <div class="concept-body">
+        Java is a <strong>high-level, class-based, object-oriented programming language</strong>
+        designed to have as few implementation dependencies as possible. It was originally
+        developed by <strong>James Gosling</strong> at Sun Microsystems and released in
+        <strong>1995</strong>. Today it is owned and maintained by <strong>Oracle Corporation</strong>.
+        Java follows the philosophy of <strong>"Write Once, Run Anywhere" (WORA)</strong> —
+        meaning compiled Java code can run on any device that has the
+        <strong>Java Virtual Machine (JVM)</strong> installed.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🔑 Key Features of Java</div>
+
+    <div class="answer-item">
+      <div class="answer-number">F1</div>
+      <div class="answer-content">
+        <div class="answer-main">Platform Independent</div>
+        <div class="answer-sub">
+          Java source code is compiled into <strong>bytecode</strong> (not machine code).
+          This bytecode runs on the <strong>JVM</strong>, which is available on Windows,
+          macOS, and Linux — so the same program runs everywhere.
+        </div>
+        <span class="reason-tag">💡 "Write Once, Run Anywhere" (WORA)</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">F2</div>
+      <div class="answer-content">
+        <div class="answer-main">Object-Oriented</div>
+        <div class="answer-sub">
+          Everything in Java is organised around <strong>classes and objects</strong>.
+          This makes programs modular, reusable, and easier to maintain.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">F3</div>
+      <div class="answer-content">
+        <div class="answer-main">Strongly Typed</div>
+        <div class="answer-sub">
+          Every variable must be declared with a <strong>specific data type</strong>
+          before it is used. Java checks types at compile time, catching errors early.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">F4</div>
+      <div class="answer-content">
+        <div class="answer-main">Secure & Robust</div>
+        <div class="answer-sub">
+          Java has built-in features to prevent common programming errors, including
+          automatic <strong>garbage collection</strong> (memory management),
+          exception handling, and strong type-checking.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">F5</div>
+      <div class="answer-content">
+        <div class="answer-main">Case-Sensitive</div>
+        <div class="answer-sub">
+          Java is <strong>case-sensitive</strong>. This means
+          <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">myVariable</code>,
+          <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">MyVariable</code>,
+          and <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">MYVARIABLE</code>
+          are three completely different identifiers.
+        </div>
+        <span class="reason-tag">⚠️ Very common source of beginner errors!</span>
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🏗️ Java Technology Stack</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Full Name</th>
+            <th>What it Does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>JDK</strong></td>
+            <td>Java Development Kit</td>
+            <td class="ans-cell">The full toolkit for writing, compiling & running Java programs</td>
+          </tr>
+          <tr>
+            <td><strong>JRE</strong></td>
+            <td>Java Runtime Environment</td>
+            <td class="ans-cell">Allows you to run (but not write) Java programs</td>
+          </tr>
+          <tr>
+            <td><strong>JVM</strong></td>
+            <td>Java Virtual Machine</td>
+            <td class="ans-cell">Executes Java bytecode on your specific operating system</td>
+          </tr>
+          <tr>
+            <td><strong>Bytecode</strong></td>
+            <td>Compiled Java Code</td>
+            <td class="ans-cell">Intermediate code (.class file) that the JVM can understand</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 Key Workflow:</strong>
+      You write <strong>.java</strong> source code →
+      The <strong>Java Compiler (javac)</strong> compiles it into a <strong>.class</strong> bytecode file →
+      The <strong>JVM</strong> runs the bytecode on your machine.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 2 — JGrasp IDE
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="jgrasp">
+    <div class="section-header">
+      <div class="section-label">Section 2</div>
+      <div class="section-title">🛠️ The JGrasp IDE</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 What is JGrasp & How to Use It</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🛠️</span>
+        <span class="concept-title">What is an IDE?</span>
+      </div>
+      <div class="concept-body">
+        An <strong>IDE (Integrated Development Environment)</strong> is a software application
+        that provides a complete environment for writing, compiling, running, and debugging code —
+        all in one place. Instead of using separate tools, an IDE bundles everything a programmer
+        needs into a single interface.
+      </div>
+      <div class="concept-example">
+        💡 Think of an IDE like a fully equipped workshop — it has your workbench (editor),
+        tools (compiler), and testing area (debugger) all in one room.
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">☕</span>
+        <span class="concept-title">What is JGrasp?</span>
+      </div>
+      <div class="concept-body">
+        <strong>JGrasp</strong> is a lightweight IDE developed at <strong>Auburn University</strong>,
+        specifically designed for teaching programming. It is particularly popular in educational
+        settings because it is <strong>free, simple to use, and includes built-in visualisation tools</strong>
+        that help beginners understand how programs work. JGrasp supports Java, C, C++, Python,
+        and other languages.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🖥️ Key Parts of the JGrasp Window</div>
+
+    <div class="answer-item">
+      <div class="answer-number">P1</div>
+      <div class="answer-content">
+        <div class="answer-main">Source Code Editor (Top Panel)</div>
+        <div class="answer-sub">
+          The main area where you type your Java code. JGrasp provides
+          <strong>syntax highlighting</strong> (different colours for keywords, strings, etc.)
+          and <strong>auto-indentation</strong> to make code readable.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P2</div>
+      <div class="answer-content">
+        <div class="answer-main">Run I/O Window (Bottom Panel)</div>
+        <div class="answer-sub">
+          Displays the output of your program when it runs, and accepts
+          <strong>keyboard input</strong> when your program asks for it.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P3</div>
+      <div class="answer-content">
+        <div class="answer-main">Toolbar Buttons</div>
+        <div class="answer-sub">
+          Key buttons include: <br>
+          🔨 <strong>Compile</strong> — converts your .java file to bytecode (.class file)<br>
+          ▶️ <strong>Run</strong> — executes your compiled program<br>
+          🐛 <strong>Debug</strong> — runs your program step by step to find errors
+        </div>
+        <span class="reason-tag">⚠️ You MUST compile successfully before you can run a program.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P4</div>
+      <div class="answer-content">
+        <div class="answer-main">CSD (Control Structure Diagram)</div>
+        <div class="answer-sub">
+          A unique JGrasp feature. It automatically generates a visual diagram of your
+          program's control flow (loops, if-statements, etc.) alongside your code,
+          helping beginners understand the program's structure at a glance.
+        </div>
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">📁 File Naming Rules in JGrasp</div>
+
+    <div class="answer-item">
+      <div class="answer-number">⚠️</div>
+      <div class="answer-content">
+        <div class="answer-main">Critical Rule: File Name Must Match Class Name</div>
+        <div class="answer-sub">
+          In Java, the <strong>filename must exactly match the public class name</strong>,
+          including capitalisation. The file must be saved with a <strong>.java</strong> extension.
+        </div>
+        <div class="concept-example" style="margin-top:8px; background:#f0fff4; border-left:4px solid #22c55e;">
+          ✅ Class named <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">HelloWorld</code>
+          → File must be saved as <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">HelloWorld.java</code>
+        </div>
+        <div class="concept-example" style="margin-top:8px; background:#fef2f2; border-left:4px solid #ef4444;">
+          ❌ Class named <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">HelloWorld</code>
+          → File saved as <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">helloworld.java</code>
+          — this will cause a <strong>compile error</strong>!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 3 — JAVA PROGRAM STRUCTURE
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="structure">
+    <div class="section-header">
+      <div class="section-label">Section 3</div>
+      <div class="section-title">🏗️ Java Program Structure</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Anatomy of a Java Program</div>
+
+    <div class="code-block">
+      <span class="code-label">HelloWorld.java</span>
+<span class="com">// This is a single-line comment — the compiler ignores this line</span>
+
+<span class="kw">public class</span> <span class="cls">HelloWorld</span> {                    <span class="com">// Class declaration</span>
+
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {   <span class="com">// Main method — program starts here</span>
+
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Hello, World!"</span>);     <span class="com">// Print a line of text</span>
+
+    }  <span class="com">// end of main method</span>
+
+}  <span class="com">// end of class</span>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🔍 Breaking Down Each Part</div>
+
+    <div class="answer-item">
+      <div class="answer-number">1</div>
+      <div class="answer-content">
+        <div class="answer-main"><code style="background:#1a1a2e;color:#93c5fd;padding:2px 6px;border-radius:4px;font-family:monospace;">public class HelloWorld</code></div>
+        <div class="answer-sub">
+          This declares a <strong>class</strong> named <em>HelloWorld</em>.
+          In Java, <strong>every program must be inside a class</strong>.
+          The word <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">public</code> is an
+          <strong>access modifier</strong> — it means this class is accessible from anywhere.
+          The class name must match the filename exactly.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">2</div>
+      <div class="answer-content">
+        <div class="answer-main"><code style="background:#1a1a2e;color:#93c5fd;padding:2px 6px;border-radius:4px;font-family:monospace;">public static void main(String[] args)</code></div>
+        <div class="answer-sub">
+          This is the <strong>main method</strong> — the entry point of every Java application.
+          When you run a Java program, the JVM looks for and executes this method first.
+          You must write it <em>exactly</em> as shown — it is case-sensitive and must
+          include every keyword.
+        </div>
+        <span class="reason-tag">⚠️ Without this exact method signature, your program will not run.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">3</div>
+      <div class="answer-content">
+        <div class="answer-main">Curly Braces <code style="background:#1a1a2e;color:#fbbf24;padding:2px 6px;border-radius:4px;font-family:monospace;">{ }</code></div>
+        <div class="answer-sub">
+          Curly braces define <strong>blocks of code</strong>. Every opening brace
+          <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">{</code>
+          must have a matching closing brace
+          <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">}</code>.
+          The class body sits between the class braces; the method body sits between the method braces.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">4</div>
+      <div class="answer-content">
+        <div class="answer-main">Semicolons <code style="background:#1a1a2e;color:#f9a8d4;padding:2px 6px;border-radius:4px;font-family:monospace;">;</code></div>
+        <div class="answer-sub">
+          In Java, <strong>every statement must end with a semicolon</strong>. Forgetting a
+          semicolon is one of the most common beginner errors and will cause a compile error.
+        </div>
+        <span class="reason-tag">⚠️ Note: Class and method declarations do NOT end with semicolons — only statements inside them do.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">5</div>
+      <div class="answer-content">
+        <div class="answer-main"><code style="background:#1a1a2e;color:#93c5fd;padding:2px 6px;border-radius:4px;font-family:monospace;">System.out.println("Hello, World!");</code></div>
+        <div class="answer-sub">
+          This statement prints the text <em>"Hello, World!"</em> followed by a new line to the screen.
+          <strong>System</strong> is a built-in Java class,
+          <strong>out</strong> is an output stream, and
+          <strong>println</strong> is the method that prints text with a line break.
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper" style="margin-top:16px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>What it Does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#c084fc;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println()</code></td>
+            <td>Prints text + moves to a <strong>new line</strong></td>
+            <td><code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println("Hi!");</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#c084fc;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.print()</code></td>
+            <td>Prints text <strong>without</strong> moving to a new line</td>
+            <td><code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.print("Hi ");</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 4 — DATA TYPES
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="datatypes">
+    <div class="section-header">
+      <div class="section-label">Section 4</div>
+      <div class="section-title">🔢 Data Types</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Primitive Data Types in Java</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🔢</span>
+        <span class="concept-title">What is a Data Type?</span>
+      </div>
+      <div class="concept-body">
+        A <strong>data type</strong> tells Java what kind of value a variable will hold.
+        Because Java is <strong>strongly typed</strong>, you must declare the type of every
+        variable before using it. Java has <strong>8 primitive data types</strong> (built-in,
+        simple types) and also supports <strong>reference types</strong> like
+        <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">String</code>.
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Data Type</th>
+            <th>Category</th>
+            <th>Size</th>
+            <th>What it Stores</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">int</code></td>
+            <td>Integer</td>
+            <td>32-bit</td>
+            <td class="ans-cell">Whole numbers (no decimals)</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">42</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">double</code></td>
+            <td>Floating Point</td>
+            <td>64-bit</td>
+            <td class="ans-cell">Decimal / fractional numbers</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">3.14</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">char</code></td>
+            <td>Character</td>
+            <td>16-bit</td>
+            <td class="ans-cell">A single character (letter, digit, symbol)</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">'A'</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">boolean</code></td>
+            <td>Logical</td>
+            <td>1-bit</td>
+            <td class="ans-cell">Only two values: true or false</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">true</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">float</code></td>
+            <td>Floating Point</td>
+            <td>32-bit</td>
+            <td class="ans-cell">Decimal numbers (less precise than double)</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">3.14f</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">long</code></td>
+            <td>Integer</td>
+            <td>64-bit</td>
+            <td class="ans-cell">Very large whole numbers</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">1000000L</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">byte</code></td>
+            <td>Integer</td>
+            <td>8-bit</td>
+            <td class="ans-cell">Very small whole numbers (-128 to 127)</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">100</code></td>
+          </tr>
+          <tr>
+            <td><code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">short</code></td>
+            <td>Integer</td>
+            <td>16-bit</td>
+            <td class="ans-cell">Small whole numbers (-32768 to 32767)</td>
+            <td><code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">200</code></td>
+          </tr>
+          <tr style="background:#fffbeb;">
+            <td><code  style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">String</code></td>
+            <td>Reference Type</td>
+            <td>Variable</td>
+            <td class="ans-cell">A sequence of characters (text) — not a primitive!</td>
+            <td><code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">"Hello"</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 Key Distinctions to Remember:</strong><br>
+      • <code style="background:#1a1a2e;color:#34d399;padding:1px 4px;border-radius:3px;font-family:monospace;">char</code>
+        values use <strong>single quotes</strong>:
+        <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">'A'</code><br>
+      • <code style="background:#1a1a2e;color:#fbbf24;padding:1px 4px;border-radius:3px;font-family:monospace;">String</code>
+        values use <strong>double quotes</strong>:
+        <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">"Hello"</code><br>
+      • <code style="background:#1a1a2e;color:#34d399;padding:1px 4px;border-radius:3px;font-family:monospace;">float</code>
+        literals must end with <strong>f</strong>:
+        <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">3.14f</code><br>
+      • <code style="background:#1a1a2e;color:#34d399;padding:1px 4px;border-radius:3px;font-family:monospace;">long</code>
+        literals must end with <strong>L</strong>:
+        <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">1000000L</code><br>
+      • <code style="background:#1a1a2e;color:#fbbf24;padding:1px 4px;border-radius:3px;font-family:monospace;">String</code>
+        starts with a capital S — it is a <strong>class</strong>, not a primitive type.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 5 — VARIABLES
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="variables">
+    <div class="section-header">
+      <div class="section-label">Section 5</div>
+      <div class="section-title">📦 Variables</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Declaring, Initialising & Naming Variables</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">📦</span>
+        <span class="concept-title">What is a Variable?</span>
+      </div>
+      <div class="concept-body">
+        A <strong>variable</strong> is a named storage location in memory that holds a value.
+        In Java, before you can use a variable, you must <strong>declare</strong> it by
+        specifying its <strong>data type</strong> and giving it a <strong>name (identifier)</strong>.
+        You can also optionally <strong>initialise</strong> it (give it a starting value) at
+        the same time.
+      </div>
+      <div class="concept-example">
+        💡 Think of a variable as a labelled box — the <strong>type</strong> defines what
+        kind of thing can go in the box, and the <strong>name</strong> is the label on the box.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">📝 Syntax: How to Declare a Variable</div>
+
+    <div class="code-block">
+      <span class="code-label">Variables.java</span>
+<span class="com">// Syntax: dataType variableName;</span>
+<span class="com">// Syntax: dataType variableName = value;</span>
+
+<span class="kw">public class</span> <span class="cls">Variables</span> {
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+
+        <span class="com">// Declaration only</span>
+        <span class="typ">int</span> age;
+
+        <span class="com">// Declaration + Initialisation</span>
+        <span class="typ">int</span> score = <span class="num">95</span>;
+        <span class="typ">double</span> price = <span class="num">9.99</span>;
+        <span class="typ">char</span> grade = <span class="str">'A'</span>;
+        <span class="typ">boolean</span> isPassed = <span class="kw">true</span>;
+        <span class="cls">String</span> name = <span class="str">"Lena"</span>;
+
+        <span class="com">// Assigning a value after declaration</span>
+        age = <span class="num">17</span>;
+
+        <span class="com">// Updating a variable's value</span>
+        score = <span class="num">100</span>;
+
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Name: "</span> + name);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Age: "</span>  + age);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Score: "</span> + score);
+    }
+}
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">📏 Variable Naming Rules & Conventions</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Rule / Convention</th><th>Detail</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Must start with a letter, $ or _</strong></td>
+            <td>Cannot start with a number</td>
+            <td>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">myAge</code> &nbsp;
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">1age</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>No spaces allowed</strong></td>
+            <td>Use camelCase for multi-word names</td>
+            <td>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">firstName</code> &nbsp;
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">first name</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Case-sensitive</strong></td>
+            <td><code style="font-family:monospace;">age</code> and <code style="font-family:monospace;">Age</code> are different</td>
+            <td>
+              <code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">score</code> ≠
+              <code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">Score</code> ≠
+              <code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">SCORE</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Cannot use Java keywords</strong></td>
+            <td>Reserved words are off limits</td>
+            <td>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">int</code>,
+              <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">class</code>,
+              <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">static</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>camelCase convention</strong></td>
+            <td>First word lowercase, subsequent words capitalised</td>
+            <td>
+              <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">studentName</code>,
+              <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">totalScore</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Use meaningful names</strong></td>
+            <td>Names should describe what the variable stores</td>
+            <td>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">studentAge</code> &nbsp;
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">x</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="answer-item" style="margin-top:16px;">
+      <div class="answer-number">💡</div>
+      <div class="answer-content">
+        <div class="answer-main">Constants — The <code style="background:#1a1a2e;color:#93c5fd;padding:2px 6px;border-radius:4px;font-family:monospace;">final</code> Keyword</div>
+        <div class="answer-sub">
+          A <strong>constant</strong> is a variable whose value cannot be changed after it
+          is set. In Java, use the <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">final</code>
+          keyword to declare a constant. By convention, constants use
+          <strong>ALL_UPPER_CASE</strong> with underscores.
+        </div>
+        <div class="code-block" style="margin-top:10px; font-size:0.85rem; padding:14px 18px;">
+<span class="kw">final</span> <span class="typ">double</span> PI = <span class="num">3.14159</span>;
+<span class="kw">final</span> <span class="typ">int</span> MAX_SCORE = <span class="num">100</span>;
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 6 — OPERATORS
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="operators">
+    <div class="section-header">
+      <div class="section-label">Section 6</div>
+      <div class="section-title">➕ Operators</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Types of Operators in Java</div>
+
+    <div class="answer-item">
+      <div class="answer-number">①</div>
+      <div class="answer-content">
+        <div class="answer-main">Arithmetic Operators — Used to perform mathematical calculations</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:monospace;">+</code></td><td>Addition</td>
+            <td><code style="font-family:monospace;">10 + 3</code></td><td class="ans-cell">13</td></tr>
+          <tr><td><code style="font-family:monospace;">-</code></td><td>Subtraction</td>
+            <td><code style="font-family:monospace;">10 - 3</code></td><td class="ans-cell">7</td></tr>
+          <tr><td><code style="font-family:monospace;">*</code></td><td>Multiplication</td>
+            <td><code style="font-family:monospace;">10 * 3</code></td><td class="ans-cell">30</td></tr>
+          <tr><td><code style="font-family:monospace;">/</code></td><td>Division</td>
+            <td><code style="font-family:monospace;">10 / 3</code></td><td class="ans-cell">3 (integer division!)</td></tr>
+          <tr><td><code style="font-family:monospace;">%</code></td><td>Modulus (remainder)</td>
+            <td><code style="font-family:monospace;">10 % 3</code></td><td class="ans-cell">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box">
+      <strong>⚠️ Integer Division Warning:</strong> When you divide two
+      <code style="background:#1a1a2e;color:#34d399;padding:1px 4px;border-radius:3px;font-family:monospace;">int</code>
+      values, Java discards the decimal part.
+      <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">10 / 3</code>
+      gives <strong>3</strong>, not 3.33. To get a decimal result, at least one value must be a
+      <code style="background:#1a1a2e;color:#34d399;padding:1px 4px;border-radius:3px;font-family:monospace;">double</code>:
+      <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">10.0 / 3</code>
+      gives <strong>3.3333...</strong>
+    </div>
+
+    <div class="answer-item" style="margin-top:14px;">
+      <div class="answer-number">②</div>
+      <div class="answer-content">
+        <div class="answer-main">Assignment Operators — Used to assign values to variables</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Operator</th><th>Meaning</th><th>Equivalent To</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:monospace;">=</code></td><td>Assign</td>
+            <td><code style="font-family:monospace;">x = 5</code></td></tr>
+          <tr><td><code style="font-family:monospace;">+=</code></td><td>Add and assign</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x + 5</code></td></tr>
+          <tr><td><code style="font-family:monospace;">-=</code></td><td>Subtract and assign</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x - 5</code></td></tr>
+          <tr><td><code style="font-family:monospace;">*=</code></td><td>Multiply and assign</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x * 5</code></td></tr>
+          <tr><td><code style="font-family:monospace;">/=</code></td><td>Divide and assign</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x / 5</code></td></tr>
+          <tr><td><code style="font-family:monospace;">++</code></td><td>Increment by 1</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x + 1</code></td></tr>
+          <tr><td><code style="font-family:monospace;">--</code></td><td>Decrement by 1</td>
+            <td class="ans-cell"><code style="font-family:monospace;">x = x - 1</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="answer-item" style="margin-top:14px;">
+      <div class="answer-number">③</div>
+      <div class="answer-content">
+        <div class="answer-main">Comparison (Relational) Operators — Return <code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">true</code> or <code style="background:#1a1a2e;color:#34d399;padding:1px 5px;border-radius:4px;font-family:monospace;">false</code></div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:monospace;">==</code></td><td>Equal to</td>
+            <td><code style="font-family:monospace;">5 == 5</code></td><td class="ans-cell">true</td></tr>
+          <tr><td><code style="font-family:monospace;">!=</code></td><td>Not equal to</td>
+            <td><code style="font-family:monospace;">5 != 3</code></td><td class="ans-cell">true</td></tr>
+          <tr><td><code style="font-family:monospace;">&gt;</code></td><td>Greater than</td>
+            <td><code style="font-family:monospace;">7 &gt; 3</code></td><td class="ans-cell">true</td></tr>
+          <tr><td><code style="font-family:monospace;">&lt;</code></td><td>Less than</td>
+            <td><code style="font-family:monospace;">2 &lt; 5</code></td><td class="ans-cell">true</td></tr>
+          <tr><td><code style="font-family:monospace;">&gt;=</code></td><td>Greater than or equal to</td>
+            <td><code style="font-family:monospace;">5 &gt;= 5</code></td><td class="ans-cell">true</td></tr>
+          <tr><td><code style="font-family:monospace;">&lt;=</code></td><td>Less than or equal to</td>
+            <td><code style="font-family:monospace;">4 &lt;= 3</code></td><td class="ans-cell">false</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box" style="margin-top:10px;">
+      <strong>⚠️ Common Mistake:</strong> Do NOT confuse
+      <code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">=</code>
+      (assignment — sets a value) with
+      <code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">==</code>
+      (comparison — checks if two values are equal).
+      Writing <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 4px;border-radius:3px;font-family:monospace;">if (x = 5)</code>
+      instead of <code style="background:#1a1a2e;color:#86efac;padding:1px 4px;border-radius:3px;font-family:monospace;">if (x == 5)</code>
+      is a very common beginner error.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 7 — INPUT / OUTPUT
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="io">
+    <div class="section-header">
+      <div class="section-label">Section 7</div>
+      <div class="section-title">📤 Input & Output</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Displaying Output & Reading User Input</div>
+
+    <div class="answer-item">
+      <div class="answer-number">OUT</div>
+      <div class="answer-content">
+        <div class="answer-main">Output — Displaying Information to the Screen</div>
+        <div class="answer-sub">
+          Java uses
+          <code style="background:#1a1a2e;color:#c084fc;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println()</code>
+          and
+          <code style="background:#1a1a2e;color:#c084fc;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.print()</code>
+          to display output. You can combine text and variable values using the
+          <strong>concatenation operator</strong>
+          <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">+</code>.
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">OutputDemo.java</span>
+<span class="typ">int</span> age = <span class="num">17</span>;
+<span class="cls">String</span> name = <span class="str">"Lena"</span>;
+
+<span class="com">// Concatenation: combining text + variables</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Name: "</span> + name);
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Age:  "</span> + age);
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"In 3 years: "</span> + (age + <span class="num">3</span>));
+
+<span class="com">// print() stays on the same line</span>
+<span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Hello "</span>);
+<span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"World"</span>);
+<span class="com">// Output: Hello World  (on one line)</span>
+    </div>
+
+    <div class="answer-item" style="margin-top:4px;">
+      <div class="answer-number">IN</div>
+      <div class="answer-content">
+        <div class="answer-main">Input — Reading Data from the Keyboard using <code style="background:#1a1a2e;color:#fbbf24;padding:2px 6px;border-radius:4px;font-family:monospace;">Scanner</code></div>
+        <div class="answer-sub">
+          To read input from the user, Java uses the
+          <code style="background:#1a1a2e;color:#fbbf24;padding:1px 5px;border-radius:4px;font-family:monospace;">Scanner</code>
+          class, which is found in the
+          <code style="background:#1a1a2e;color:#93c5fd;padding:1px 5px;border-radius:4px;font-family:monospace;">java.util</code>
+          package. You must <strong>import</strong> it at the top of your file before using it.
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">InputDemo.java</span>
+<span class="kw">import</span> java.util.<span class="cls">Scanner</span>;   <span class="com">// Step 1: Import Scanner</span>
+
+<span class="kw">public class</span> <span class="cls">InputDemo</span> {
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+
+        <span class="com">// Step 2: Create a Scanner object</span>
+        <span class="cls">Scanner</span> input = <span class="kw">new</span> <span class="cls">Scanner</span>(<span class="cls">System</span>.in);
+
+        <span class="com">// Step 3: Prompt the user</span>
+        <span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Enter your name: "</span>);
+
+        <span class="com">// Step 4: Read input into a variable</span>
+        <span class="cls">String</span> name = input.<span class="met">nextLine</span>();
+
+        <span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Enter your age: "</span>);
+        <span class="typ">int</span> age = input.<span class="met">nextInt</span>();
+
+        <span class="com">// Step 5: Use the input</span>
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Hello, "</span> + name + <span class="str">"! You are "</span> + age + <span class="str">" years old."</span>);
+
+        input.<span class="met">close</span>();  <span class="com">// Step 6: Close the Scanner when done</span>
+    }
+}
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead><tr><th>Scanner Method</th><th>Reads As</th><th>Use For</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:monospace;">nextLine()</code></td>
+            <td class="ans-cell">String</td><td>A full line of text (including spaces)</td></tr>
+          <tr><td><code style="font-family:monospace;">next()</code></td>
+            <td class="ans-cell">String</td><td>A single word (stops at whitespace)</td></tr>
+          <tr><td><code style="font-family:monospace;">nextInt()</code></td>
+            <td class="ans-cell">int</td><td>A whole number</td></tr>
+          <tr><td><code style="font-family:monospace;">nextDouble()</code></td>
+            <td class="ans-cell">double</td><td>A decimal number</td></tr>
+          <tr><td><code style="font-family:monospace;">nextBoolean()</code></td>
+            <td class="ans-cell">boolean</td><td>true or false</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 8 — COMMENTS
+  ══════════════════════════════════════════════ -->
+  <div class="section-block" id="comments">
+    <div class="section-header">
+      <div class="section-label">Section 8</div>
+      <div class="section-title">💬 Comments</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Types of Comments in Java</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">💬</span>
+        <span class="concept-title">What is a Comment?</span>
+      </div>
+      <div class="concept-body">
+        A <strong>comment</strong> is a note written in the source code that the
+        <strong>compiler completely ignores</strong>. Comments are written for
+        <em>humans</em> — to explain what the code does, why a decision was made,
+        or to temporarily disable code during testing. Good commenting is a sign of a
+        professional, thoughtful programmer.
+      </div>
+    </div>
+
+    <div class="code-block" style="margin-top:14px;">
+      <span class="code-label">Comments.java</span>
+<span class="com">// ── 1. Single-line comment ──────────────────────────
+// Starts with // and runs to the end of the line.
+// The compiler ignores everything after the //</span>
+
+<span class="typ">int</span> x = <span class="num">10</span>;  <span class="com">// You can also place them at the end of a line</span>
+
+<span class="com">/* ── 2. Multi-line comment ─────────────────────────
+   Starts with /* and ends with */
+   Useful for longer explanations that span
+   multiple lines.
+*/</span>
+
+<span class="com">/**
+ * ── 3. Javadoc comment ───────────────────────────
+ * Starts with /** and ends with */
+ * Used to generate official documentation.
+ * Appears before classes and methods.
+ *
+ * @param  args  command-line arguments
+ * @author Lena
+ */</span>
+<span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) { }
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead><tr><th>Type</th><th>Syntax</th><th>Best Used For</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Single-line</strong></td>
+            <td><code style="font-family:monospace;">// comment</code></td>
+            <td class="ans-cell">Quick notes, short explanations</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-line</strong></td>
+            <td><code style="font-family:monospace;">/* comment */</code></td>
+            <td class="ans-cell">Longer explanations, temporarily disabling code</td>
+          </tr>
+          <tr>
+            <td><strong>Javadoc</strong></td>
+            <td><code style="font-family:monospace;">/** comment */</code></td>
+            <td class="ans-cell">Documenting classes, methods, and parameters formally</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 Best Practice:</strong> Always comment your code as you write it — not after.
+      Describe the <em>purpose</em> of your code (the "why"), not just what it does (the "what"),
+      since the code itself already shows what it does.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       INTERACTIVE QUIZ
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="quiz">
+    <div class="section-header">
+      <div class="section-label">Interactive</div>
+      <div class="section-title">🎯 Java Basics Quiz</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="quiz-progress-label" id="progressLabel">Progress: 0 / 31 questions attempted (0%)</div>
+    <div class="quiz-progress-bar-container">
+      <div class="quiz-progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="score-tracker">
+      <div class="score-box">
+        <div class="sb-label">Score</div>
+        <div class="sb-val" id="liveScore">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Correct</div>
+        <div class="sb-val" id="liveCorrect" style="color:#16a34a;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Incorrect</div>
+        <div class="sb-val" id="liveIncorrect" style="color:#dc2626;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Remaining</div>
+        <div class="sb-val" id="liveRemaining">31</div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION A: Multiple Choice ══ -->
+    <div class="question-group-title" style="margin-top:20px;">
+      📝 Section A — Multiple Choice <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- A1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A1</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What does the acronym <strong>JVM</strong> stand for in Java?
+      </div>
+      <div class="mc-options" id="q1-options">
+        <div class="mc-option" onclick="selectMC('q1','A',this)">
+          <input type="radio" name="q1" id="q1a"><label for="q1a">A) Java Visual Monitor</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','B',this)">
+          <input type="radio" name="q1" id="q1b"><label for="q1b">B) Java Virtual Machine</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','C',this)">
+          <input type="radio" name="q1" id="q1c"><label for="q1c">C) Java Variable Manager</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','D',this)">
+          <input type="radio" name="q1" id="q1d"><label for="q1d">D) Java Verified Module</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q1-feedback"></div>
+      <div class="hint-box" id="q1-hint">💡 Hint: The JVM is what makes Java platform-independent — it executes bytecode on any operating system.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q1','B','The JVM (Java Virtual Machine) executes Java bytecode, allowing the same program to run on any operating system.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A2</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In Java, which data type would you use to store the value <code>3.14</code>?
+      </div>
+      <div class="mc-options" id="q2-options">
+        <div class="mc-option" onclick="selectMC('q2','A',this)">
+          <input type="radio" name="q2" id="q2a"><label for="q2a">A) <code>int</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','B',this)">
+          <input type="radio" name="q2" id="q2b"><label for="q2b">B) <code>boolean</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','C',this)">
+          <input type="radio" name="q2" id="q2c"><label for="q2c">C) <code>double</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','D',this)">
+          <input type="radio" name="q2" id="q2d"><label for="q2d">D) <code>char</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q2-feedback"></div>
+      <div class="hint-box" id="q2-hint">💡 Hint: 3.14 is a decimal/fractional number — which type stores decimal numbers?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q2','C','double is used to store decimal (floating-point) numbers. int stores whole numbers, boolean stores true/false, and char stores a single character.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A3</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which of the following is a <strong>valid</strong> variable name in Java?
+      </div>
+      <div class="mc-options" id="q3-options">
+        <div class="mc-option" onclick="selectMC('q3','A',this)">
+          <input type="radio" name="q3" id="q3a"><label for="q3a">A) <code>2ndScore</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','B',this)">
+          <input type="radio" name="q3" id="q3b"><label for="q3b">B) <code>student name</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','C',this)">
+          <input type="radio" name="q3" id="q3c"><label for="q3c">C) <code>totalScore</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','D',this)">
+          <input type="radio" name="q3" id="q3d"><label for="q3d">D) <code>class</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q3-feedback"></div>
+      <div class="hint-box" id="q3-hint">💡 Hint: Variable names cannot start with a number, contain spaces, or be a Java keyword.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q3','C','totalScore is valid — it uses camelCase, starts with a letter, has no spaces, and is not a keyword. 2ndScore starts with a number, student name has a space, and class is a Java keyword.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A4</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What will the following code output?<br><br>
+        <code>System.out.println(10 / 3);</code>
+      </div>
+      <div class="mc-options" id="q4-options">
+        <div class="mc-option" onclick="selectMC('q4','A',this)">
+          <input type="radio" name="q4" id="q4a"><label for="q4a">A) <code>3.3333</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','B',this)">
+          <input type="radio" name="q4" id="q4b"><label for="q4b">B) <code>3</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','C',this)">
+          <input type="radio" name="q4" id="q4c"><label for="q4c">C) <code>4</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','D',this)">
+          <input type="radio" name="q4" id="q4d"><label for="q4d">D) A compile error</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q4-feedback"></div>
+      <div class="hint-box" id="q4-hint">💡 Hint: Both 10 and 3 are integers — remember what integer division does to the decimal part.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q4','B','Integer division in Java discards the decimal. 10 / 3 = 3 (not 3.3333). To get 3.3333, you would need 10.0 / 3.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A5</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which method is the <strong>entry point</strong> of every Java application —
+        the method the JVM looks for and runs first?
+      </div>
+      <div class="mc-options" id="q5-options">
+        <div class="mc-option" onclick="selectMC('q5','A',this)">
+          <input type="radio" name="q5" id="q5a"><label for="q5a">A) <code>public void start(String[] args)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','B',this)">
+          <input type="radio" name="q5" id="q5b"><label for="q5b">B) <code>public static void main(String[] args)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','C',this)">
+          <input type="radio" name="q5" id="q5c"><label for="q5c">C) <code>static void run(String args)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','D',this)">
+          <input type="radio" name="q5" id="q5d"><label for="q5d">D) <code>public Main(String[] args)</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q5-feedback"></div>
+      <div class="hint-box" id="q5-hint">💡 Hint: Every single keyword in the main method signature matters — it must be exactly right.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q5','B','public static void main(String[] args) is the exact, required main method signature. Every word is required and must be written exactly as shown.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A6</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In Java, which of the following correctly declares a <strong>constant</strong>
+        for the value of gravity (9.8)?
+      </div>
+      <div class="mc-options" id="q6-options">
+        <div class="mc-option" onclick="selectMC('q6','A',this)">
+          <input type="radio" name="q6" id="q6a"><label for="q6a">A) <code>double GRAVITY = 9.8;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','B',this)">
+          <input type="radio" name="q6" id="q6b"><label for="q6b">B) <code>constant double GRAVITY = 9.8;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','C',this)">
+          <input type="radio" name="q6" id="q6c"><label for="q6c">C) <code>final double GRAVITY = 9.8;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','D',this)">
+          <input type="radio" name="q6" id="q6d"><label for="q6d">D) <code>static double GRAVITY = 9.8;</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q6-feedback"></div>
+      <div class="hint-box" id="q6-hint">💡 Hint: Java uses a specific keyword to make a variable's value unchangeable. It's not "constant"!</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q6','C','The final keyword makes a variable a constant — its value cannot be changed after it is assigned. Constants are named in ALL_UPPER_CASE by convention.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A7</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which Scanner method should you use to read a <strong>whole number</strong>
+        typed by the user?
+      </div>
+      <div class="mc-options" id="q7-options">
+        <div class="mc-option" onclick="selectMC('q7','A',this)">
+          <input type="radio" name="q7" id="q7a"><label for="q7a">A) <code>nextLine()</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','B',this)">
+          <input type="radio" name="q7" id="q7b"><label for="q7b">B) <code>nextDouble()</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','C',this)">
+          <input type="radio" name="q7" id="q7c"><label for="q7c">C) <code>nextInt()</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','D',this)">
+          <input type="radio" name="q7" id="q7d"><label for="q7d">D) <code>nextChar()</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q7-feedback"></div>
+      <div class="hint-box" id="q7-hint">💡 Hint: Think about which Scanner method name matches the data type "int".</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q7','C','nextInt() reads a whole number (integer) from the user. nextLine() reads a String, nextDouble() reads a decimal, and nextChar() does not exist in Scanner.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A8</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A learner saves their Java file as <code>helloworld.java</code> but declares their
+        class as <code>public class HelloWorld</code>. What will happen when they try to compile?
+      </div>
+      <div class="mc-options" id="q8-options">
+        <div class="mc-option" onclick="selectMC('q8','A',this)">
+          <input type="radio" name="q8" id="q8a"><label for="q8a">A) The program will compile and run normally</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','B',this)">
+          <input type="radio" name="q8" id="q8b"><label for="q8b">B) Java will automatically rename the class to match the file</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','C',this)">
+          <input type="radio" name="q8" id="q8c"><label for="q8c">C) A compile error — the filename must exactly match the class name</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','D',this)">
+          <input type="radio" name="q8" id="q8d"><label for="q8d">D) The program will compile but produce wrong output</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q8-feedback"></div>
+      <div class="hint-box" id="q8-hint">💡 Hint: Java is case-sensitive, and the filename must exactly match the public class name.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q8','C','Java requires the filename to match the public class name exactly, including capitalisation. helloworld ≠ HelloWorld — this causes a compile error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A9</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the result of the expression <code>17 % 5</code> in Java?
+      </div>
+      <div class="mc-options" id="q9-options">
+        <div class="mc-option" onclick="selectMC('q9','A',this)">
+          <input type="radio" name="q9" id="q9a"><label for="q9a">A) 3</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','B',this)">
+          <input type="radio" name="q9" id="q9b"><label for="q9b">B) 2</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','C',this)">
+          <input type="radio" name="q9" id="q9c"><label for="q9c">C) 3.4</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','D',this)">
+          <input type="radio" name="q9" id="q9d"><label for="q9d">D) 5</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q9-feedback"></div>
+      <div class="hint-box" id="q9-hint">💡 Hint: The % operator gives you the remainder. 5 goes into 17 three times (15), leaving a remainder of...?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q9','B','17 % 5 = 2. Because 5 × 3 = 15, and 17 - 15 = 2. The modulus operator returns the remainder after division.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A10</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which statement correctly imports the Scanner class so it can be used in your program?
+      </div>
+      <div class="mc-options" id="q10-options">
+        <div class="mc-option" onclick="selectMC('q10','A',this)">
+          <input type="radio" name="q10" id="q10a"><label for="q10a">A) <code>include java.util.Scanner;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','B',this)">
+          <input type="radio" name="q10" id="q10b"><label for="q10b">B) <code>import Scanner;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','C',this)">
+          <input type="radio" name="q10" id="q10c"><label for="q10c">C) <code>import java.util.Scanner;</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','D',this)">
+          <input type="radio" name="q10" id="q10d"><label for="q10d">D) <code>using java.util.Scanner;</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q10-feedback"></div>
+      <div class="hint-box" id="q10-hint">💡 Hint: Java uses the "import" keyword, followed by the full package path to the class.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q10','C','import java.util.Scanner; is the correct syntax. Scanner lives in the java.util package. You must include the full path and end with a semicolon.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION B: True or False ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✅ Section B — True or False <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- B1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B1</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Java is case-sensitive, meaning <code>myVariable</code> and <code>MyVariable</code> are treated as the same identifier.</div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf1-true" onclick="selectTF('tf1','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf1-false" onclick="selectTF('tf1','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf1-feedback"></div>
+      <div class="hint-box" id="tf1-hint">💡 Hint: "Case-sensitive" means capitalisation matters — different cases = different identifiers.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf1','false','FALSE — Java is case-sensitive, so myVariable and MyVariable are TWO different identifiers. They are NOT the same.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B2</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Every Java statement must end with a semicolon <code>;</code>.</div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf2-true" onclick="selectTF('tf2','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf2-false" onclick="selectTF('tf2','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf2-feedback"></div>
+      <div class="hint-box" id="tf2-hint">💡 Hint: Class and method headers use curly braces — not semicolons. But what about the code statements inside them?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf2','false','FALSE — Class and method declarations do NOT end with semicolons. Only statements inside methods end with semicolons. This is a common nuance beginners must remember.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B3</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">In Java, a <code>char</code> value is enclosed in double quotes, like <code>"A"</code>.</div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf3-true" onclick="selectTF('tf3','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf3-false" onclick="selectTF('tf3','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf3-feedback"></div>
+      <div class="hint-box" id="tf3-hint">💡 Hint: Think about the difference between char and String — they use different types of quotation marks.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf3','false','FALSE — char values use SINGLE quotes: \'A\'. Double quotes are used for String values: \"A\". Using double quotes for a char will cause a compile error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B4</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        JGrasp is an IDE that includes a unique feature called a
+        <strong>CSD (Control Structure Diagram)</strong> that visually displays
+        the structure of your program alongside your code.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf4-true" onclick="selectTF('tf4','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf4-false" onclick="selectTF('tf4','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf4-feedback"></div>
+      <div class="hint-box" id="tf4-hint">💡 Hint: This is one of the features that makes JGrasp especially useful for beginner programmers.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf4','true','TRUE — The CSD (Control Structure Diagram) is a unique JGrasp feature that automatically generates a visual representation of your program\'s control flow structures.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B5</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        <code>String</code> is a primitive data type in Java, just like
+        <code>int</code> and <code>boolean</code>.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf5-true" onclick="selectTF('tf5','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf5-false" onclick="selectTF('tf5','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf5-feedback"></div>
+      <div class="hint-box" id="tf5-hint">💡 Hint: Notice how String starts with a capital letter — primitive types are all lowercase.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf5','false','FALSE — String is a REFERENCE type (a class), not a primitive. The 8 primitive types are: int, double, float, long, short, byte, char, and boolean — all written in lowercase.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B6</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The Java compiler ignores all comments — they have no effect on how
+        the program runs.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf6-true" onclick="selectTF('tf6','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf6-false" onclick="selectTF('tf6','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf6-feedback"></div>
+      <div class="hint-box" id="tf6-hint">💡 Hint: Comments are written for human readers — developers, teachers, teammates.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf6','true','TRUE — Comments are completely ignored by the Java compiler. They exist purely to help humans understand the code and have absolutely no effect on program execution.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B7</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In JGrasp, you must successfully <strong>compile</strong> your program
+        before you are able to <strong>run</strong> it.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf7-true" onclick="selectTF('tf7','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf7-false" onclick="selectTF('tf7','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf7-feedback"></div>
+      <div class="hint-box" id="tf7-hint">💡 Hint: Think about the workflow — source code → bytecode → execution.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf7','true','TRUE — Java is a compiled language. The source code (.java) must first be compiled into bytecode (.class) before the JVM can run it. Compilation must succeed with no errors first.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B8</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The <code>+</code> operator in Java can be used both for
+        <strong>arithmetic addition</strong> (with numbers) and for
+        <strong>string concatenation</strong> (joining text together).
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf8-true" onclick="selectTF('tf8','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf8-false" onclick="selectTF('tf8','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf8-feedback"></div>
+      <div class="hint-box" id="tf8-hint">💡 Hint: Think about how System.out.println("Name: " + name) works.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf8','true','TRUE — The + operator is overloaded in Java. With numbers it performs addition (5 + 3 = 8), and with Strings it performs concatenation (\"Hello\" + \" World\" = \"Hello World\").')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B9</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A variable declared with the <code>final</code> keyword can have its
+        value changed at any point later in the program.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf9-true" onclick="selectTF('tf9','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf9-false" onclick="selectTF('tf9','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf9-feedback"></div>
+      <div class="hint-box" id="tf9-hint">💡 Hint: The word "final" suggests something that is... finished, fixed, unchangeable.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf9','false','FALSE — A final variable is a CONSTANT. Once its value is assigned, it cannot be changed. Attempting to reassign a final variable will cause a compile error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B10</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Java's "Write Once, Run Anywhere" (WORA) principle means that compiled
+        Java bytecode can run on any device that has the JVM installed,
+        regardless of the operating system.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf10-true" onclick="selectTF('tf10','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf10-false" onclick="selectTF('tf10','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf10-feedback"></div>
+      <div class="hint-box" id="tf10-hint">💡 Hint: This is one of Java's most celebrated features and the reason it became so widely used.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf10','true','TRUE — This is the core promise of Java. Bytecode compiled once runs on Windows, macOS, Linux, or any OS — as long as the JVM is installed. This is what platform independence means.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION C: Fill in the Blank ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✏️ Section C — Fill in the Blank <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- C1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C1</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>In Java, the compiled output file that contains bytecode has the file extension</span>
+        <input type="text" class="fitb-input" id="fitb1" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb1-feedback"></div>
+      <div class="hint-box" id="fitb1-hint">💡 Hint: Source code is saved as .java — what does the compiler produce?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb1',['.class','class'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C2</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>The Java data type used to store a single character such as</span>
+        <code>'A'</code>
+        <span>is called</span>
+        <input type="text" class="fitb-input" id="fitb2" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb2-feedback"></div>
+      <div class="hint-box" id="fitb2-hint">💡 Hint: It stores exactly ONE character and uses single quotes.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb2',['char'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C3</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>To read user input from the keyboard in Java, you use the</span>
+        <input type="text" class="fitb-input" id="fitb3" placeholder="type here…">
+        <span>class from the <code>java.util</code> package.</span>
+      </div>
+      <div class="feedback-msg" id="fitb3-feedback"></div>
+      <div class="hint-box" id="fitb3-hint">💡 Hint: You import it with: import java.util.______;</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb3',['scanner','Scanner'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C4</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>The naming convention used in Java for variable names with multiple words (e.g.,</span>
+        <code>studentScore</code>
+        <span>) is called</span>
+        <input type="text" class="fitb-input" id="fitb4" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb4-feedback"></div>
+      <div class="hint-box" id="fitb4-hint">💡 Hint: The first word is lowercase, subsequent words start with a capital — it looks like humps on a camel.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb4',['camelcase','camel case','camelCase'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C5</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>The operator</span>
+        <input type="text" class="fitb-input" id="fitb5" placeholder="type here…" style="min-width:60px; max-width:80px;">
+        <span>is used in Java to find the <strong>remainder</strong> after dividing two integers (e.g., <code>10 % 3 = 1</code>).</span>
+      </div>
+      <div class="feedback-msg" id="fitb5-feedback"></div>
+      <div class="hint-box" id="fitb5-hint">💡 Hint: It's a single symbol — the same one used as a percentage sign.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb5',['%','modulus','modulo'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C6</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>In Java, the keyword</span>
+        <input type="text" class="fitb-input" id="fitb6" placeholder="type here…">
+        <span>is used to declare a constant whose value cannot be changed after it is assigned.</span>
+      </div>
+      <div class="feedback-msg" id="fitb6-feedback"></div>
+      <div class="hint-box" id="fitb6-hint">💡 Hint: final double PI = 3.14159; — what is the first keyword?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb6',['final'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C7</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span><code>System.out.println()</code> prints output and moves to a new line, while</span>
+        <input type="text" class="fitb-input" id="fitb7" placeholder="type here…">
+        <span>prints output and stays on the same line.</span>
+      </div>
+      <div class="feedback-msg" id="fitb7-feedback"></div>
+      <div class="hint-box" id="fitb7-hint">💡 Hint: It's very similar to println — just without the "ln" at the end.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb7',['system.out.print()','System.out.print()','print()','System.out.print'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C8</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>Java was originally developed by</span>
+        <input type="text" class="fitb-input" id="fitb8" placeholder="type here…">
+        <span>at Sun Microsystems and first released in 1995.</span>
+      </div>
+      <div class="feedback-msg" id="fitb8-feedback"></div>
+      <div class="hint-box" id="fitb8-hint">💡 Hint: His first name is James — a very well-known name in computer science history.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb8',['james gosling','gosling','james gosling'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C9</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>The Java data type that stores only the values</span>
+        <code>true</code> <span>or</span> <code>false</code>
+        <span>is called</span>
+        <input type="text" class="fitb-input" id="fitb9" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb9-feedback"></div>
+      <div class="hint-box" id="fitb9-hint">💡 Hint: It's named after the mathematician George Boole, who developed Boolean algebra.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb9',['boolean'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C10</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the statement:</div>
+      <div class="fitb-wrapper">
+        <span>In Java, a multi-line comment begins with</span>
+        <input type="text" class="fitb-input" id="fitb10" placeholder="type here…" style="min-width:70px; max-width:90px;">
+        <span>and ends with</span>
+        <input type="text" class="fitb-input" id="fitb10b" placeholder="type here…" style="min-width:70px; max-width:90px;">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb10-feedback"></div>
+      <div class="hint-box" id="fitb10-hint">💡 Hint: Think of it as an opening and closing tag — one has a star before the slash, one has a star after.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITBDouble('fitb10','fitb10b',['/*'],['*/'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITBDouble('fitb10','fitb10b')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION D: Matching ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔗 Section D — Match the Term to its Description <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">D1–10</div>
+        <span class="quiz-q-type">Matching</span>
+        <span class="marks">10 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Match each Java term on the left to its correct description on the right.
+      </div>
+
+      <div class="table-wrapper" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Term</th><th>Select the Matching Description</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>D1</strong></td>
+              <td class="ans-cell">JDK</td>
+              <td>
+                <select class="match-select" id="match1">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D2</strong></td>
+              <td class="ans-cell">JVM</td>
+              <td>
+                <select class="match-select" id="match2">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D3</strong></td>
+              <td class="ans-cell">.class file</td>
+              <td>
+                <select class="match-select" id="match3">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D4</strong></td>
+              <td class="ans-cell">Scanner</td>
+              <td>
+                <select class="match-select" id="match4">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D5</strong></td>
+              <td class="ans-cell">Constant (final)</td>
+              <td>
+                <select class="match-select" id="match5">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D6</strong></td>
+              <td class="ans-cell">camelCase</td>
+              <td>
+                <select class="match-select" id="match6">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D7</strong></td>
+              <td class="ans-cell">main() method</td>
+              <td>
+                <select class="match-select" id="match7">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D8</strong></td>
+              <td class="ans-cell">boolean</td>
+              <td>
+                <select class="match-select" id="match8">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D9</strong></td>
+              <td class="ans-cell">Concatenation</td>
+              <td>
+                <select class="match-select" id="match9">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D10</strong></td>
+              <td class="ans-cell">Comment</td>
+              <td>
+                <select class="match-select" id="match10">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Executes Java bytecode on a specific operating system</option>
+                  <option value="B">B) The complete toolkit for writing, compiling and running Java</option>
+                  <option value="C">C) A variable whose value cannot be changed after assignment</option>
+                  <option value="D">D) Allows a Java program to read keyboard input from the user</option>
+                  <option value="E">E) The compiled output file produced by the Java compiler</option>
+                  <option value="F">F) The naming convention where the first word is lowercase and subsequent words are capitalised</option>
+                  <option value="G">G) The entry point method that the JVM looks for to start a program</option>
+                  <option value="H">H) A data type that stores only true or false</option>
+                  <option value="I">I) Combines strings and variables together using the + operator</option>
+                  <option value="J">J) A note in source code that the compiler ignores completely</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="feedback-msg" id="match-feedback"></div>
+      <div class="hint-box" id="match-hint">
+        💡 Hint: Review the study content sections above.
+        Each term maps to exactly one description — no description is used twice.
+      </div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMatching()">Check All Matches</button>
+        <button class="btn-hint" onclick="toggleHint('match')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMatching()">↺ Reset All</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION E: Short Answer ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      📝 Section E — Short Answer Questions <span class="marks">5 marks each = 15 marks</span>
+    </div>
+
+    <!-- E1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E1</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Explain the difference between <strong>JDK</strong>, <strong>JRE</strong>,
+        and <strong>JVM</strong>. In your answer, explain what each one is,
+        what it does, and how they relate to each other in the process of
+        running a Java program.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa1"
+        placeholder="Write your answer here… (Aim for at least 6–8 lines)"
+        rows="7"
+        oninput="updateSAWordCount('sa1','sa1-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa1-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — JDK correctly described as the full development toolkit
+        (includes compiler, JRE, libraries, debugging tools)<br>
+        <strong>• 1 mark</strong> — JRE correctly described as the environment for
+        <em>running</em> (not writing) Java programs (includes JVM + class libraries)<br>
+        <strong>• 1 mark</strong> — JVM correctly described as the component that
+        <em>executes bytecode</em> on the specific host operating system<br>
+        <strong>• 1 mark</strong> — Correct relationship explained: JDK contains the JRE,
+        which contains the JVM<br>
+        <strong>• 1 mark</strong> — Workflow described: .java source code → compiled by JDK
+        into .class bytecode → JVM executes it on any platform
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#1d4ed8;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p>
+              The <strong>JDK (Java Development Kit)</strong> is the complete package a developer
+              needs to write, compile, and run Java programs. It includes the Java compiler
+              (<code style="background:#1a1a2e;color:#93c5fd;padding:1px 4px;border-radius:3px;font-family:monospace;">javac</code>),
+              the JRE, standard libraries, and debugging tools. It is what you install when
+              you want to <em>create</em> Java programs.
+            </p>
+            <p>
+              The <strong>JRE (Java Runtime Environment)</strong> is a subset of the JDK. It contains
+              everything needed to <em>run</em> Java programs — specifically the JVM and the
+              standard class libraries — but it does not include the compiler. End users who
+              only want to run Java applications (not develop them) install the JRE.
+            </p>
+            <p>
+              The <strong>JVM (Java Virtual Machine)</strong> is the core component that actually
+              <em>executes</em> the compiled bytecode (.class files). The JVM is platform-specific
+              — there is a separate JVM for Windows, macOS, and Linux — but because all bytecode
+              looks the same to the JVM, the same .class file runs on any of them.
+            </p>
+            <p>
+              <strong>Relationship:</strong> JDK ⊇ JRE ⊇ JVM. The workflow is:
+              the developer writes .java source code → the JDK's compiler converts it to
+              .class bytecode → the JVM (inside the JRE) executes that bytecode on the
+              user's machine.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- E2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E2</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Study the following Java code carefully. Identify and explain
+        <strong>every error</strong> in it. For each error, state
+        what is wrong and write the corrected line.
+        <div class="code-block" style="margin-top:14px;">
+          <span class="code-label">BuggyProgram.java</span>
+<span class="kw">public class</span> <span class="cls">buggyprogram</span> {
+
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+
+        <span class="typ">int</span> score = <span class="num">85</span>
+        <span class="typ">double</span> price = <span class="str">"19.99"</span>;
+        <span class="typ">char</span> grade = <span class="str">"A"</span>;
+        <span class="cls">String</span> 1name = <span class="str">"Lena"</span>;
+
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Score: "</span> + Score);
+    }
+}
+        </div>
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa2"
+        placeholder="List each error, explain what is wrong, and provide the corrected line…"
+        rows="10"
+        oninput="updateSAWordCount('sa2','sa2-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa2-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks — 1 per error found & corrected):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Class name <code>buggyprogram</code> does not match
+        file name convention / must be <code>BuggyProgram</code> (capitalised to match filename)<br>
+        <strong>• 1 mark</strong> — Missing semicolon after <code>int score = 85</code>
+        → corrected: <code>int score = 85;</code><br>
+        <strong>• 1 mark</strong> — <code>double price = "19.99"</code> assigns a String to a double
+        → corrected: <code>double price = 19.99;</code><br>
+        <strong>• 1 mark</strong> — <code>char grade = "A"</code> uses double quotes; char needs
+        single quotes → corrected: <code>char grade = 'A';</code><br>
+        <strong>• 1 mark</strong> — Variable name <code>1name</code> starts with a number (invalid)
+        AND/OR <code>Score</code> should be <code>score</code> (case-sensitive)
+        → corrected: <code>String name = "Lena";</code> and <code>System.out.println("Score: " + score);</code>
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#1d4ed8;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p><strong>Error 1 — Class name does not match filename convention:</strong><br>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">public class buggyprogram</code><br>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">public class BuggyProgram</code><br>
+              The class name must match the filename exactly (including capitalisation).
+            </p>
+            <p><strong>Error 2 — Missing semicolon:</strong><br>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">int score = 85</code><br>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">int score = 85;</code><br>
+              Every statement must end with a semicolon.
+            </p>
+            <p><strong>Error 3 — String assigned to a double:</strong><br>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">double price = "19.99";</code><br>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">double price = 19.99;</code><br>
+              A double stores a numeric value — not a String in double quotes.
+            </p>
+            <p><strong>Error 4 — char uses double quotes instead of single quotes:</strong><br>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">char grade = "A";</code><br>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">char grade = 'A';</code><br>
+              char literals must be enclosed in single quotes.
+            </p>
+            <p><strong>Error 5 — Variable name starts with a number; wrong case used in println:</strong><br>
+              ❌ <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">String 1name = "Lena";</code> and
+              <code style="background:#1a1a2e;color:#f9a8d4;padding:1px 5px;border-radius:4px;font-family:monospace;">Score</code><br>
+              ✅ <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">String name = "Lena";</code> and
+              <code style="background:#1a1a2e;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">score</code><br>
+              Variable names cannot start with a digit. Java is case-sensitive:
+              <code style="font-family:monospace;">score</code> ≠ <code style="font-family:monospace;">Score</code>.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- E3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E3</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Write a <strong>complete Java program</strong> in JGrasp that does the following:<br><br>
+        1. Asks the user to enter their <strong>name</strong> (String)<br>
+        2. Asks the user to enter their <strong>age</strong> (int)<br>
+        3. Asks the user to enter their <strong>favourite number</strong> (double)<br>
+        4. Calculates and displays the user's age <strong>in 10 years</strong><br>
+        5. Displays a neatly formatted output using all three entered values<br><br>
+        Your program must include: correct import statement, Scanner usage,
+        appropriate variable declarations, and at least <strong>two comments</strong>.
+      </div>
+      <textarea
+        class="short-answer-textarea short-answer-code"
+        id="sa3"
+        placeholder="// Write your complete Java program here…&#10;&#10;import java.util.Scanner;&#10;&#10;public class YourClassName {&#10;    public static void main(String[] args) {&#10;        &#10;    }&#10;}"
+        rows="18"
+        oninput="updateSAWordCount('sa3','sa3-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Lines: <span id="sa3-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Correct import statement and Scanner object creation<br>
+        <strong>• 1 mark</strong> — All three variables correctly declared with the right data types
+        (String, int, double) and read using appropriate Scanner methods<br>
+        <strong>• 1 mark</strong> — Age in 10 years correctly calculated
+        (<code style="font-family:monospace;">age + 10</code>) and stored or displayed<br>
+        <strong>• 1 mark</strong> — Neatly formatted output displaying all values, including
+        the calculated future age<br>
+        <strong>• 1 mark</strong> — Program has correct structure (class, main method, braces,
+        semicolons) AND at least two meaningful comments are included
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#1d4ed8;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <div class="code-block">
+              <span class="code-label">UserInfo.java</span>
+<span class="kw">import</span> java.util.<span class="cls">Scanner</span>;
+
+<span class="kw">public class</span> <span class="cls">UserInfo</span> {
+
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+
+        <span class="com">// Create a Scanner object to read keyboard input</span>
+        <span class="cls">Scanner</span> input = <span class="kw">new</span> <span class="cls">Scanner</span>(<span class="cls">System</span>.in);
+
+        <span class="com">// Prompt the user and collect their information</span>
+        <span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Enter your name: "</span>);
+        <span class="cls">String</span> name = input.<span class="met">nextLine</span>();
+
+        <span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Enter your age: "</span>);
+        <span class="typ">int</span> age = input.<span class="met">nextInt</span>();
+
+        <span class="cls">System</span>.out.<span class="met">print</span>(<span class="str">"Enter your favourite number: "</span>);
+        <span class="typ">double</span> favNumber = input.<span class="met">nextDouble</span>();
+
+        <span class="com">// Calculate age in 10 years</span>
+        <span class="typ">int</span> futureAge = age + <span class="num">10</span>;
+
+        <span class="com">// Display formatted output</span>
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"─────────────────────────────"</span>);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Name           : "</span> + name);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Current Age    : "</span> + age);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Age in 10 Years: "</span> + futureAge);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Favourite Number: "</span> + favNumber);
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"─────────────────────────────"</span>);
+
+        input.<span class="met">close</span>();
+    }
+}
+            </div>
+            <div class="rubric-box" style="margin-top:12px;">
+              <strong>📌 Note:</strong> Accept any valid program that meets all five requirements.
+              Variable names and output formatting may differ — focus on correctness of
+              import, data types, Scanner methods, calculation, and structure.
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- ══ SUBMIT ══ -->
+    <div style="
+      background: linear-gradient(135deg, #1a365d, #2a4a8a);
+      border-radius: 16px; padding: 28px;
+      margin-top: 10px; text-align: center; color: white;
+    ">
+      <div style="font-size:1.1rem; font-weight:700; margin-bottom:8px;">
+        🎯 Ready to see your final score?
+      </div>
+      <div style="font-size:0.9rem; opacity:0.85; margin-bottom:18px;">
+        Make sure you have attempted all sections (A–D) before submitting.
+        Section E is self-assessed using the marking guides provided above.
+      </div>
+      <button class="btn-submit-all" onclick="submitQuiz()">
+        🏁 Submit Quiz &amp; View Results
+      </button>
+    </div>
+
+    <!-- ══ RESULTS PANEL ══ -->
+    <div class="quiz-results-panel" id="resultsPanel">
+      <div style="font-size:1.2rem; font-weight:700; letter-spacing:1px; opacity:0.9;">
+        🎉 QUIZ COMPLETE — YOUR RESULTS
+      </div>
+      <div class="results-score" id="finalScore">0</div>
+      <div class="results-label">out of 40 auto-marked marks</div>
+      <div class="results-grade" id="finalGrade">—</div>
+      <div style="
+        background: rgba(255,255,255,0.12); border-radius:12px;
+        padding:18px 24px; margin:20px auto; max-width:520px;
+        font-size:0.92rem; text-align:left; line-height:1.9;
+      ">
+        <strong>📊 Section Breakdown:</strong><br>
+        Section A (MCQ): <strong id="res-a">0</strong> / 10<br>
+        Section B (True/False): <strong id="res-b">0</strong> / 10<br>
+        Section C (Fill in the Blank): <strong id="res-c">0</strong> / 10<br>
+        Section D (Matching): <strong id="res-d">0</strong> / 10<br>
+        Section E (Short Answer): <em>Self-assessed — see marking guides above</em>
+      </div>
+      <div style="
+        background: rgba(255,255,255,0.15); border-radius:10px;
+        padding:16px 20px; max-width:400px;
+        margin:0 auto 20px; font-size:0.9rem; line-height:1.9;
+      ">
+        <strong>Performance Guide:</strong><br>
+        🟢 36–40 &nbsp;=&nbsp; Outstanding<br>
+        🔵 30–35 &nbsp;=&nbsp; Excellent<br>
+        🟡 22–29 &nbsp;=&nbsp; Satisfactory<br>
+        🟠 14–21 &nbsp;=&nbsp; Needs Improvement<br>
+        🔴 0–13  &nbsp;&nbsp;=&nbsp; Requires Additional Study
+      </div>
+      <button class="btn-retake" onclick="retakeQuiz()">🔄 Retake Quiz</button>
+    </div>
+
+  </div><!-- end quiz section-block -->
+
+  <!-- ══ FINAL SCORE BOX ══ -->
+  <div style="
+    background: linear-gradient(135deg, #1a365d, #2a4a8a);
+    color: white; border-radius: 16px;
+    padding: 30px; margin-bottom: 36px; text-align: center;
+  ">
+    <div style="font-size:1rem; opacity:0.8; margin-bottom:8px;
+      letter-spacing:1px; text-transform:uppercase;">
+      Total Marks Available
+    </div>
+    <div style="font-size:3rem; font-weight:700; margin-bottom:6px;">55</div>
+    <div style="
+      display:flex; justify-content:center; gap:16px;
+      flex-wrap:wrap; margin-top:16px; font-size:0.88rem; opacity:0.85;
+    ">
+      <span>Section A: 10</span><span>•</span>
+      <span>Section B: 10</span><span>•</span>
+      <span>Section C: 10</span><span>•</span>
+      <span>Section D: 10</span><span>•</span>
+      <span>Section E: 15</span>
+    </div>
+    <div style="
+      margin-top:20px; background:rgba(255,255,255,0.15);
+      border-radius:10px; padding:16px 20px; font-size:0.92rem;
+      max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;
+    ">
+      <strong>Performance Guide (Full 55 marks):</strong><br>
+      🟢 50–55 &nbsp;=&nbsp; Outstanding<br>
+      🔵 44–49 &nbsp;=&nbsp; Excellent<br>
+      🟡 33–43 &nbsp;=&nbsp; Satisfactory<br>
+      🟠 22–32 &nbsp;=&nbsp; Needs Improvement<br>
+      🔴 0–21  &nbsp;&nbsp;=&nbsp; Requires Additional Study
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>☕ <strong>Introduction to Java — Study Guide &amp; Interactive Quiz</strong></p>
+  <p style="margin-top:6px; font-size:0.82rem; color:#a0aec0;">
+    Covers: What is Java · JGrasp IDE · Program Structure · Data Types ·
+    Variables · Operators · Input &amp; Output · Comments
+  </p>
+</footer>
+
+<!-- ════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+
+  /* ══════════════════════════════
+     STATE
+  ══════════════════════════════ */
+  const state = {
+    scores: {
+      mcq:      { earned: 0, possible: 10 },
+      tf:       { earned: 0, possible: 10 },
+      fitb:     { earned: 0, possible: 10 },
+      matching: { earned: 0, possible: 10 }
+    },
+    mcqSelected:  {},
+    tfSelected:   {},
+    checked: {
+      mcq:      {},
+      tf:       {},
+      fitb:     {},
+      matching: false
+    }
+  };
+
+  /* ══════════════════════════════
+     SCROLL TO SECTION
+  ══════════════════════════════ */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ══════════════════════════════
+     PROGRESS & LIVE SCORE
+  ══════════════════════════════ */
+  function updateProgress() {
+    const mcqDone      = Object.keys(state.checked.mcq).length;
+    const tfDone       = Object.keys(state.checked.tf).length;
+    const fitbDone     = Object.keys(state.checked.fitb).length;
+    const matchDone    = state.checked.matching ? 1 : 0;
+    const total        = mcqDone + tfDone + fitbDone + matchDone;
+    const maxItems     = 31; // 10 MCQ + 10 TF + 10 FITB + 1 matching block
+    const pct          = Math.min(100, Math.round((total / maxItems) * 100));
+
+    document.getElementById('progressBar').style.width   = pct + '%';
+    document.getElementById('progressLabel').textContent =
+      `Progress: ${total} / ${maxItems} questions attempted (${pct}%)`;
+
+    const earned = state.scores.mcq.earned   +
+                   state.scores.tf.earned    +
+                   state.scores.fitb.earned  +
+                   state.scores.matching.earned;
+
+    const attempted = mcqDone + tfDone + fitbDone +
+                      (state.checked.matching ? 10 : 0);
+    const incorrect = Math.max(0, attempted - earned);
+
+    document.getElementById('liveScore').textContent     = earned;
+    document.getElementById('liveCorrect').textContent   = earned;
+    document.getElementById('liveIncorrect').textContent = incorrect;
+    document.getElementById('liveRemaining').textContent =
+      Math.max(0, maxItems - total);
+  }
+
+  /* ══════════════════════════════
+     MULTIPLE CHOICE
+  ══════════════════════════════ */
+  function selectMC(qId, letter, el) {
+    if (state.checked.mcq[qId]) return;
+    state.mcqSelected[qId] = letter;
+    document.querySelectorAll(`#${qId}-options .mc-option`)
+      .forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type="radio"]').checked = true;
+  }
+
+  function checkMC(qId, correctLetter, explanation) {
+    if (state.checked.mcq[qId]) return;
+    const selected = state.mcqSelected[qId];
+    const fb       = document.getElementById(`${qId}-feedback`);
+
+    if (!selected) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select an answer first.';
+      return;
+    }
+
+    document.querySelectorAll(`#${qId}-options .mc-option`).forEach(opt => {
+      const letter = opt.querySelector('input').id.replace(qId, '').toUpperCase();
+      if (letter === correctLetter)                    opt.classList.add('correct');
+      if (letter === selected && selected !== correctLetter) opt.classList.add('incorrect');
+      opt.style.pointerEvents = 'none';
+    });
+
+    if (selected === correctLetter) {
+      state.scores.mcq.earned++;
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = '✅ Correct! ' + explanation;
+    } else {
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. The correct answer was <strong>${correctLetter}</strong>. ${explanation}`;
+    }
+
+    state.checked.mcq[qId] = true;
+    lockButtons(qId);
+    updateProgress();
+  }
+
+  function resetMC(qId) {
+    if (state.checked.mcq[qId]) return;
+    state.mcqSelected[qId] = null;
+    document.querySelectorAll(`#${qId}-options .mc-option`).forEach(opt => {
+      opt.classList.remove('selected', 'correct', 'incorrect');
+      opt.querySelector('input[type="radio"]').checked = false;
+    });
+    const fb = document.getElementById(`${qId}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     TRUE / FALSE
+  ══════════════════════════════ */
+  function selectTF(id, value, el) {
+    if (state.checked.tf[id]) return;
+    state.tfSelected[id] = value;
+    document.getElementById(`${id}-true`).classList.remove('selected');
+    document.getElementById(`${id}-false`).classList.remove('selected');
+    el.classList.add('selected');
+  }
+
+  function checkTF(id, correctValue, explanation) {
+    if (state.checked.tf[id]) return;
+    const selected = state.tfSelected[id];
+    const fb       = document.getElementById(`${id}-feedback`);
+
+    if (!selected) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select True or False first.';
+      return;
+    }
+
+    const trueBtn  = document.getElementById(`${id}-true`);
+    const falseBtn = document.getElementById(`${id}-false`);
+    trueBtn.style.pointerEvents  = 'none';
+    falseBtn.style.pointerEvents = 'none';
+
+    if (correctValue === 'true')  trueBtn.classList.add('correct');
+    else                          falseBtn.classList.add('correct');
+
+    if (selected !== correctValue) {
+      if (selected === 'true')  trueBtn.classList.add('incorrect');
+      else                      falseBtn.classList.add('incorrect');
+    }
+
+    if (selected === correctValue) {
+      state.scores.tf.earned++;
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = '✅ Correct! ' + explanation;
+    } else {
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = '❌ Incorrect. ' + explanation;
+    }
+
+    state.checked.tf[id] = true;
+    lockButtons(id);
+    updateProgress();
+  }
+
+  function resetTF(id) {
+    if (state.checked.tf[id]) return;
+    state.tfSelected[id] = null;
+    ['true','false'].forEach(v => {
+      const btn = document.getElementById(`${id}-${v}`);
+      btn.classList.remove('selected','correct','incorrect');
+      btn.style.pointerEvents = '';
+    });
+    const fb = document.getElementById(`${id}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     FILL IN THE BLANK — Single
+  ══════════════════════════════ */
+  function checkFITB(id, acceptedAnswers) {
+    if (state.checked.fitb[id]) return;
+    const input   = document.getElementById(id);
+    const fb      = document.getElementById(`${id}-feedback`);
+    const userAns = input.value.trim().toLowerCase();
+
+    if (!userAns) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please type an answer first.';
+      return;
+    }
+
+    const isCorrect = acceptedAnswers
+      .map(a => a.toLowerCase())
+      .includes(userAns);
+
+    input.disabled = true;
+
+    if (isCorrect) {
+      state.scores.fitb.earned++;
+      input.classList.add('correct');
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = `✅ Correct! The answer is <strong>"${acceptedAnswers[0]}"</strong>.`;
+    } else {
+      input.classList.add('incorrect');
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. The correct answer is: <strong>"${acceptedAnswers[0]}"</strong>`;
+    }
+
+    state.checked.fitb[id] = true;
+    lockButtons(id);
+    updateProgress();
+  }
+
+  function resetFITB(id) {
+    if (state.checked.fitb[id]) return;
+    const input = document.getElementById(id);
+    input.value = '';
+    input.disabled = false;
+    input.classList.remove('correct','incorrect');
+    const fb = document.getElementById(`${id}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     FILL IN THE BLANK — Double
+     (used for C10 — two inputs)
+  ══════════════════════════════ */
+  function checkFITBDouble(id1, id2, accepted1, accepted2) {
+    if (state.checked.fitb[id1]) return;
+
+    const input1  = document.getElementById(id1);
+    const input2  = document.getElementById(id2);
+    const fb      = document.getElementById(`${id1}-feedback`);
+    const ans1    = input1.value.trim().toLowerCase();
+    const ans2    = input2.value.trim().toLowerCase();
+
+    if (!ans1 || !ans2) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please fill in BOTH blanks before checking.';
+      return;
+    }
+
+    const ok1 = accepted1.map(a => a.toLowerCase()).includes(ans1);
+    const ok2 = accepted2.map(a => a.toLowerCase()).includes(ans2);
+
+    input1.disabled = true;
+    input2.disabled = true;
+
+    input1.classList.add(ok1 ? 'correct' : 'incorrect');
+    input2.classList.add(ok2 ? 'correct' : 'incorrect');
+
+    if (ok1 && ok2) {
+      state.scores.fitb.earned++;
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = `✅ Correct! Multi-line comments start with <strong>/*</strong> and end with <strong>*/</strong>.`;
+    } else {
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. Multi-line comments start with <strong>/*</strong> and end with <strong>*/</strong>.`;
+    }
+
+    state.checked.fitb[id1] = true;
+    lockButtons(id1);
+    updateProgress();
+  }
+
+  function resetFITBDouble(id1, id2) {
+    if (state.checked.fitb[id1]) return;
+    [id1, id2].forEach(id => {
+      const input = document.getElementById(id);
+      input.value = '';
+      input.disabled = false;
+      input.classList.remove('correct','incorrect');
+    });
+    const fb = document.getElementById(`${id1}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     MATCHING
+  ══════════════════════════════ */
+  // Correct answers: D1=B, D2=A, D3=E, D4=D, D5=C, D6=F, D7=G, D8=H, D9=I, D10=J
+  const matchAnswers = {
+    match1:  'B',  // JDK        → complete toolkit
+    match2:  'A',  // JVM        → executes bytecode
+    match3:  'E',  // .class     → compiled output file
+    match4:  'D',  // Scanner    → reads keyboard input
+    match5:  'C',  // final      → value cannot change
+    match6:  'F',  // camelCase  → naming convention
+    match7:  'G',  // main()     → entry point
+    match8:  'H',  // boolean    → true or false
+    match9:  'I',  // concat     → + operator for strings
+    match10: 'J'   // comment    → compiler ignores
+  };
+
+  function checkMatching() {
+    if (state.checked.matching) return;
+    const fb = document.getElementById('match-feedback');
+    let allAnswered = true;
+
+    for (let i = 1; i <= 10; i++) {
+      if (!document.getElementById(`match${i}`).value) {
+        allAnswered = false;
+        break;
+      }
+    }
+
+    if (!allAnswered) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select a match for every term before checking.';
+      return;
+    }
+
+    let earned = 0;
+    for (let i = 1; i <= 10; i++) {
+      const sel     = document.getElementById(`match${i}`);
+      const correct = matchAnswers[`match${i}`];
+      sel.disabled  = true;
+      if (sel.value === correct) {
+        sel.classList.add('correct');
+        earned++;
+      } else {
+        sel.classList.add('incorrect');
+      }
+    }
+
+    state.scores.matching.earned    = earned;
+    state.checked.matching          = true;
+
+    const tone = earned === 10
+      ? 'correct-fb' : earned >= 6
+      ? 'info-fb' : 'incorrect-fb';
+    const emoji = earned === 10 ? '🎉' : earned >= 6 ? '✅' : '❌';
+
+    fb.className = `feedback-msg ${tone} show`;
+    fb.innerHTML = `${emoji} You scored <strong>${earned} / 10</strong> on the matching section.
+      ${earned < 10 ? ' Review the incorrect matches in the study content above.' : ' Perfect score!'}`;
+
+    updateProgress();
+  }
+
+  function resetMatching() {
+    if (state.checked.matching) return;
+    for (let i = 1; i <= 10; i++) {
+      const sel = document.getElementById(`match${i}`);
+      sel.value = '';
+      sel.disabled = false;
+      sel.classList.remove('correct','incorrect');
+    }
+    const fb = document.getElementById('match-feedback');
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     HINT TOGGLE
+  ══════════════════════════════ */
+  function toggleHint(id) {
+    const hint = document.getElementById(`${id}-hint`);
+    if (hint) hint.classList.toggle('show');
+  }
+
+  /* ══════════════════════════════
+     LOCK BUTTONS AFTER CHECK
+  ══════════════════════════════ */
+  function lockButtons(id) {
+    const fb   = document.getElementById(`${id}-feedback`);
+    if (!fb) return;
+    const card = fb.closest('.quiz-question-card');
+    if (!card) return;
+    const checkBtn = card.querySelector('.btn-check');
+    const resetBtn = card.querySelector('.btn-reset');
+    if (checkBtn) { checkBtn.disabled = true; }
+    if (resetBtn) { resetBtn.disabled = true; resetBtn.style.opacity = '0.4'; }
+  }
+
+  /* ══════════════════════════════
+     SHORT ANSWER WORD / LINE COUNT
+  ══════════════════════════════ */
+  function updateSAWordCount(textareaId, counterId) {
+    const ta      = document.getElementById(textareaId);
+    const counter = document.getElementById(counterId);
+    if (!ta || !counter) return;
+
+    if (textareaId === 'sa3') {
+      // Count non-empty lines for code
+      const lines = ta.value.split('\n')
+        .filter(l => l.trim().length > 0).length;
+      counter.textContent = lines;
+    } else {
+      const words = ta.value.trim() === ''
+        ? 0
+        : ta.value.trim().split(/\s+/).length;
+      counter.textContent = words;
+    }
+  }
+
+  /* ══════════════════════════════
+     SUBMIT QUIZ
+  ══════════════════════════════ */
+  function submitQuiz() {
+    const aEarned = state.scores.mcq.earned;
+    const bEarned = state.scores.tf.earned;
+    const cEarned = state.scores.fitb.earned;
+    const dEarned = state.scores.matching.earned;
+    const total   = aEarned + bEarned + cEarned + dEarned;
+
+    document.getElementById('finalScore').textContent = total;
+    document.getElementById('res-a').textContent      = aEarned;
+    document.getElementById('res-b').textContent      = bEarned;
+    document.getElementById('res-c').textContent      = cEarned;
+    document.getElementById('res-d').textContent      = dEarned;
+
+    let grade = '';
+    if      (total >= 36) grade = '🟢 Outstanding';
+    else if (total >= 30) grade = '🔵 Excellent';
+    else if (total >= 22) grade = '🟡 Satisfactory';
+    else if (total >= 14) grade = '🟠 Needs Improvement';
+    else                  grade = '🔴 Requires Additional Study';
+
+    document.getElementById('finalGrade').textContent = grade;
+
+    const panel = document.getElementById('resultsPanel');
+    panel.classList.add('show');
+    setTimeout(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  /* ══════════════════════════════
+     RETAKE QUIZ
+  ══════════════════════════════ */
+  function retakeQuiz() {
+    if (!confirm('Are you sure you want to retake the quiz? All your answers will be cleared.')) return;
+    location.reload();
+  }
+
+  /* ══════════════════════════════
+     INIT
+  ══════════════════════════════ */
+  updateProgress();
+
+</script>
+</body>
+</html>

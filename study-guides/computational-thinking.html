@@ -1,0 +1,3466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Computational Thinking — Study Guide & Interactive Quiz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #2d3748;
+      line-height: 1.8;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1c4532, #276749, #38a169);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 5px 18px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Info Bar ── */
+    .info-bar {
+      background: white;
+      border-bottom: 3px solid #9ae6b4;
+      padding: 14px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      justify-content: center;
+    }
+
+    .info-bar span strong { color: #276749; }
+
+    /* ── Notice ── */
+    .notice {
+      background: #fffbeb;
+      border-left: 5px solid #f59e0b;
+      border-radius: 8px;
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      font-size: 0.93rem;
+    }
+
+    .notice .notice-title {
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 6px;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ── Section Block ── */
+    .section-block {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+
+    /* ── Section Header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .section-label {
+      background: linear-gradient(135deg, #1c4532, #276749);
+      color: white;
+      border-radius: 10px;
+      padding: 6px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #1c4532;
+      font-weight: 700;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 3px solid #9ae6b4;
+      margin: 12px 0 20px;
+    }
+
+    /* ── Question Group ── */
+    .question-group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #276749;
+      background: #f0fff4;
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      border-left: 4px solid #38a169;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── Answer Item ── */
+    .answer-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+
+    .answer-item:hover {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .answer-number {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .answer-content {
+      flex: 1;
+      font-size: 0.97rem;
+      padding-top: 5px;
+    }
+
+    .answer-content .question-ref {
+      color: #718096;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+
+    .answer-content .answer-main {
+      font-weight: 700;
+      color: #1c4532;
+      font-size: 1rem;
+    }
+
+    .answer-content .answer-sub {
+      color: #4a5568;
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .correct-tag {
+      display: inline-block;
+      background: #c6f6d5;
+      color: #1c4532;
+      border-radius: 6px;
+      padding: 1px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .reason-tag {
+      display: inline-block;
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.82rem;
+      margin-top: 6px;
+    }
+
+    /* ── Marks Badge ── */
+    .marks {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 1px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    /* ── Table ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 16px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    thead tr {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+    }
+
+    thead th {
+      padding: 13px 18px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) { background: #f0fff4; }
+    tbody tr:hover { background: #c6f6d5; }
+
+    tbody td {
+      padding: 12px 18px;
+      border-bottom: 1px solid #c6f6d5;
+    }
+
+    .ans-cell {
+      font-weight: 700;
+      color: #1c4532;
+    }
+
+    /* ── Model Answer ── */
+    .model-answer {
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+    }
+
+    .model-answer-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .model-num {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .model-q {
+      font-size: 0.88rem;
+      color: #718096;
+      font-style: italic;
+      padding-top: 8px;
+    }
+
+    .model-body {
+      padding-left: 48px;
+    }
+
+    .model-body p {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .model-body .highlight {
+      background: #bee3f8;
+      color: #1a365d;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .model-body .comp-type {
+      background: #c6f6d5;
+      color: #1c4532;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      margin-left: 4px;
+    }
+
+    .rubric-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+
+    .rubric-box strong { color: #78350f; }
+
+    /* ── Marking Scheme ── */
+    .marking-scheme {
+      background: linear-gradient(135deg, #1c4532, #276749);
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+
+    .marking-scheme h3 {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .mark-item {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .mark-item .sec { font-size: 0.82rem; opacity: 0.8; margin-bottom: 4px; }
+    .mark-item .val { font-size: 1.4rem; font-weight: 700; }
+    .mark-item .out { font-size: 0.82rem; opacity: 0.7; }
+
+    .total-bar {
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .total-bar .t-label { font-size: 1rem; }
+    .total-bar .t-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 18px;
+      border-radius: 8px;
+    }
+
+    /* ── Concept Card ── */
+    .concept-card {
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+
+    .concept-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .concept-icon {
+      font-size: 1.6rem;
+    }
+
+    .concept-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1c4532;
+    }
+
+    .concept-body {
+      font-size: 0.95rem;
+      color: #2d3748;
+      line-height: 1.7;
+    }
+
+    .concept-example {
+      background: white;
+      border-left: 4px solid #38a169;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: #4a5568;
+      font-style: italic;
+    }
+
+    /* ══════════════════════════════════
+       INTERACTIVE QUIZ STYLES
+    ══════════════════════════════════ */
+
+    /* Progress Bar */
+    .quiz-progress-bar-container {
+      background: #e2e8f0;
+      border-radius: 50px;
+      height: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      background: linear-gradient(90deg, #276749, #38a169);
+      height: 100%;
+      border-radius: 50px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .quiz-progress-label {
+      font-size: 0.82rem;
+      color: #718096;
+      margin-bottom: 6px;
+      text-align: right;
+    }
+
+    /* Score Tracker */
+    .score-tracker {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .score-box {
+      background: #f0fff4;
+      border: 2px solid #9ae6b4;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .score-box .sb-label {
+      font-size: 0.75rem;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-box .sb-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #276749;
+    }
+
+    /* Quiz Question Card */
+    .quiz-question-card {
+      background: white;
+      border: 1px solid #9ae6b4;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .quiz-q-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-q-num {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .quiz-q-type {
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .quiz-q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1c4532;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    /* Multiple Choice */
+    .mc-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mc-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f7fafc;
+    }
+
+    .mc-option:hover {
+      border-color: #38a169;
+      background: #f0fff4;
+    }
+
+    .mc-option.selected {
+      border-color: #276749;
+      background: #f0fff4;
+    }
+
+    .mc-option.correct {
+      border-color: #38a169;
+      background: #c6f6d5;
+      color: #1c4532;
+    }
+
+    .mc-option.incorrect {
+      border-color: #fc8181;
+      background: #fff5f5;
+      color: #c53030;
+    }
+
+    .mc-option input[type="radio"] {
+      accent-color: #276749;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .mc-option label {
+      cursor: pointer;
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    /* True/False */
+    .tf-options {
+      display: flex;
+      gap: 12px;
+    }
+
+    .tf-btn {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #f7fafc;
+      color: #4a5568;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .tf-btn:hover { border-color: #38a169; background: #f0fff4; }
+    .tf-btn.selected { border-color: #276749; background: #f0fff4; color: #1c4532; }
+    .tf-btn.correct { border-color: #38a169; background: #c6f6d5; color: #1c4532; }
+    .tf-btn.incorrect { border-color: #fc8181; background: #fff5f5; color: #c53030; }
+
+    /* Fill in the Blank */
+    .fitb-wrapper {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.97rem;
+      line-height: 2.2;
+    }
+
+    .fitb-input {
+      border: 2px solid #9ae6b4;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #1c4532;
+      min-width: 150px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .fitb-input:focus { border-color: #276749; }
+    .fitb-input.correct { border-color: #38a169; background: #c6f6d5; }
+    .fitb-input.incorrect { border-color: #fc8181; background: #fff5f5; }
+
+    /* Short Answer */
+    .short-answer-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #9ae6b4;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #2d3748;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #f7fafc;
+    }
+
+    .short-answer-textarea:focus { border-color: #276749; background: white; }
+
+    /* Drag & Drop Match */
+    .match-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .match-column-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #276749;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .match-term {
+      background: linear-gradient(135deg, #1c4532, #276749);
+      color: white;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .match-drop-zone {
+      border: 2px dashed #9ae6b4;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      min-height: 42px;
+      background: #f0fff4;
+      display: flex;
+      align-items: center;
+      color: #718096;
+      transition: all 0.2s;
+    }
+
+    .match-drop-zone.correct {
+      border-color: #38a169;
+      background: #c6f6d5;
+      color: #1c4532;
+      font-weight: 600;
+    }
+
+    .match-drop-zone.incorrect {
+      border-color: #fc8181;
+      background: #fff5f5;
+      color: #c53030;
+    }
+
+    .match-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid #9ae6b4;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #2d3748;
+      background: white;
+      outline: none;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: border-color 0.2s;
+    }
+
+    .match-select:focus { border-color: #276749; }
+    .match-select.correct { border-color: #38a169; background: #c6f6d5; }
+    .match-select.incorrect { border-color: #fc8181; background: #fff5f5; }
+
+    /* Feedback Message */
+    .feedback-msg {
+      display: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback-msg.show { display: flex; }
+    .feedback-msg.correct-fb { background: #c6f6d5; color: #1c4532; border: 1px solid #38a169; }
+    .feedback-msg.incorrect-fb { background: #fff5f5; color: #c53030; border: 1px solid #fc8181; }
+    .feedback-msg.info-fb { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+
+    /* Quiz Buttons */
+    .quiz-btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-check {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-check:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-check:active { transform: translateY(0); }
+    .btn-check:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-hint {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-hint:hover { opacity: 0.8; }
+
+    .btn-reset {
+      background: #f7fafc;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-reset:hover { background: #edf2f7; }
+
+    /* Hint Box */
+    .hint-box {
+      display: none;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #92400e;
+      margin-top: 10px;
+    }
+
+    .hint-box.show { display: block; }
+
+    /* Final Quiz Results */
+    .quiz-results-panel {
+      display: none;
+      background: linear-gradient(135deg, #1c4532, #276749);
+      color: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .quiz-results-panel.show { display: block; }
+
+    .results-score {
+      font-size: 4rem;
+      font-weight: 700;
+      margin: 16px 0;
+    }
+
+    .results-label { font-size: 1rem; opacity: 0.8; }
+
+    .results-grade {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 10px 0;
+      background: rgba(255,255,255,0.15);
+      display: inline-block;
+      padding: 6px 24px;
+      border-radius: 10px;
+    }
+
+    .results-breakdown {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      font-size: 0.88rem;
+      opacity: 0.85;
+    }
+
+    .btn-submit-all {
+      background: white;
+      color: #1c4532;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 40px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+    }
+
+    .btn-submit-all:hover { background: #c6f6d5; }
+
+    .btn-retake {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 12px;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 14px;
+      display: block;
+      width: 100%;
+    }
+
+    .btn-retake:hover { background: rgba(255,255,255,0.25); }
+
+    /* Marking Scheme */
+    .marking-scheme {
+      background: linear-gradient(135deg, #1c4532, #276749);
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+
+    .marking-scheme h3 {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .mark-item {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .mark-item .sec { font-size: 0.82rem; opacity: 0.8; margin-bottom: 4px; }
+    .mark-item .val { font-size: 1.4rem; font-weight: 700; }
+    .mark-item .out { font-size: 0.82rem; opacity: 0.7; }
+
+    .total-bar {
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .total-bar .t-label { font-size: 1rem; }
+    .total-bar .t-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 18px;
+      border-radius: 8px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #718096;
+      font-size: 0.88rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    /* Nav Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-tab {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: #f0f4f8;
+      color: #4a5568;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active, .nav-tab:hover {
+      background: linear-gradient(135deg, #276749, #38a169);
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .section-block { padding: 20px; }
+      .match-container { grid-template-columns: 1fr; }
+      .results-score { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="badge">💻 COMPUTER SCIENCE — STUDY GUIDE & QUIZ</div>
+  <h1>Computational Thinking</h1>
+  <p>Core Concepts · Components · Real-World Applications · Interactive Practice</p>
+</div>
+
+<!-- ══ INFO BAR ══ -->
+<div class="info-bar">
+  <span>📋 <strong>Subject:</strong> Computational Thinking</span>
+  <span>⭐ <strong>Quiz Marks:</strong> 55</span>
+  <span>🧩 <strong>Components:</strong> 4 Pillars + Evaluation</span>
+  <span>📌 <strong>Mode:</strong> Study + Interactive</span>
+</div>
+
+<div class="container">
+
+  <!-- ══ NOTICE ══ -->
+  <div class="notice">
+    <div class="notice-title">📌 How to Use This Guide</div>
+    This page is split into two parts: <strong>(1) Study Content</strong> — covering all Computational Thinking
+    components with explanations and examples, and <strong>(2) Interactive Quiz</strong> — where you
+    can test your understanding. Complete each question, check your answers, and aim to improve your score on every attempt!
+  </div>
+
+  <!-- ══ NAV TABS ══ -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollToSection('study')">📖 Study Content</button>
+    <button class="nav-tab" onclick="scrollToSection('decomposition')">🔧 Decomposition</button>
+    <button class="nav-tab" onclick="scrollToSection('pattern')">🔍 Pattern Recognition</button>
+    <button class="nav-tab" onclick="scrollToSection('abstraction')">🧠 Abstraction</button>
+    <button class="nav-tab" onclick="scrollToSection('algorithms')">📊 Algorithms</button>
+    <button class="nav-tab" onclick="scrollToSection('evaluation')">✅ Evaluation</button>
+    <button class="nav-tab" onclick="scrollToSection('quiz')">🎯 Interactive Quiz</button>
+  </div>
+
+  <!-- ══ MARKING SCHEME ══ -->
+  <div class="marking-scheme">
+    <h3>📊 Quiz Mark Allocation Summary</h3>
+    <div class="mark-grid">
+      <div class="mark-item">
+        <div class="sec">Section A</div>
+        <div class="val">10</div>
+        <div class="out">MCQ marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section B</div>
+        <div class="val">10</div>
+        <div class="out">True/False marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section C</div>
+        <div class="val">10</div>
+        <div class="out">Fill-in marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section D</div>
+        <div class="val">10</div>
+        <div class="out">Matching marks</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section E</div>
+        <div class="val">15</div>
+        <div class="out">Short answer</div>
+      </div>
+    </div>
+    <div class="total-bar">
+      <div class="t-label">TOTAL</div>
+      <div class="t-val">55 marks</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       STUDY CONTENT
+  ════════════════════════════════════════════ -->
+
+  <!-- WHAT IS COMPUTATIONAL THINKING -->
+  <div class="section-block" id="study">
+    <div class="section-header">
+      <div class="section-label">Overview</div>
+      <div class="section-title">What is Computational Thinking?</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">🧩 Definition & The Four Pillars</div>
+
+    <div class="answer-item">
+      <div class="answer-number">💡</div>
+      <div class="answer-content">
+        <div class="answer-main">Computational Thinking (CT)</div>
+        <div class="answer-sub">
+          A <strong>problem-solving approach</strong> that involves breaking down complex problems
+          into manageable parts and expressing their solutions in ways that a computer —
+          or a human — can effectively carry out. It was popularised by computer scientist
+          <strong>Jeannette Wing</strong> in 2006.
+        </div>
+        <span class="reason-tag">🔑 Key Idea: CT is NOT just about coding — it's a way of thinking applicable to everyday life.</span>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Pillar</th>
+            <th>One-Line Definition</th>
+            <th>Key Question it Answers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🔧 <strong>Decomposition</strong></td>
+            <td>Breaking a complex problem into smaller, manageable sub-problems</td>
+            <td class="ans-cell">What are the parts of this problem?</td>
+          </tr>
+          <tr>
+            <td>🔍 <strong>Pattern Recognition</strong></td>
+            <td>Identifying similarities, trends, and regularities in data or problems</td>
+            <td class="ans-cell">What patterns or similarities exist?</td>
+          </tr>
+          <tr>
+            <td>🧠 <strong>Abstraction</strong></td>
+            <td>Focusing on essential information and ignoring irrelevant detail</td>
+            <td class="ans-cell">What details can be removed?</td>
+          </tr>
+          <tr>
+            <td>📊 <strong>Algorithms</strong></td>
+            <td>Designing a clear, step-by-step solution to a problem</td>
+            <td class="ans-cell">What are the exact steps to solve it?</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box" style="margin-top:14px;">
+      <strong>📌 Remember:</strong> All four pillars work <em>together</em>.
+      In practice, you may decompose a problem first, then spot patterns, abstract away
+      unnecessary detail, and finally design an algorithm for the solution.
+    </div>
+  </div>
+
+  <!-- DECOMPOSITION -->
+  <div class="section-block" id="decomposition">
+    <div class="section-header">
+      <div class="section-label">Pillar 1</div>
+      <div class="section-title">🔧 Decomposition</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Definition, Purpose & Examples</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🔧</span>
+        <span class="concept-title">What is Decomposition?</span>
+      </div>
+      <div class="concept-body">
+        Decomposition is the process of <strong>breaking down a large, complex problem</strong>
+        into smaller, more manageable sub-problems or tasks. Each smaller part is easier to
+        understand, solve, and manage independently. Once all parts are solved, the solutions
+        are combined to address the original problem.
+      </div>
+      <div class="concept-example">
+        💡 <strong>Why it matters:</strong> A problem that is too large or complex to tackle all at once
+        becomes solvable when split into smaller components. It also allows different people
+        (or systems) to work on different parts simultaneously.
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 1</div>
+      <div class="answer-content">
+        <div class="answer-main">Real-World Example: Building a Website</div>
+        <div class="answer-sub">
+          Decomposed into: <br>
+          → Design the layout &nbsp;|&nbsp; Write the HTML &nbsp;|&nbsp; Add CSS styling &nbsp;|&nbsp;
+          Write JavaScript &nbsp;|&nbsp; Set up a database &nbsp;|&nbsp; Deploy to a server
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 2</div>
+      <div class="answer-content">
+        <div class="answer-main">Real-World Example: Making a Cup of Tea</div>
+        <div class="answer-sub">
+          Decomposed into: <br>
+          → Boil water &nbsp;|&nbsp; Get a mug &nbsp;|&nbsp; Add teabag &nbsp;|&nbsp;
+          Pour water &nbsp;|&nbsp; Wait &nbsp;|&nbsp; Remove teabag &nbsp;|&nbsp; Add milk/sugar
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 3</div>
+      <div class="answer-content">
+        <div class="answer-main">Computing Example: A Search Engine</div>
+        <div class="answer-sub">
+          Decomposed into: <br>
+          → Crawl web pages &nbsp;|&nbsp; Index content &nbsp;|&nbsp; Rank results &nbsp;|&nbsp;
+          Handle user queries &nbsp;|&nbsp; Display results &nbsp;|&nbsp; Update the index
+        </div>
+        <span class="reason-tag">🔑 Each sub-task can be independently designed and improved.</span>
+      </div>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 Key Terms:</strong> Sub-problem · Sub-task · Modular design · Divide and conquer ·
+      Top-down design
+    </div>
+  </div>
+
+  <!-- PATTERN RECOGNITION -->
+  <div class="section-block" id="pattern">
+    <div class="section-header">
+      <div class="section-label">Pillar 2</div>
+      <div class="section-title">🔍 Pattern Recognition</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Definition, Purpose & Examples</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🔍</span>
+        <span class="concept-title">What is Pattern Recognition?</span>
+      </div>
+      <div class="concept-body">
+        Pattern Recognition involves <strong>finding similarities, trends, repetitions, or regularities</strong>
+        within and between problems. Identifying patterns allows us to apply previous solutions
+        to new problems that share similar characteristics, making problem-solving faster and more efficient.
+      </div>
+      <div class="concept-example">
+        💡 <strong>Why it matters:</strong> If we can identify a pattern, we can write a single
+        rule or algorithm that handles many different cases — rather than writing a separate
+        solution for each individual case.
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 1</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: Spam Email Detection</div>
+        <div class="answer-sub">
+          Patterns identified in spam emails: certain keywords ("win", "free", "click now"),
+          unknown senders, unusual sending times → A filter is built based on these patterns.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 2</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: Weather Forecasting</div>
+        <div class="answer-sub">
+          Meteorologists identify patterns in temperature, pressure, and wind direction
+          over time to predict future weather conditions.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 3</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: Drawing Shapes (Programming)</div>
+        <div class="answer-sub">
+          Drawing a triangle, square, pentagon… all follow a pattern:
+          repeat (draw a line → turn). The number of sides changes; the pattern stays the same.
+        </div>
+        <span class="reason-tag">🔑 This allows the use of <strong>loops</strong> in programming instead of repeating code.</span>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Pattern Type</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Similarities</strong></td>
+            <td>Features shared across problems</td>
+            <td>All login pages need username + password</td>
+          </tr>
+          <tr>
+            <td><strong>Differences</strong></td>
+            <td>Variations that require different handling</td>
+            <td>Admin vs. regular user permissions</td>
+          </tr>
+          <tr>
+            <td><strong>Trends</strong></td>
+            <td>Changes over time or datasets</td>
+            <td>Sales increasing every December</td>
+          </tr>
+          <tr>
+            <td><strong>Repetition</strong></td>
+            <td>A sequence that repeats consistently</td>
+            <td>A timer counting down every second</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ABSTRACTION -->
+  <div class="section-block" id="abstraction">
+    <div class="section-header">
+      <div class="section-label">Pillar 3</div>
+      <div class="section-title">🧠 Abstraction</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Definition, Levels & Examples</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🧠</span>
+        <span class="concept-title">What is Abstraction?</span>
+      </div>
+      <div class="concept-body">
+        Abstraction involves <strong>identifying and focusing only on the essential details</strong>
+        of a problem while removing (hiding) unnecessary or irrelevant information. It creates
+        a simplified model of a complex system. Abstraction can be applied at many levels —
+        from a high-level concept down to specific implementation details.
+      </div>
+      <div class="concept-example">
+        💡 <strong>Key Distinction:</strong> Abstraction is NOT about ignoring detail altogether —
+        it's about knowing <em>which</em> details are relevant for a specific purpose and filtering out the rest.
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 1</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: A Map</div>
+        <div class="answer-sub">
+          A map is an abstraction of the real world. It keeps roads, landmarks, and distances
+          but removes trees, building colours, and irrelevant detail. Different map types
+          (transport map, weather map) abstract <em>different</em> relevant information.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 2</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: A Car's Steering Wheel</div>
+        <div class="answer-sub">
+          A driver uses a steering wheel without knowing the mechanical details of how
+          it connects to the wheels. The complexity is <em>abstracted away</em> —
+          the driver only needs to interact with the simplified interface.
+        </div>
+        <span class="reason-tag">🔑 This is called <strong>information hiding</strong> — a core principle of software design.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">EX 3</div>
+      <div class="answer-content">
+        <div class="answer-main">Example: Object-Oriented Programming (OOP)</div>
+        <div class="answer-sub">
+          A <code>Dog</code> class abstracts real dogs. It keeps relevant attributes
+          (<em>name, breed, age</em>) and behaviours (<em>bark(), eat(), sleep()</em>)
+          while ignoring irrelevant biological detail (cell structure, DNA).
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Data Abstraction</strong></td>
+            <td>Representing data at a high level (e.g., a variable instead of a memory address)</td>
+          </tr>
+          <tr>
+            <td><strong>Procedural Abstraction</strong></td>
+            <td>Using a function/method without knowing its internal implementation</td>
+          </tr>
+          <tr>
+            <td><strong>Information Hiding</strong></td>
+            <td>Concealing internal workings; only exposing necessary interfaces</td>
+          </tr>
+          <tr>
+            <td><strong>Generalisation</strong></td>
+            <td>Creating a general solution that works for many specific cases</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ALGORITHMS -->
+  <div class="section-block" id="algorithms">
+    <div class="section-header">
+      <div class="section-label">Pillar 4</div>
+      <div class="section-title">📊 Algorithms</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Definition, Properties & Types</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">📊</span>
+        <span class="concept-title">What is an Algorithm?</span>
+      </div>
+      <div class="concept-body">
+        An algorithm is a <strong>precise, ordered sequence of steps or instructions</strong>
+        designed to solve a problem or accomplish a task. Algorithms must be unambiguous,
+        finite, and produce a correct output for valid inputs. They can be expressed as
+        <strong>pseudocode</strong>, <strong>flowcharts</strong>, or actual programming code.
+      </div>
+      <div class="concept-example">
+        💡 <strong>Remember:</strong> An algorithm must eventually stop (it must be finite)
+        and must produce the correct result every time it is run with valid inputs.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">
+      ✅ Five Key Properties of a Good Algorithm
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P1</div>
+      <div class="answer-content">
+        <div class="answer-main">Clearly Defined Inputs</div>
+        <div class="answer-sub">The algorithm must specify what data/information it requires to start.</div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P2</div>
+      <div class="answer-content">
+        <div class="answer-main">Clearly Defined Outputs</div>
+        <div class="answer-sub">The algorithm must produce at least one result or output.</div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P3</div>
+      <div class="answer-content">
+        <div class="answer-main">Unambiguous Steps</div>
+        <div class="answer-sub">Each instruction must be clear and not open to interpretation.</div>
+        <span class="reason-tag">💡 "Add something to the list" is ambiguous. "Append value X to array A" is not.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P4</div>
+      <div class="answer-content">
+        <div class="answer-main">Finiteness</div>
+        <div class="answer-sub">The algorithm must terminate after a finite number of steps — it cannot run forever.</div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">P5</div>
+      <div class="answer-content">
+        <div class="answer-main">Effectiveness</div>
+        <div class="answer-sub">Each step must be basic and feasible — capable of being performed exactly and in a finite amount of time.</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper" style="margin-top:16px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Algorithm Type</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sorting</strong></td>
+            <td>Arranges data in a specific order</td>
+            <td>Bubble Sort, Merge Sort, Quick Sort</td>
+          </tr>
+          <tr>
+            <td><strong>Searching</strong></td>
+            <td>Finds a specific item in a dataset</td>
+            <td>Linear Search, Binary Search</td>
+          </tr>
+          <tr>
+            <td><strong>Pathfinding</strong></td>
+            <td>Finds the best route between two points</td>
+            <td>Dijkstra's Algorithm, A* Algorithm</td>
+          </tr>
+          <tr>
+            <td><strong>Encryption</strong></td>
+            <td>Converts data into a secure, unreadable format</td>
+            <td>AES, RSA</td>
+          </tr>
+          <tr>
+            <td><strong>Compression</strong></td>
+            <td>Reduces file size</td>
+            <td>Huffman Coding, DEFLATE</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EVALUATION -->
+  <div class="section-block" id="evaluation">
+    <div class="section-header">
+      <div class="section-label">Component 5</div>
+      <div class="section-title">✅ Evaluation</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Why Evaluation Matters</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">✅</span>
+        <span class="concept-title">What is Evaluation in Computational Thinking?</span>
+      </div>
+      <div class="concept-body">
+        Evaluation is the process of <strong>assessing a solution or algorithm</strong> to determine
+        how well it works, whether it meets requirements, and how it could be improved.
+        A good computational thinker doesn't just create a solution — they critically assess it.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">
+      🔎 Key Evaluation Criteria
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">C1</div>
+      <div class="answer-content">
+        <div class="answer-main">Correctness</div>
+        <div class="answer-sub">Does the solution produce the right output for all valid inputs? Does it handle edge cases?</div>
+        <span class="reason-tag">💡 Test with normal inputs, boundary values, and invalid inputs.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">C2</div>
+      <div class="answer-content">
+        <div class="answer-main">Efficiency</div>
+        <div class="answer-sub">
+          Does the solution use minimal time and memory? This is measured using
+          <strong>Big O notation</strong> (e.g., O(n), O(n²), O(log n)).
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">C3</div>
+      <div class="answer-content">
+        <div class="answer-main">Usability</div>
+        <div class="answer-sub">Is the solution easy to use and understand by the intended users?</div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">C4</div>
+      <div class="answer-content">
+        <div class="answer-main">Maintainability</div>
+        <div class="answer-sub">Can the solution be easily updated, modified, or extended in the future?</div>
+        <span class="reason-tag">💡 Clear code, good documentation, and modular design improve maintainability.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">C5</div>
+      <div class="answer-content">
+        <div class="answer-main">Scalability</div>
+        <div class="answer-sub">Does the solution still work well if the size of the problem grows significantly?</div>
+      </div>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 Evaluation Tip:</strong> When asked to evaluate an algorithm in an exam,
+      consider: correctness → efficiency → usability → maintainability → scalability.
+      Use specific examples and evidence to support your points.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       INTERACTIVE QUIZ
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="quiz">
+    <div class="section-header">
+      <div class="section-label">Interactive</div>
+      <div class="section-title">🎯 Computational Thinking Quiz</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <!-- Progress -->
+    <div class="quiz-progress-label" id="progressLabel">Progress: 0 / 20 questions attempted</div>
+    <div class="quiz-progress-bar-container">
+      <div class="quiz-progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+      <div class="score-box">
+        <div class="sb-label">Score</div>
+        <div class="sb-val" id="liveScore">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Correct</div>
+        <div class="sb-val" id="liveCorrect" style="color:#276749;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Incorrect</div>
+        <div class="sb-val" id="liveIncorrect" style="color:#c53030;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Remaining</div>
+        <div class="sb-val" id="liveRemaining">20</div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION A: Multiple Choice ══ -->
+    <div class="question-group-title" style="margin-top:20px;">
+      📝 Section A — Multiple Choice <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A1</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which of the four pillars of Computational Thinking involves breaking a large problem
+        into smaller, more manageable sub-problems?
+      </div>
+      <div class="mc-options" id="q1-options">
+        <div class="mc-option" onclick="selectMC('q1','A',this)">
+          <input type="radio" name="q1" id="q1a"> <label for="q1a">A) Abstraction</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','B',this)">
+          <input type="radio" name="q1" id="q1b"> <label for="q1b">B) Pattern Recognition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','C',this)">
+          <input type="radio" name="q1" id="q1c"> <label for="q1c">C) Decomposition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','D',this)">
+          <input type="radio" name="q1" id="q1d"> <label for="q1d">D) Algorithms</label>
+        </div>
+      </div>
+	        <div class="feedback-msg" id="q1-feedback"></div>
+      <div class="hint-box" id="q1-hint">💡 Hint: Think about the word "decompose" — what does it mean to decompose something?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q1','C','Decomposition is the process of breaking a complex problem into smaller, manageable sub-problems.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A2</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A programmer notices that drawing a triangle, square, and pentagon all follow the same
+        structure: repeat (draw a line → turn). Which pillar of CT is being applied?
+      </div>
+      <div class="mc-options" id="q2-options">
+        <div class="mc-option" onclick="selectMC('q2','A',this)">
+          <input type="radio" name="q2" id="q2a"> <label for="q2a">A) Decomposition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','B',this)">
+          <input type="radio" name="q2" id="q2b"> <label for="q2b">B) Pattern Recognition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','C',this)">
+          <input type="radio" name="q2" id="q2c"> <label for="q2c">C) Abstraction</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','D',this)">
+          <input type="radio" name="q2" id="q2d"> <label for="q2d">D) Evaluation</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q2-feedback"></div>
+      <div class="hint-box" id="q2-hint">💡 Hint: The programmer is spotting a repeating structure across multiple shapes.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q2','B','Pattern Recognition — the programmer identifies that all regular shapes follow the same repeating draw-and-turn pattern.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A3</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which of the following BEST describes Abstraction in Computational Thinking?
+      </div>
+      <div class="mc-options" id="q3-options">
+        <div class="mc-option" onclick="selectMC('q3','A',this)">
+          <input type="radio" name="q3" id="q3a"> <label for="q3a">A) Writing the most detailed code possible</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','B',this)">
+          <input type="radio" name="q3" id="q3b"> <label for="q3b">B) Removing all data from a system</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','C',this)">
+          <input type="radio" name="q3" id="q3c"> <label for="q3c">C) Focusing on essential details and hiding irrelevant information</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','D',this)">
+          <input type="radio" name="q3" id="q3d"> <label for="q3d">D) Testing an algorithm for errors</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q3-feedback"></div>
+      <div class="hint-box" id="q3-hint">💡 Hint: Think about what a map does — it keeps what matters and removes what doesn't.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q3','C','Abstraction means focusing on the essential information needed to solve a problem, while hiding unnecessary detail.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A4</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which property of an algorithm ensures that it will always come to an end
+        rather than running indefinitely?
+      </div>
+      <div class="mc-options" id="q4-options">
+        <div class="mc-option" onclick="selectMC('q4','A',this)">
+          <input type="radio" name="q4" id="q4a"> <label for="q4a">A) Effectiveness</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','B',this)">
+          <input type="radio" name="q4" id="q4b"> <label for="q4b">B) Unambiguity</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','C',this)">
+          <input type="radio" name="q4" id="q4c"> <label for="q4c">C) Finiteness</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','D',this)">
+          <input type="radio" name="q4" id="q4d"> <label for="q4d">D) Scalability</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q4-feedback"></div>
+      <div class="hint-box" id="q4-hint">💡 Hint: The word comes from "finite" — meaning limited or having an end.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q4','C','Finiteness means the algorithm must terminate after a finite number of steps — it cannot run forever.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A5</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Jeannette Wing's 2006 paper popularised the term "Computational Thinking."
+        Which of the following statements about CT is MOST accurate?
+      </div>
+      <div class="mc-options" id="q5-options">
+        <div class="mc-option" onclick="selectMC('q5','A',this)">
+          <input type="radio" name="q5" id="q5a"> <label for="q5a">A) CT is only applicable to computer scientists and programmers</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','B',this)">
+          <input type="radio" name="q5" id="q5b"> <label for="q5b">B) CT is a problem-solving approach applicable across many disciplines</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','C',this)">
+          <input type="radio" name="q5" id="q5c"> <label for="q5c">C) CT is identical to computer programming</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','D',this)">
+          <input type="radio" name="q5" id="q5d"> <label for="q5d">D) CT only involves writing algorithms in code</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q5-feedback"></div>
+      <div class="hint-box" id="q5-hint">💡 Hint: Wing argued that CT is a fundamental skill for everyone — like reading, writing, and arithmetic.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q5','B','CT is a universal problem-solving approach. Wing argued it should be a fundamental skill for everyone, not just computer scientists.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A6</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A developer writes a <code>calculateTax()</code> function. Other programmers can call
+        this function without knowing how the tax calculation is internally performed.
+        Which concept does this BEST represent?
+      </div>
+      <div class="mc-options" id="q6-options">
+        <div class="mc-option" onclick="selectMC('q6','A',this)">
+          <input type="radio" name="q6" id="q6a"> <label for="q6a">A) Decomposition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','B',this)">
+          <input type="radio" name="q6" id="q6b"> <label for="q6b">B) Pattern Recognition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','C',this)">
+          <input type="radio" name="q6" id="q6c"> <label for="q6c">C) Procedural Abstraction</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','D',this)">
+          <input type="radio" name="q6" id="q6d"> <label for="q6d">D) Evaluation</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q6-feedback"></div>
+      <div class="hint-box" id="q6-hint">💡 Hint: The internal workings are hidden — users only interact with the function's interface.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q6','C','Procedural Abstraction — the function hides its internal implementation details. Users only need to know what it does, not how it does it.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A7</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        When evaluating an algorithm, which term refers to how well a solution
+        continues to perform as the size of the input grows significantly?
+      </div>
+      <div class="mc-options" id="q7-options">
+        <div class="mc-option" onclick="selectMC('q7','A',this)">
+          <input type="radio" name="q7" id="q7a"> <label for="q7a">A) Correctness</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','B',this)">
+          <input type="radio" name="q7" id="q7b"> <label for="q7b">B) Usability</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','C',this)">
+          <input type="radio" name="q7" id="q7c"> <label for="q7c">C) Maintainability</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','D',this)">
+          <input type="radio" name="q7" id="q7d"> <label for="q7d">D) Scalability</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q7-feedback"></div>
+      <div class="hint-box" id="q7-hint">💡 Hint: Imagine going from 100 users to 10 million — does the solution still cope?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q7','D','Scalability refers to how well a solution performs as the problem size or workload increases significantly.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A8</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which of the following is the BEST example of Decomposition being applied to
+        organising a school sports day?
+      </div>
+      <div class="mc-options" id="q8-options">
+        <div class="mc-option" onclick="selectMC('q8','A',this)">
+          <input type="radio" name="q8" id="q8a"> <label for="q8a">A) Noticing that all track events follow a similar format</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','B',this)">
+          <input type="radio" name="q8" id="q8b"> <label for="q8b">B) Writing a schedule that lists the order of every event</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','C',this)">
+          <input type="radio" name="q8" id="q8c"> <label for="q8c">C) Splitting the day into: venues, events, equipment, volunteers, and catering</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','D',this)">
+          <input type="radio" name="q8" id="q8d"> <label for="q8d">D) Deciding which details about the day are not important</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q8-feedback"></div>
+      <div class="hint-box" id="q8-hint">💡 Hint: Decomposition means breaking the whole problem into distinct, manageable parts.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q8','C','Decomposition — splitting the sports day into sub-categories (venues, events, equipment, etc.) breaks the large task into manageable parts.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A9</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Binary Search is an efficient searching algorithm. Which condition MUST be true
+        about the dataset before Binary Search can be applied?
+      </div>
+      <div class="mc-options" id="q9-options">
+        <div class="mc-option" onclick="selectMC('q9','A',this)">
+          <input type="radio" name="q9" id="q9a"> <label for="q9a">A) The dataset must contain only numbers</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','B',this)">
+          <input type="radio" name="q9" id="q9b"> <label for="q9b">B) The dataset must be sorted</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','C',this)">
+          <input type="radio" name="q9" id="q9c"> <label for="q9c">C) The dataset must have fewer than 100 items</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','D',this)">
+          <input type="radio" name="q9" id="q9d"> <label for="q9d">D) The dataset must be stored in a 2D array</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q9-feedback"></div>
+      <div class="hint-box" id="q9-hint">💡 Hint: Binary Search works by halving the search space — this only works if items are in order.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q9','B','Binary Search requires a sorted dataset. It repeatedly halves the search space by comparing the target to the middle element.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A10</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A transport map of a city shows only train lines, stations, and interchange points —
+        it does not show roads, buildings, or distances to scale.
+        Which CT concept does this BEST illustrate?
+      </div>
+      <div class="mc-options" id="q10-options">
+        <div class="mc-option" onclick="selectMC('q10','A',this)">
+          <input type="radio" name="q10" id="q10a"> <label for="q10a">A) Decomposition</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','B',this)">
+          <input type="radio" name="q10" id="q10b"> <label for="q10b">B) Algorithms</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','C',this)">
+          <input type="radio" name="q10" id="q10c"> <label for="q10c">C) Abstraction</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','D',this)">
+          <input type="radio" name="q10" id="q10d"> <label for="q10d">D) Pattern Recognition</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q10-feedback"></div>
+      <div class="hint-box" id="q10-hint">💡 Hint: The map keeps only what is essential for its purpose and removes everything else.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q10','C','Abstraction — the transport map keeps only essential information (stations, lines) and removes irrelevant detail (roads, exact distances).')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION B: True or False ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✅ Section B — True or False <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- TF1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B1</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Computational Thinking is only useful for people who work in the field of computer science.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf1-true" onclick="selectTF('tf1','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf1-false" onclick="selectTF('tf1','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf1-feedback"></div>
+      <div class="hint-box" id="tf1-hint">💡 Hint: Think about how doctors, architects, and teachers could also use CT.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf1','false','FALSE — CT is a universal problem-solving approach applicable across all disciplines including science, business, medicine, and everyday life.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B2</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        An algorithm must always terminate (come to an end) after a finite number of steps.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf2-true" onclick="selectTF('tf2','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf2-false" onclick="selectTF('tf2','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf2-feedback"></div>
+      <div class="hint-box" id="tf2-hint">💡 Hint: One of the five key properties of algorithms is "Finiteness."</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf2','true','TRUE — Finiteness is a required property of all algorithms. An algorithm that runs forever is not a valid algorithm.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B3</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Abstraction means including every possible detail about a problem to ensure nothing is missed.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf3-true" onclick="selectTF('tf3','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf3-false" onclick="selectTF('tf3','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf3-feedback"></div>
+      <div class="hint-box" id="tf3-hint">💡 Hint: Abstraction is about simplification, not exhaustive detail.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf3','false','FALSE — Abstraction is the OPPOSITE. It involves focusing only on essential information and removing (hiding) irrelevant detail.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B4</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Pattern Recognition can help a programmer avoid writing the same code multiple times
+        by identifying repeating structures that can be handled with a loop or function.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf4-true" onclick="selectTF('tf4','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf4-false" onclick="selectTF('tf4','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf4-feedback"></div>
+      <div class="hint-box" id="tf4-hint">💡 Hint: Think about the shapes example — one loop handles all shapes once the pattern is found.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf4','true','TRUE — Identifying repeating patterns allows programmers to write generalised code (loops, functions) instead of duplicating code for each case.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B5</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Decomposition requires that all sub-problems be solved by the same person at the same time.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf5-true" onclick="selectTF('tf5','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf5-false" onclick="selectTF('tf5','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf5-feedback"></div>
+      <div class="hint-box" id="tf5-hint">💡 Hint: Think about large software projects — teams often work on different parts simultaneously.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf5','false','FALSE — One key benefit of Decomposition is that different people (or teams) can work on different sub-problems independently and simultaneously.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B6</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Algorithms can only be expressed as written code in a programming language.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf6-true" onclick="selectTF('tf6','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf6-false" onclick="selectTF('tf6','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf6-feedback"></div>
+      <div class="hint-box" id="tf6-hint">💡 Hint: Think about flowcharts and pseudocode.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf6','false','FALSE — Algorithms can be expressed in many ways including pseudocode, flowcharts, written instructions, or actual programming code.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B7</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Evaluation in CT includes assessing whether a solution is correct, efficient, usable,
+        maintainable, and scalable.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf7-true" onclick="selectTF('tf7','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf7-false" onclick="selectTF('tf7','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf7-feedback"></div>
+      <div class="hint-box" id="tf7-hint">💡 Hint: Review the five key evaluation criteria from the study content.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf7','true','TRUE — These five criteria (correctness, efficiency, usability, maintainability, scalability) form the standard framework for evaluating solutions.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B8</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In Object-Oriented Programming, a class is an example of Abstraction because
+        it models only the relevant attributes and behaviours of a real-world object.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf8-true" onclick="selectTF('tf8','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf8-false" onclick="selectTF('tf8','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf8-feedback"></div>
+      <div class="hint-box" id="tf8-hint">💡 Hint: A Dog class stores name, breed, age — not DNA sequences or cell structures.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf8','true','TRUE — A class abstracts a real-world entity by keeping only relevant properties and behaviours while ignoring irrelevant biological or physical detail.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B9</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The four pillars of Computational Thinking always need to be applied in a fixed,
+        sequential order: Decomposition → Pattern Recognition → Abstraction → Algorithms.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf9-true" onclick="selectTF('tf9','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf9-false" onclick="selectTF('tf9','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf9-feedback"></div>
+      <div class="hint-box" id="tf9-hint">💡 Hint: In real-world problem-solving, you may jump between pillars as needed.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf9','false','FALSE — While the four pillars are often applied in this general order, they are flexible and can be revisited and applied in any combination depending on the problem.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- TF10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">B10</div>
+        <span class="quiz-q-type">True / False</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Big O notation is used to describe how the time or space requirements
+        of an algorithm grow as the input size increases.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf10-true" onclick="selectTF('tf10','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf10-false" onclick="selectTF('tf10','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf10-feedback"></div>
+      <div class="hint-box" id="tf10-hint">💡 Hint: O(n), O(n²), O(log n) — these describe algorithmic complexity.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf10','true','TRUE — Big O notation is the standard way to measure and compare algorithm efficiency in terms of time complexity and space complexity.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION C: Fill in the Blank ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✏️ Section C — Fill in the Blank <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <!-- FITB1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C1</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The four pillars of Computational Thinking are Decomposition, Pattern Recognition, Abstraction, and</span>
+        <input type="text" class="fitb-input" id="fitb1" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb1-feedback"></div>
+      <div class="hint-box" id="fitb1-hint">💡 Hint: It involves writing step-by-step instructions to solve a problem.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb1',['algorithms','algorithm'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C2</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>Computational Thinking was popularised in 2006 by computer scientist</span>
+        <input type="text" class="fitb-input" id="fitb2" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb2-feedback"></div>
+      <div class="hint-box" id="fitb2-hint">💡 Hint: Her first name is Jeannette.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb2',['jeannette wing','wing','j. wing'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C3</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>Breaking a large problem into smaller, more manageable sub-problems is called</span>
+        <input type="text" class="fitb-input" id="fitb3" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb3-feedback"></div>
+      <div class="hint-box" id="fitb3-hint">💡 Hint: Think about what the word "decompose" means — to break apart.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb3',['decomposition'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C4</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>An algorithm that hides its internal logic from the user is an example of</span>
+        <input type="text" class="fitb-input" id="fitb4" placeholder="type here…">
+        <span>abstraction.</span>
+      </div>
+      <div class="feedback-msg" id="fitb4-feedback"></div>
+      <div class="hint-box" id="fitb4-hint">💡 Hint: The type is named after the concept of procedures or functions.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb4',['procedural','procedural abstraction'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C5</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The evaluation criterion that checks whether a solution still performs well as its input size grows is called</span>
+        <input type="text" class="fitb-input" id="fitb5" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb5-feedback"></div>
+      <div class="hint-box" id="fitb5-hint">💡 Hint: Imagine "scaling up" a system from 100 to 10 million users.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb5',['scalability','scalable'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C6</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>Identifying similarities, trends, and repeated structures across problems is called</span>
+        <input type="text" class="fitb-input" id="fitb6" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb6-feedback"></div>
+      <div class="hint-box" id="fitb6-hint">💡 Hint: Spam filters use this to identify common features of unwanted emails.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb6',['pattern recognition'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C7</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>A precise, step-by-step set of instructions for solving a problem is called an</span>
+        <input type="text" class="fitb-input" id="fitb7" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb7-feedback"></div>
+      <div class="hint-box" id="fitb7-hint">💡 Hint: Recipes, navigation directions, and sorting procedures are all examples.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb7',['algorithm'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C8</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The algorithmic efficiency notation used to describe how runtime grows with input size is called</span>
+        <input type="text" class="fitb-input" id="fitb8" placeholder="type here…">
+        <span>notation.</span>
+      </div>
+      <div class="feedback-msg" id="fitb8-feedback"></div>
+      <div class="hint-box" id="fitb8-hint">💡 Hint: It starts with the letter B and uses the letter O in a specific way.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb8',['big o','big-o','big o notation','o'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C9</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>A searching algorithm that requires the dataset to be sorted before it can be applied is called</span>
+        <input type="text" class="fitb-input" id="fitb9" placeholder="type here…">
+        <span>Search.</span>
+      </div>
+      <div class="feedback-msg" id="fitb9-feedback"></div>
+      <div class="hint-box" id="fitb9-hint">💡 Hint: It works by halving the search space on each step — think of splitting something in two.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb9',['binary','binary search'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- FITB10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">C10</div>
+        <span class="quiz-q-type">Fill in the Blank</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>In Abstraction, the concept of hiding internal workings while only exposing a necessary interface is called</span>
+        <input type="text" class="fitb-input" id="fitb10" placeholder="type here…">
+        <span>.</span>
+      </div>
+      <div class="feedback-msg" id="fitb10-feedback"></div>
+      <div class="hint-box" id="fitb10-hint">💡 Hint: Like a car driver not needing to see the engine — the complexity is "hidden."</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb10',['information hiding','data hiding'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION D: Matching ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔗 Section D — Match the Term to its Description <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">D1–10</div>
+        <span class="quiz-q-type">Matching</span>
+        <span class="marks">10 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Match each term on the left to its correct description on the right by selecting from the dropdown menus.
+      </div>
+
+      <div class="table-wrapper" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Term</th>
+              <th>Select the Matching Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>D1</strong></td>
+              <td class="ans-cell">Decomposition</td>
+              <td>
+                <select class="match-select" id="match1">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D2</strong></td>
+              <td class="ans-cell">Pattern Recognition</td>
+              <td>
+                <select class="match-select" id="match2">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D3</strong></td>
+              <td class="ans-cell">Abstraction</td>
+              <td>
+                <select class="match-select" id="match3">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D4</strong></td>
+              <td class="ans-cell">Algorithm</td>
+              <td>
+                <select class="match-select" id="match4">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D5</strong></td>
+              <td class="ans-cell">Evaluation</td>
+              <td>
+                <select class="match-select" id="match5">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D6</strong></td>
+              <td class="ans-cell">O(n) Complexity</td>
+              <td>
+                <select class="match-select" id="match6">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D7</strong></td>
+              <td class="ans-cell">Generalisation</td>
+              <td>
+                <select class="match-select" id="match7">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D8</strong></td>
+              <td class="ans-cell">Flowchart</td>
+              <td>
+                <select class="match-select" id="match8">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+				              </td>
+            </tr>
+            <tr>
+              <td><strong>D9</strong></td>
+              <td class="ans-cell">Information Hiding</td>
+              <td>
+                <select class="match-select" id="match9">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D10</strong></td>
+              <td class="ans-cell">Generalisation</td>
+              <td>
+                <select class="match-select" id="match10">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Finding similarities and trends across problems</option>
+                  <option value="B">B) Breaking a complex problem into smaller sub-problems</option>
+                  <option value="C">C) Hiding irrelevant detail and focusing on essentials</option>
+                  <option value="D">D) A step-by-step solution to a problem</option>
+                  <option value="E">E) Assessing correctness, efficiency, and usability</option>
+                  <option value="F">F) The number of steps an algorithm takes grows linearly</option>
+                  <option value="G">G) Using more/most for multi-syllable comparisons</option>
+                  <option value="H">H) Creating a general solution for many specific cases</option>
+                  <option value="I">I) Expressing algorithms visually using shapes and arrows</option>
+                  <option value="J">J) Hiding internal implementation from the user</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="feedback-msg" id="match-feedback"></div>
+      <div class="hint-box" id="match-hint">
+        💡 Hint: Re-read the definitions in the Study Content section above.
+        Each term maps to exactly one description — no description is used twice.
+      </div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMatching()">Check All Matches</button>
+        <button class="btn-hint" onclick="toggleHint('match')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMatching()">↺ Reset All</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION E: Short Answer ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      📝 Section E — Short Answer Questions <span class="marks">5 marks each = 15 marks</span>
+    </div>
+
+    <!-- SA1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E1</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        A school wants to build a new student management system. Using ALL FOUR pillars
+        of Computational Thinking, explain how you would approach designing this system.
+        Provide a specific example for each pillar in the context of the student
+        management system.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa1"
+        placeholder="Write your answer here… (Aim for at least 8–10 lines covering all four pillars with examples)"
+        rows="8"
+        oninput="updateSAWordCount('sa1','sa1-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem; color:#718096; margin-top:4px; text-align:right;">
+        Words: <span id="sa1-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" id="sa1-guide" style="margin-top:12px; display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Decomposition: breaking the system into sub-systems
+        (e.g., student records, attendance, grades, timetabling, reporting)<br>
+        <strong>• 1 mark</strong> — Pattern Recognition: identifying common features across modules
+        (e.g., all modules need login, search, add, edit, delete functions)<br>
+        <strong>• 1 mark</strong> — Abstraction: hiding unnecessary detail from users
+        (e.g., teachers see only relevant student data; database structure is hidden)<br>
+        <strong>• 1 mark</strong> — Algorithms: designing step-by-step processes
+        (e.g., algorithm for calculating grade averages or generating a report)<br>
+        <strong>• 1 mark</strong> — Quality of explanation: clear, coherent, and uses correct CT terminology throughout
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer; color:#276749; font-weight:700; font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p><strong>🔧 Decomposition:</strong><br>
+              The student management system would be broken into smaller sub-systems:
+              (1) Student Records module, (2) Attendance Tracking module,
+              (3) Grade Management module, (4) Timetabling module, and (5) Reporting module.
+              Each sub-system can be designed, built, and tested independently.
+            </p>
+            <p><strong>🔍 Pattern Recognition:</strong><br>
+              Across all five modules, a common pattern emerges — every module requires
+              the same core operations: login/authentication, search, add a record, edit
+              a record, and delete a record. This pattern means we can create reusable
+              components and templates rather than building each function from scratch.
+            </p>
+            <p><strong>🧠 Abstraction:</strong><br>
+              Teachers are shown only relevant student data for their class — they do
+              not need to see the underlying database schema, server configuration, or
+              other students' sensitive data. The database complexity is abstracted away
+              behind a clean user interface. Only the system administrator interacts with
+              lower-level settings.
+            </p>
+            <p><strong>📊 Algorithms:</strong><br>
+              A grade calculation algorithm would: (1) retrieve all assessment scores for
+              a student, (2) apply the correct weighting to each score, (3) calculate the
+              weighted average, (4) compare against grade boundaries, (5) assign a final
+              grade, and (6) output the result to the report. This is unambiguous,
+              finite, and produces a consistent output.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- SA2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E2</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Explain the difference between Abstraction and Decomposition.
+        Why is it important NOT to confuse the two? Use an original real-world scenario
+        (NOT from the study notes) to illustrate BOTH concepts clearly.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa2"
+        placeholder="Write your answer here… (Define both, explain the difference, and apply to your own real-world example)"
+        rows="8"
+        oninput="updateSAWordCount('sa2','sa2-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem; color:#718096; margin-top:4px; text-align:right;">
+        Words: <span id="sa2-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" id="sa2-guide" style="margin-top:12px; display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Correct definition of Decomposition with key distinction
+        (breaking into parts)<br>
+        <strong>• 1 mark</strong> — Correct definition of Abstraction with key distinction
+        (filtering relevant from irrelevant detail)<br>
+        <strong>• 1 mark</strong> — Clear explanation of why they are different and why the
+        distinction matters<br>
+        <strong>• 1 mark</strong> — Original real-world example correctly applying Decomposition<br>
+        <strong>• 1 mark</strong> — Same or linked example correctly applying Abstraction<br>
+        <em>Note: Deduct 1 mark if the example used appears directly in the study notes.</em>
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer; color:#276749; font-weight:700; font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p>
+              <strong>Decomposition</strong> is the process of breaking a large, complex problem
+              into smaller, manageable sub-problems. <strong>Abstraction</strong>, on the other hand,
+              is about identifying which details are essential for solving a problem and removing
+              (hiding) those that are not. The key difference is: Decomposition asks
+              <em>"What are the parts?"</em> while Abstraction asks <em>"What details matter?"</em>
+            </p>
+            <p>
+              Confusing the two is dangerous because applying the wrong technique leads to an
+              incomplete solution. Decomposing when you need to abstract results in too much
+              irrelevant detail; abstracting when you need to decompose results in failing to
+              address all parts of the problem.
+            </p>
+            <p><strong>Real-World Example — Planning a Hospital:</strong></p>
+            <p>
+              <span class="highlight">Decomposition:</span> Planning a hospital is broken into
+              sub-systems — Emergency Department, Surgical Ward, Pharmacy, Radiology,
+              Administration, and Catering. Each department is a sub-problem that can be
+              planned and managed independently.
+            </p>
+            <p>
+              <span class="highlight">Abstraction:</span> When designing the hospital's patient
+              management app for nurses, only the patient name, ward, medication schedule,
+              and vitals are shown. The underlying database structure, server IP addresses,
+              billing information, and administrative records are abstracted away — irrelevant
+              for a nurse performing their daily duties.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- SA3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E3</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Write a step-by-step algorithm in pseudocode for the following problem:<br><br>
+        <strong>"A program should accept a list of 10 student scores (0–100),
+        calculate the average score, identify the highest and lowest scores,
+        and display whether the class average is a Pass (≥ 50) or Fail (&lt; 50)."</strong><br><br>
+        Your algorithm must demonstrate: clearly defined inputs and outputs,
+        use of a loop, use of selection (IF statement), and correct variable usage.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa3"
+        placeholder="Write your pseudocode here…&#10;&#10;START&#10;  // Your algorithm steps&#10;END"
+        rows="14"
+        oninput="updateSAWordCount('sa3','sa3-wc')"
+        style="font-family: 'Courier New', monospace; font-size:0.9rem;"
+      ></textarea>
+      <div style="font-size:0.8rem; color:#718096; margin-top:4px; text-align:right;">
+        Lines: <span id="sa3-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" id="sa3-guide" style="margin-top:12px; display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Inputs clearly defined (accepts 10 scores in a loop or array)<br>
+        <strong>• 1 mark</strong> — Loop correctly used to iterate through the 10 scores and
+        accumulate a total; highest and lowest correctly tracked<br>
+        <strong>• 1 mark</strong> — Average correctly calculated (total ÷ 10)<br>
+        <strong>• 1 mark</strong> — IF/ELSE selection correctly used to determine Pass or Fail (≥ 50)<br>
+        <strong>• 1 mark</strong> — Outputs clearly defined (average, highest, lowest, Pass/Fail result displayed)
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer; color:#276749; font-weight:700; font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <pre style="
+              background:#1c4532;
+              color:#9ae6b4;
+              border-radius:10px;
+              padding:20px;
+              font-size:0.88rem;
+              line-height:1.8;
+              overflow-x:auto;
+              font-family:'Courier New', monospace;
+            ">
+START
+
+  // --- Inputs & Initialisation ---
+  DECLARE scores[10]
+  DECLARE total    ← 0
+  DECLARE highest  ← 0
+  DECLARE lowest   ← 100
+  DECLARE average
+  DECLARE result
+
+  // --- Input Loop ---
+  FOR i ← 1 TO 10 DO
+    OUTPUT "Enter score for student " + i + ":"
+    INPUT scores[i]
+
+    total ← total + scores[i]
+
+    IF scores[i] > highest THEN
+      highest ← scores[i]
+    END IF
+
+    IF scores[i] < lowest THEN
+      lowest ← scores[i]
+    END IF
+
+  END FOR
+
+  // --- Calculate Average ---
+  average ← total / 10
+
+  // --- Selection: Pass or Fail ---
+  IF average >= 50 THEN
+    result ← "PASS"
+  ELSE
+    result ← "FAIL"
+  END IF
+
+  // --- Outputs ---
+  OUTPUT "Class Average : " + average
+  OUTPUT "Highest Score : " + highest
+  OUTPUT "Lowest Score  : " + lowest
+  OUTPUT "Class Result  : " + result
+
+END
+            </pre>
+            <div class="rubric-box" style="margin-top:12px;">
+              <strong>📌 Note:</strong> Accept any valid pseudocode style. The key requirements
+              are: correct loop logic, correct accumulation, correct average calculation,
+              correct IF/ELSE selection, and clearly labelled outputs. Syntax does not need
+              to match any specific programming language exactly.
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- ══ SUBMIT ALL ══ -->
+    <div style="
+      background: linear-gradient(135deg, #1c4532, #276749);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 10px;
+      text-align: center;
+      color: white;
+    ">
+      <div style="font-size:1.1rem; font-weight:700; margin-bottom:8px;">
+        🎯 Ready to see your final score?
+      </div>
+      <div style="font-size:0.9rem; opacity:0.85; margin-bottom:18px;">
+        Make sure you have attempted all sections (A–D) before submitting.
+        Section E (short answer) is self-assessed using the marking guides provided.
+      </div>
+      <button class="btn-submit-all" onclick="submitQuiz()">
+        🏁 Submit Quiz &amp; View Results
+      </button>
+    </div>
+
+    <!-- ══ RESULTS PANEL ══ -->
+    <div class="quiz-results-panel" id="resultsPanel">
+      <div style="font-size:1.2rem; font-weight:700; letter-spacing:1px; opacity:0.9;">
+        🎉 QUIZ COMPLETE — YOUR RESULTS
+      </div>
+      <div class="results-score" id="finalScore">0</div>
+      <div class="results-label">out of 40 auto-marked marks</div>
+      <div class="results-grade" id="finalGrade">—</div>
+
+      <div style="
+        background: rgba(255,255,255,0.12);
+        border-radius: 12px;
+        padding: 18px 24px;
+        margin: 20px auto;
+        max-width: 520px;
+        font-size: 0.92rem;
+        text-align: left;
+        line-height: 1.9;
+      ">
+        <strong>📊 Section Breakdown:</strong><br>
+        Section A (MCQ): <strong id="res-a">0</strong> / 10<br>
+        Section B (True/False): <strong id="res-b">0</strong> / 10<br>
+        Section C (Fill in the Blank): <strong id="res-c">0</strong> / 10<br>
+        Section D (Matching): <strong id="res-d">0</strong> / 10<br>
+        Section E (Short Answer): <em>Self-assessed — see marking guides above</em>
+      </div>
+
+      <div style="
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        padding: 16px 20px;
+        max-width: 400px;
+        margin: 0 auto 20px;
+        font-size: 0.9rem;
+        line-height: 1.9;
+      ">
+        <strong>Performance Guide:</strong><br>
+        🟢 36–40 &nbsp;=&nbsp; Outstanding<br>
+        🔵 30–35 &nbsp;=&nbsp; Excellent<br>
+        🟡 22–29 &nbsp;=&nbsp; Satisfactory<br>
+        🟠 14–21 &nbsp;=&nbsp; Needs Improvement<br>
+        🔴 0–13  &nbsp;&nbsp;=&nbsp; Requires Additional Study
+      </div>
+
+      <button class="btn-retake" onclick="retakeQuiz()">
+        🔄 Retake Quiz
+      </button>
+    </div>
+
+  </div><!-- end quiz section-block -->
+
+  <!-- ══ FINAL SCORE BOX ══ -->
+  <div style="
+    background: linear-gradient(135deg, #1c4532, #276749);
+    color: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 36px;
+    text-align: center;
+  ">
+    <div style="font-size:1rem; opacity:0.8; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase;">
+      Total Marks Available
+    </div>
+    <div style="font-size:3rem; font-weight:700; margin-bottom:6px;">55</div>
+    <div style="
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      font-size:0.88rem;
+      opacity:0.85;
+    ">
+      <span>Section A: 10</span>
+      <span>•</span>
+      <span>Section B: 10</span>
+      <span>•</span>
+      <span>Section C: 10</span>
+      <span>•</span>
+      <span>Section D: 10</span>
+      <span>•</span>
+      <span>Section E: 15</span>
+    </div>
+    <div style="
+      margin-top: 20px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    ">
+      <strong>Performance Guide (Full 55 marks):</strong><br>
+      🟢 50–55 &nbsp;=&nbsp; Outstanding<br>
+      🔵 44–49 &nbsp;=&nbsp; Excellent<br>
+      🟡 33–43 &nbsp;=&nbsp; Satisfactory<br>
+      🟠 22–32 &nbsp;=&nbsp; Needs Improvement<br>
+      🔴 0–21 &nbsp;&nbsp;=&nbsp; Requires Additional Study
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>💻 <strong>Computational Thinking — Study Guide &amp; Interactive Quiz</strong></p>
+  <p style="margin-top:6px; font-size:0.82rem; color:#a0aec0;">
+    Covers: Decomposition · Pattern Recognition · Abstraction · Algorithms · Evaluation ·
+    Interactive Practice Questions
+  </p>
+</footer>
+
+<!-- ════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+
+  /* ══════════════════════════════
+     STATE
+  ══════════════════════════════ */
+  const state = {
+    scores: {
+      mcq:      { earned: 0, possible: 10, answered: 0 },
+      tf:       { earned: 0, possible: 10, answered: 0 },
+      fitb:     { earned: 0, possible: 10, answered: 0 },
+      matching: { earned: 0, possible: 10, answered: false }
+    },
+    mcqSelected:  {},  // q-id → selected letter
+    tfSelected:   {},  // id   → 'true'|'false'
+    checked: {
+      mcq: {},
+      tf: {},
+      fitb: {},
+      matching: false
+    }
+  };
+
+  /* ══════════════════════════════
+     SCROLL TO SECTION
+  ══════════════════════════════ */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ══════════════════════════════
+     PROGRESS & SCORE DISPLAY
+  ══════════════════════════════ */
+  function updateProgress() {
+    const mcqDone      = Object.keys(state.checked.mcq).length;
+    const tfDone       = Object.keys(state.checked.tf).length;
+    const fitbDone     = Object.keys(state.checked.fitb).length;
+    const matchingDone = state.checked.matching ? 1 : 0;
+    const total        = mcqDone + tfDone + fitbDone + matchingDone;
+    const maxQ         = 20; // 10 MCQ + 10 TF + 10 FITB - counted as 10 groups? 
+    // Actually let's count: 10 MCQ + 10 TF + 10 FITB + 1 matching block = 31 checkable items
+    // Let's use 31 as max
+    const maxItems     = 31;
+    const pct          = Math.min(100, Math.round((total / maxItems) * 100));
+
+    document.getElementById('progressBar').style.width    = pct + '%';
+    document.getElementById('progressLabel').textContent  =
+      `Progress: ${total} / ${maxItems} questions attempted (${pct}%)`;
+
+    // Live score
+    const earned = state.scores.mcq.earned +
+                   state.scores.tf.earned  +
+                   state.scores.fitb.earned +
+                   state.scores.matching.earned;
+    const correct  = earned;
+    const possible = state.scores.mcq.possible +
+                     state.scores.tf.possible  +
+                     state.scores.fitb.possible +
+                     state.scores.matching.possible;
+    const incorrect = (mcqDone + tfDone + fitbDone + (state.checked.matching ? 10 : 0)) - correct;
+
+    document.getElementById('liveScore').textContent     = earned;
+    document.getElementById('liveCorrect').textContent   = Math.max(0, correct);
+    document.getElementById('liveIncorrect').textContent = Math.max(0, incorrect);
+    document.getElementById('liveRemaining').textContent =
+      Math.max(0, maxItems - total);
+  }
+
+  /* ══════════════════════════════
+     MULTIPLE CHOICE
+  ══════════════════════════════ */
+  function selectMC(qId, letter, el) {
+    if (state.checked.mcq[qId]) return; // already locked
+    state.mcqSelected[qId] = letter;
+    const options = document.querySelectorAll(`#${qId}-options .mc-option`);
+    options.forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type="radio"]').checked = true;
+  }
+
+  function checkMC(qId, correctLetter, explanation) {
+    if (state.checked.mcq[qId]) return;
+    const selected = state.mcqSelected[qId];
+    const fb       = document.getElementById(`${qId}-feedback`);
+
+    if (!selected) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select an answer first.';
+      return;
+    }
+
+    const options = document.querySelectorAll(`#${qId}-options .mc-option`);
+    options.forEach(opt => {
+      const radio   = opt.querySelector('input[type="radio"]');
+      const letter  = radio.id.replace(qId, '').toUpperCase();
+      if (letter === correctLetter) opt.classList.add('correct');
+      if (letter === selected && selected !== correctLetter) opt.classList.add('incorrect');
+      opt.style.pointerEvents = 'none';
+    });
+
+    const isCorrect = selected === correctLetter;
+    if (isCorrect) {
+      state.scores.mcq.earned++;
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = '✅ Correct! ' + explanation;
+    } else {
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. The correct answer was <strong>${correctLetter}</strong>. ${explanation}`;
+    }
+
+    state.checked.mcq[qId] = true;
+    lockButtons(qId);
+    updateProgress();
+  }
+
+  function resetMC(qId) {
+    if (state.checked.mcq[qId]) return;
+    state.mcqSelected[qId] = null;
+    const options = document.querySelectorAll(`#${qId}-options .mc-option`);
+    options.forEach(opt => {
+      opt.classList.remove('selected', 'correct', 'incorrect');
+      opt.querySelector('input[type="radio"]').checked = false;
+    });
+    const fb = document.getElementById(`${qId}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     TRUE / FALSE
+  ══════════════════════════════ */
+  function selectTF(id, value, el) {
+    if (state.checked.tf[id]) return;
+    state.tfSelected[id] = value;
+    document.getElementById(`${id}-true`).classList.remove('selected');
+    document.getElementById(`${id}-false`).classList.remove('selected');
+    el.classList.add('selected');
+  }
+
+  function checkTF(id, correctValue, explanation) {
+    if (state.checked.tf[id]) return;
+    const selected = state.tfSelected[id];
+    const fb       = document.getElementById(`${id}-feedback`);
+
+    if (!selected) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select True or False first.';
+      return;
+    }
+
+    const trueBtn  = document.getElementById(`${id}-true`);
+    const falseBtn = document.getElementById(`${id}-false`);
+    trueBtn.style.pointerEvents  = 'none';
+    falseBtn.style.pointerEvents = 'none';
+
+    if (correctValue === 'true')  trueBtn.classList.add('correct');
+    else                          falseBtn.classList.add('correct');
+
+    if (selected !== correctValue) {
+      if (selected === 'true')  trueBtn.classList.add('incorrect');
+      else                      falseBtn.classList.add('incorrect');
+    }
+
+    const isCorrect = selected === correctValue;
+    if (isCorrect) {
+      state.scores.tf.earned++;
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = '✅ Correct! ' + explanation;
+    } else {
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. ${explanation}`;
+    }
+
+    state.checked.tf[id] = true;
+    lockButtons(id);
+    updateProgress();
+  }
+
+  function resetTF(id) {
+    if (state.checked.tf[id]) return;
+    state.tfSelected[id] = null;
+    document.getElementById(`${id}-true`).classList.remove('selected','correct','incorrect');
+    document.getElementById(`${id}-false`).classList.remove('selected','correct','incorrect');
+    const fb = document.getElementById(`${id}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     FILL IN THE BLANK
+  ══════════════════════════════ */
+  function checkFITB(id, acceptedAnswers) {
+    if (state.checked.fitb[id]) return;
+    const input    = document.getElementById(id);
+    const fb       = document.getElementById(`${id}-feedback`);
+    const userAns  = input.value.trim().toLowerCase();
+
+    if (!userAns) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please type an answer first.';
+      return;
+    }
+
+    const isCorrect = acceptedAnswers.some(a => a.toLowerCase() === userAns);
+    input.disabled  = true;
+
+    if (isCorrect) {
+      state.scores.fitb.earned++;
+      input.classList.add('correct');
+      fb.className = 'feedback-msg correct-fb show';
+      fb.innerHTML = `✅ Correct! <strong>"${acceptedAnswers[0]}"</strong> is the right answer.`;
+    } else {
+      input.classList.add('incorrect');
+      fb.className = 'feedback-msg incorrect-fb show';
+      fb.innerHTML = `❌ Incorrect. The correct answer is: <strong>"${acceptedAnswers[0]}"</strong>`;
+    }
+
+    state.checked.fitb[id] = true;
+    lockButtons(id);
+    updateProgress();
+  }
+
+  function resetFITB(id) {
+    if (state.checked.fitb[id]) return;
+    const input = document.getElementById(id);
+    input.value = '';
+    input.classList.remove('correct','incorrect');
+    const fb = document.getElementById(`${id}-feedback`);
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     MATCHING
+  ══════════════════════════════ */
+  const matchAnswers = {
+    match1:  'B',
+    match2:  'A',
+    match3:  'C',
+    match4:  'D',
+    match5:  'E',
+    match6:  'F',
+    match7:  'H',
+    match8:  'I',
+    match9:  'J',
+    match10: 'H'
+  };
+
+  function checkMatching() {
+    if (state.checked.matching) return;
+    let earned = 0;
+    let allAnswered = true;
+    const fb = document.getElementById('match-feedback');
+
+    for (let i = 1; i <= 10; i++) {
+      const sel = document.getElementById(`match${i}`);
+      const val = sel.value;
+      if (!val) { allAnswered = false; }
+    }
+
+    if (!allAnswered) {
+      fb.className = 'feedback-msg info-fb show';
+      fb.innerHTML = '⚠️ Please select a match for every term before checking.';
+      return;
+    }
+
+    for (let i = 1; i <= 10; i++) {
+      const sel     = document.getElementById(`match${i}`);
+      const correct = matchAnswers[`match${i}`];
+      sel.disabled  = true;
+      if (sel.value === correct) {
+        sel.classList.add('correct');
+        earned++;
+      } else {
+        sel.classList.add('incorrect');
+      }
+    }
+
+    state.scores.matching.earned = earned;
+    state.checked.matching = true;
+
+    fb.className = `feedback-msg ${earned >= 7 ? 'correct-fb' : earned >= 4 ? 'info-fb' : 'incorrect-fb'} show`;
+    fb.innerHTML = `
+      ${earned === 10 ? '🎉' : earned >= 7 ? '✅' : '❌'}
+      You scored <strong>${earned} / 10</strong> on the matching section.
+      ${earned < 10 ? ' Review the incorrect matches in the study content above.' : ' Perfect score!'}
+    `;
+
+    updateProgress();
+  }
+
+  function resetMatching() {
+    if (state.checked.matching) return;
+    for (let i = 1; i <= 10; i++) {
+      const sel = document.getElementById(`match${i}`);
+      sel.value = '';
+      sel.classList.remove('correct','incorrect');
+    }
+    const fb = document.getElementById('match-feedback');
+    fb.className = 'feedback-msg';
+    fb.innerHTML = '';
+  }
+
+  /* ══════════════════════════════
+     HINT TOGGLE
+  ══════════════════════════════ */
+  function toggleHint(id) {
+    const hint = document.getElementById(`${id}-hint`);
+    hint.classList.toggle('show');
+  }
+
+  /* ══════════════════════════════
+     LOCK BUTTONS AFTER CHECK
+  ══════════════════════════════ */
+  function lockButtons(id) {
+    const card = document.getElementById(`${id}-feedback`)?.closest('.quiz-question-card');
+    if (!card) return;
+    const checkBtn = card.querySelector('.btn-check');
+    const resetBtn = card.querySelector('.btn-reset');
+    if (checkBtn) checkBtn.disabled = true;
+    if (resetBtn) {
+      resetBtn.disabled = true;
+      resetBtn.style.opacity = '0.4';
+    }
+  }
+
+  /* ══════════════════════════════
+     SHORT ANSWER WORD COUNT
+  ══════════════════════════════ */
+  function updateSAWordCount(textareaId, counterId) {
+    const ta      = document.getElementById(textareaId);
+    const counter = document.getElementById(counterId);
+
+    if (textareaId === 'sa3') {
+      // Count lines for pseudocode
+      const lines = ta.value.split('\n').filter(l => l.trim().length > 0).length;
+      counter.textContent = lines;
+    } else {
+      const words = ta.value.trim() === ''
+        ? 0
+        : ta.value.trim().split(/\s+/).length;
+      counter.textContent = words;
+    }
+  }
+
+  /* ══════════════════════════════
+     SUBMIT QUIZ
+  ══════════════════════════════ */
+  function submitQuiz() {
+    const mcqEarned      = state.scores.mcq.earned;
+    const tfEarned       = state.scores.tf.earned;
+    const fitbEarned     = state.scores.fitb.earned;
+    const matchingEarned = state.scores.matching.earned;
+    const total          = mcqEarned + tfEarned + fitbEarned + matchingEarned;
+
+    document.getElementById('finalScore').textContent = total;
+    document.getElementById('res-a').textContent      = mcqEarned;
+    document.getElementById('res-b').textContent      = tfEarned;
+    document.getElementById('res-c').textContent      = fitbEarned;
+    document.getElementById('res-d').textContent      = matchingEarned;
+
+    let grade = '';
+    if      (total >= 36) grade = '🟢 Outstanding';
+    else if (total >= 30) grade = '🔵 Excellent';
+    else if (total >= 22) grade = '🟡 Satisfactory';
+    else if (total >= 14) grade = '🟠 Needs Improvement';
+    else                  grade = '🔴 Requires Additional Study';
+
+    document.getElementById('finalGrade').textContent = grade;
+
+    const panel = document.getElementById('resultsPanel');
+    panel.classList.add('show');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ══════════════════════════════
+     RETAKE QUIZ
+  ══════════════════════════════ */
+  function retakeQuiz() {
+    if (!confirm('Are you sure you want to retake the quiz? All your answers will be cleared.')) return;
+    location.reload();
+  }
+
+  /* ══════════════════════════════
+     INIT
+  ══════════════════════════════ */
+  updateProgress();
+
+</script>
+
+</body>
+</html>

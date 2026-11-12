@@ -1,0 +1,2983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JGrasp Interface & Usage — Study Guide & Quiz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #2d3748;
+      line-height: 1.8;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 5px 18px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .info-bar {
+      background: white;
+      border-bottom: 3px solid #e53e3e;
+      padding: 14px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      justify-content: center;
+    }
+
+    .info-bar span strong { color: #c53030; }
+
+    .notice {
+      background: #fff5f5;
+      border-left: 5px solid #e53e3e;
+      border-radius: 8px;
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      font-size: 0.93rem;
+    }
+
+    .notice .notice-title {
+      font-weight: 700;
+      color: #c53030;
+      margin-bottom: 6px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section-block {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .section-label {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+      border-radius: 10px;
+      padding: 6px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 3px solid #feb2b2;
+      margin: 12px 0 20px;
+    }
+
+    .question-group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c53030;
+      background: #fff5f5;
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      border-left: 4px solid #e53e3e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .answer-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+
+    .answer-item:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+
+    .answer-number {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .answer-content { flex: 1; font-size: 0.97rem; padding-top: 5px; }
+
+    .answer-content .answer-main {
+      font-weight: 700; color: #1a1a2e; font-size: 1rem;
+    }
+
+    .answer-content .answer-sub {
+      color: #4a5568; font-size: 0.88rem; margin-top: 4px;
+    }
+
+    .reason-tag {
+      display: inline-block;
+      background: #fefcbf; color: #744210;
+      border: 1px solid #f6e05e; border-radius: 6px;
+      padding: 2px 10px; font-size: 0.82rem; margin-top: 6px;
+    }
+
+    .marks {
+      display: inline-block;
+      background: #fef3c7; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 10px;
+      padding: 1px 10px; font-size: 0.78rem;
+      font-weight: 700; margin-left: 8px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto; margin: 16px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+
+    thead tr {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+    }
+
+    thead th { padding: 13px 18px; text-align: left; font-weight: 600; }
+
+    tbody tr:nth-child(even) { background: #fff5f5; }
+    tbody tr:hover { background: #fed7d7; }
+
+    tbody td { padding: 12px 18px; border-bottom: 1px solid #feb2b2; }
+
+    .ans-cell { font-weight: 700; color: #1a1a2e; }
+
+    .code-block {
+      background: #0d0d1a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.9;
+      margin: 14px 0;
+      overflow-x: auto;
+      position: relative;
+      border-left: 4px solid #e53e3e;
+    }
+
+    .code-block .code-label {
+      position: absolute; top: 10px; right: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 2px 10px;
+      font-size: 0.75rem; color: #fc8181;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .kw   { color: #fc8181;  font-weight: 700; }
+    .cls  { color: #fbbf24;  font-weight: 700; }
+    .str  { color: #86efac; }
+    .com  { color: #6b7280;  font-style: italic; }
+    .num  { color: #c084fc; }
+    .met  { color: #67e8f9; }
+    .typ  { color: #34d399;  font-weight: 600; }
+
+    .concept-card {
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+
+    .concept-card-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 10px;
+    }
+
+    .concept-icon { font-size: 1.6rem; }
+
+    .concept-title {
+      font-size: 1.1rem; font-weight: 700; color: #1a1a2e;
+    }
+
+    .concept-body { font-size: 0.95rem; color: #2d3748; line-height: 1.7; }
+
+    .concept-example {
+      background: white;
+      border-left: 4px solid #e53e3e;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px; margin-top: 10px;
+      font-size: 0.88rem; color: #4a5568;
+    }
+
+    .rubric-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 12px 16px; margin-top: 12px;
+      font-size: 0.88rem; color: #92400e;
+    }
+
+    .rubric-box strong { color: #78350f; }
+
+    .marking-scheme {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white; border-radius: 12px;
+      padding: 24px 28px; margin-bottom: 36px;
+    }
+
+    .marking-scheme h3 {
+      font-size: 1.2rem; margin-bottom: 14px; text-align: center;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .mark-item {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px; padding: 12px 16px; text-align: center;
+    }
+
+    .mark-item .sec { font-size: 0.82rem; opacity: 0.8; margin-bottom: 4px; }
+    .mark-item .val { font-size: 1.4rem; font-weight: 700; }
+    .mark-item .out { font-size: 0.82rem; opacity: 0.7; }
+
+    .total-bar {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 14px 20px;
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 16px;
+    }
+
+    .total-bar .t-label { font-size: 1rem; }
+
+    .total-bar .t-val {
+      font-size: 1.8rem; font-weight: 700;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 18px; border-radius: 8px;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .diff-easy {
+      background: #c6f6d5; color: #22543d;
+      border: 1px solid #9ae6b4;
+    }
+
+    .diff-medium {
+      background: #fef3c7; color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .diff-analysis {
+      background: #e9d8fd; color: #553c9a;
+      border: 1px solid #d6bcfa;
+    }
+
+    .nav-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 28px; background: white;
+      padding: 12px 16px; border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-tab {
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; border: none;
+      background: #f0f4f8; color: #4a5568;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active,
+    .nav-tab:hover {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+    }
+
+    /* ══ QUIZ STYLES ══ */
+    .quiz-progress-bar-container {
+      background: #e2e8f0; border-radius: 50px;
+      height: 10px; margin-bottom: 20px; overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      background: linear-gradient(90deg, #c53030, #e53e3e);
+      height: 100%; border-radius: 50px;
+      transition: width 0.5s ease; width: 0%;
+    }
+
+    .quiz-progress-label {
+      font-size: 0.82rem; color: #718096;
+      margin-bottom: 6px; text-align: right;
+    }
+
+    .score-tracker {
+      display: flex; gap: 16px;
+      flex-wrap: wrap; margin-bottom: 20px;
+    }
+
+    .score-box {
+      background: #fff5f5;
+      border: 2px solid #feb2b2;
+      border-radius: 10px; padding: 10px 20px;
+      text-align: center; flex: 1; min-width: 100px;
+    }
+
+    .score-box .sb-label {
+      font-size: 0.75rem; color: #718096;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .score-box .sb-val {
+      font-size: 1.6rem; font-weight: 700; color: #c53030;
+    }
+
+    .quiz-question-card {
+      background: white;
+      border: 1px solid #feb2b2;
+      border-radius: 14px; padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .quiz-q-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+
+    .quiz-q-num {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white; min-width: 40px; height: 40px;
+      border-radius: 10px; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+    }
+
+    .quiz-q-type {
+      background: #fff5f5; color: #c53030;
+      border: 1px solid #feb2b2; border-radius: 6px;
+      padding: 2px 10px; font-size: 0.78rem; font-weight: 600;
+    }
+
+    .quiz-q-text {
+      font-size: 1rem; font-weight: 600;
+      color: #1a1a2e; line-height: 1.7; margin-bottom: 16px;
+    }
+
+    .quiz-q-text code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 2px 7px; border-radius: 5px;
+      font-family: 'Courier New', monospace; font-size: 0.92rem;
+    }
+
+    .mc-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .mc-option {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; border: 2px solid #e2e8f0;
+      border-radius: 10px; cursor: pointer;
+      transition: all 0.2s; background: #f7fafc;
+    }
+
+    .mc-option:hover   { border-color: #e53e3e; background: #fff5f5; }
+    .mc-option.selected{ border-color: #c53030; background: #fff5f5; }
+    .mc-option.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .mc-option.incorrect{ border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    .mc-option input[type="radio"] {
+      accent-color: #c53030; width: 18px; height: 18px;
+      flex-shrink: 0; margin-top: 3px;
+    }
+
+    .mc-option label { cursor: pointer; font-size: 0.95rem; flex: 1; }
+
+    .mc-option label code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 1px 6px; border-radius: 4px;
+      font-family: 'Courier New', monospace; font-size: 0.88rem;
+    }
+
+    .tf-options { display: flex; gap: 12px; }
+
+    .tf-btn {
+      flex: 1; padding: 14px; border: 2px solid #e2e8f0;
+      border-radius: 10px; cursor: pointer;
+      font-size: 1rem; font-weight: 700;
+      background: #f7fafc; color: #4a5568;
+      transition: all 0.2s; text-align: center;
+    }
+
+    .tf-btn:hover    { border-color: #e53e3e; background: #fff5f5; }
+    .tf-btn.selected { border-color: #c53030; background: #fff5f5; color: #1a1a2e; }
+    .tf-btn.correct  { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .tf-btn.incorrect{ border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    .fitb-wrapper {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 8px;
+      font-size: 0.97rem; line-height: 2.6;
+    }
+
+    .fitb-wrapper code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 2px 7px; border-radius: 5px;
+      font-family: 'Courier New', monospace; font-size: 0.9rem;
+    }
+
+    .fitb-input {
+      border: 2px solid #feb2b2; border-radius: 8px;
+      padding: 6px 12px; font-size: 0.95rem;
+      font-family: 'Courier New', monospace;
+      color: #1a1a2e; min-width: 160px; outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .fitb-input:focus    { border-color: #c53030; }
+    .fitb-input.correct  { border-color: #22c55e; background: #dcfce7; }
+    .fitb-input.incorrect{ border-color: #ef4444; background: #fef2f2; }
+
+    .short-answer-textarea {
+      width: 100%; padding: 12px 16px;
+      border: 2px solid #feb2b2; border-radius: 10px;
+      font-family: inherit; font-size: 0.95rem;
+      color: #2d3748; resize: vertical; min-height: 110px;
+      outline: none; transition: border-color 0.2s; background: #f7fafc;
+    }
+
+    .short-answer-textarea:focus { border-color: #c53030; background: white; }
+
+    .match-select {
+      width: 100%; padding: 8px 12px;
+      border: 2px solid #feb2b2; border-radius: 8px;
+      font-family: inherit; font-size: 0.85rem;
+      color: #2d3748; background: white; outline: none;
+      cursor: pointer; transition: border-color 0.2s; margin-bottom: 4px;
+    }
+
+    .match-select:focus    { border-color: #c53030; }
+    .match-select.correct  { border-color: #22c55e; background: #dcfce7; }
+    .match-select.incorrect{ border-color: #ef4444; background: #fef2f2; }
+
+    .feedback-msg {
+      display: none; border-radius: 8px;
+      padding: 12px 16px; margin-top: 12px;
+      font-size: 0.9rem; font-weight: 600;
+      align-items: flex-start; gap: 8px;
+    }
+
+    .feedback-msg.show       { display: flex; }
+    .feedback-msg.correct-fb { background: #dcfce7; color: #14532d; border: 1px solid #22c55e; }
+    .feedback-msg.incorrect-fb{ background: #fef2f2; color: #991b1b; border: 1px solid #ef4444; }
+    .feedback-msg.info-fb    { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+
+    .quiz-btn-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
+    .btn-check {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white; border: none; border-radius: 10px;
+      padding: 12px 28px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-check:hover   { opacity: 0.9; transform: translateY(-1px); }
+    .btn-check:active  { transform: translateY(0); }
+    .btn-check:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-hint {
+      background: #fffbeb; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+
+    .btn-hint:hover { opacity: 0.8; }
+
+    .btn-reset {
+      background: #f7fafc; color: #4a5568;
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+
+    .btn-reset:hover { background: #edf2f7; }
+
+    .hint-box {
+      display: none; background: #fffbeb;
+      border: 1px solid #fcd34d; border-radius: 8px;
+      padding: 10px 14px; font-size: 0.85rem;
+      color: #92400e; margin-top: 10px;
+    }
+
+    .hint-box.show { display: block; }
+
+    .quiz-results-panel {
+      display: none;
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white; border-radius: 16px;
+      padding: 36px; margin-top: 28px; text-align: center;
+    }
+
+    .quiz-results-panel.show { display: block; }
+    .results-score { font-size: 4rem; font-weight: 700; margin: 16px 0; }
+    .results-label { font-size: 1rem; opacity: 0.8; }
+
+    .results-grade {
+      font-size: 1.4rem; font-weight: 700; margin: 10px 0;
+      background: rgba(255,255,255,0.15);
+      display: inline-block; padding: 6px 24px; border-radius: 10px;
+    }
+
+    .btn-submit-all {
+      background: white; color: #1a1a2e; border: none;
+      border-radius: 12px; padding: 16px 40px;
+      font-size: 1.05rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 20px; display: block; width: 100%;
+    }
+
+    .btn-submit-all:hover { background: #fed7d7; }
+
+    .btn-retake {
+      background: rgba(255,255,255,0.12); color: white;
+      border: 2px solid rgba(255,255,255,0.35); border-radius: 12px;
+      padding: 14px 36px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 14px; display: block; width: 100%;
+    }
+
+    .btn-retake:hover { background: rgba(255,255,255,0.22); }
+
+    .step-list {
+      list-style: none;
+      counter-reset: step-counter;
+      margin: 14px 0;
+    }
+
+    .step-list li {
+      counter-increment: step-counter;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #fed7d7;
+      font-size: 0.95rem;
+    }
+
+    .step-list li:last-child { border-bottom: none; }
+
+    .step-list li::before {
+      content: counter(step-counter);
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white;
+      min-width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    footer {
+      text-align: center; padding: 30px 20px;
+      color: #718096; font-size: 0.88rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .section-block { padding: 20px; }
+      .results-score { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="badge">🖥️ BEGINNER — JGRASP INTERFACE & USAGE GUIDE</div>
+  <h1>JGrasp — Interface & Usage</h1>
+  <p>
+    Getting Started · The Editor · Toolbars · Running Programs ·
+    Compiling · The I/O Window · File Management · Interactive Quiz
+  </p>
+</div>
+
+<!-- ══ INFO BAR ══ -->
+<div class="info-bar">
+  <span>📋 <strong>Level:</strong> Beginner–Intermediate</span>
+  <span>🛠️ <strong>IDE:</strong> JGrasp</span>
+  <span>⭐ <strong>Quiz Marks:</strong> 50</span>
+  <span>🎯 <strong>Focus:</strong> JGrasp interface, navigation & practical usage</span>
+</div>
+
+<div class="container">
+
+  <!-- ══ NOTICE ══ -->
+  <div class="notice">
+    <div class="notice-title">📌 Beginner-Friendly — No Prior Java Required</div>
+    This guide focuses entirely on the <strong>JGrasp Integrated Development
+    Environment (IDE)</strong> — its interface, panels, menus, toolbars, and
+    practical usage for writing, compiling, and running Java programs.
+    Understanding the IDE thoroughly is the essential first step before
+    writing any code.
+  </div>
+
+  <!-- ══ NAV TABS ══ -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollToSection('overview')">🖥️ Overview</button>
+    <button class="nav-tab" onclick="scrollToSection('interface')">🗂️ Interface</button>
+    <button class="nav-tab" onclick="scrollToSection('editor')">✏️ Editor</button>
+    <button class="nav-tab" onclick="scrollToSection('toolbar')">🔧 Toolbar</button>
+    <button class="nav-tab" onclick="scrollToSection('compile-run')">▶️ Compile & Run</button>
+    <button class="nav-tab" onclick="scrollToSection('files')">📁 File Management</button>
+    <button class="nav-tab" onclick="scrollToSection('settings')">⚙️ Settings</button>
+    <button class="nav-tab" onclick="scrollToSection('quiz')">🎯 Quiz</button>
+  </div>
+
+  <!-- ══ MARK ALLOCATION ══ -->
+  <div class="marking-scheme">
+    <h3>📊 Quiz Mark Allocation</h3>
+    <div class="mark-grid">
+      <div class="mark-item">
+        <div class="sec">Section A</div>
+        <div class="val">12</div>
+        <div class="out">MCQ</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section B</div>
+        <div class="val">10</div>
+        <div class="out">True / False</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section C</div>
+        <div class="val">10</div>
+        <div class="out">Fill in the Blank</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section D</div>
+        <div class="val">8</div>
+        <div class="out">Matching</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section E</div>
+        <div class="val">10</div>
+        <div class="out">Short Answer</div>
+      </div>
+    </div>
+    <div class="total-bar">
+      <div class="t-label">TOTAL</div>
+      <div class="t-val">50 marks</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 1 — OVERVIEW ══ -->
+  <div class="section-block" id="overview">
+    <div class="section-header">
+      <div class="section-label">Section 1</div>
+      <div class="section-title">🖥️ What is JGrasp?</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🖥️</span>
+        <span class="concept-title">JGrasp — A Lightweight Java IDE</span>
+      </div>
+      <div class="concept-body">
+        <strong>JGrasp</strong> (Java Graphical Representation of Algorithms,
+        Structures and Processes) is a lightweight
+        <strong>Integrated Development Environment (IDE)</strong> developed at
+        Auburn University. It is designed specifically for
+        <strong>teaching and learning programming</strong>, particularly Java.
+        JGrasp combines a source code editor, compiler, debugger, and unique
+        visualisation tools — all in one application — making it ideal for
+        beginners learning Java for the first time.
+      </div>
+      <div class="concept-example">
+        💡 Key distinction: JGrasp is <strong>not</strong> a word processor —
+        it is a specialised tool for writing, compiling, debugging, and running
+        Java programs. Every panel and button has a specific programming purpose.
+      </div>
+    </div>
+
+    <div class="question-group-title">📌 Core Purposes of JGrasp</div>
+
+    <div class="answer-item">
+      <div class="answer-number">①</div>
+      <div class="answer-content">
+        <div class="answer-main">Write Java source code</div>
+        <div class="answer-sub">
+          JGrasp provides a full-featured code editor with syntax highlighting,
+          automatic indentation, and line numbering — making Java code easier
+          to read and write correctly.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">②</div>
+      <div class="answer-content">
+        <div class="answer-main">Compile Java programs</div>
+        <div class="answer-sub">
+          JGrasp uses the <strong>Java compiler (javac)</strong> to translate your
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.java</code>
+          source file into a
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.class</code>
+          bytecode file. Compilation errors (syntax mistakes) are reported in
+          the compiler messages panel.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">③</div>
+      <div class="answer-content">
+        <div class="answer-main">Run Java programs</div>
+        <div class="answer-sub">
+          After successful compilation, JGrasp launches the
+          <strong>Java Virtual Machine (JVM)</strong> to execute your program.
+          All output (from <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println</code>)
+          and keyboard input (from <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">Scanner</code>)
+          appears in the <strong>I/O Window</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">④</div>
+      <div class="answer-content">
+        <div class="answer-main">Debug and visualise programs</div>
+        <div class="answer-sub">
+          JGrasp includes a built-in <strong>debugger</strong> and unique
+          visualisation tools such as the
+          <strong>Control Structure Diagram (CSD)</strong> and
+          <strong>Object Viewer</strong> to help learners understand how their
+          code works step by step.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2 — INTERFACE ══ -->
+  <div class="section-block" id="interface">
+    <div class="section-header">
+      <div class="section-label">Section 2</div>
+      <div class="section-title">🗂️ The JGrasp Interface — Panels & Layout</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Main Window Layout</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🗂️</span>
+        <span class="concept-title">Understanding the JGrasp Window</span>
+      </div>
+      <div class="concept-body">
+        When you open JGrasp, the main window is divided into several key areas.
+        Understanding what each area does is essential before you start coding.
+        The interface is designed so that everything you need — writing, compiling,
+        running, and debugging — is available without switching between separate applications.
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Panel / Area</th><th>Location</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Menu Bar</strong></td>
+            <td>Very top of the window</td>
+            <td class="ans-cell">Contains all menus: File, Edit, Build, Run, Debug, Tools, Help</td>
+          </tr>
+          <tr>
+            <td><strong>Toolbar</strong></td>
+            <td>Below the menu bar</td>
+            <td class="ans-cell">Quick-access buttons for common actions: New, Open, Save, Compile, Run, Debug</td>
+          </tr>
+          <tr>
+            <td><strong>CSD Panel</strong></td>
+            <td>Left margin of the editor</td>
+            <td class="ans-cell">Displays the Control Structure Diagram — visual shapes showing loops and if-blocks</td>
+          </tr>
+          <tr>
+            <td><strong>Source Editor</strong></td>
+            <td>Centre / main area</td>
+            <td class="ans-cell">Where you type your Java code — the primary working area</td>
+          </tr>
+          <tr>
+            <td><strong>I/O Window</strong></td>
+            <td>Bottom panel</td>
+            <td class="ans-cell">Displays program output and accepts keyboard input at runtime</td>
+          </tr>
+          <tr>
+            <td><strong>Compiler Messages</strong></td>
+            <td>Bottom panel (tab)</td>
+            <td class="ans-cell">Shows errors and warnings when compilation fails — with line numbers</td>
+          </tr>
+          <tr>
+            <td><strong>Project Manager</strong></td>
+            <td>Left panel</td>
+            <td class="ans-cell">Shows all open files and project structure; allows switching between files</td>
+          </tr>
+          <tr>
+            <td><strong>Debug Tab</strong></td>
+            <td>Bottom panel (tab)</td>
+            <td class="ans-cell">Shows variable values and the call stack when the debugger is active</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box" style="margin-top:14px;">
+      <strong>📌 Key Point:</strong> JGrasp opens with the editor in the centre.
+      The bottom panel switches between tabs — you will see <strong>Compiler
+      Messages</strong> when you compile, and the <strong>I/O Window</strong>
+      when you run your program. Both tabs are at the bottom of the same panel.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3 — EDITOR ══ -->
+  <div class="section-block" id="editor">
+    <div class="section-header">
+      <div class="section-label">Section 3</div>
+      <div class="section-title">✏️ The Source Code Editor</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Editor Features</div>
+
+    <div class="answer-item">
+      <div class="answer-number">①</div>
+      <div class="answer-content">
+        <div class="answer-main">Syntax Highlighting</div>
+        <div class="answer-sub">
+          JGrasp automatically colours different parts of your Java code to make
+          it easier to read. <strong>Keywords</strong> (like
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">public</code>,
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">class</code>,
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">if</code>)
+          appear in one colour, <strong>String literals</strong> in another,
+          and <strong>comments</strong> in another. This is called
+          <strong>syntax highlighting</strong>.
+        </div>
+        <span class="reason-tag">💡 Syntax highlighting is visual only — it does not affect how the code runs.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">②</div>
+      <div class="answer-content">
+        <div class="answer-main">Line Numbers</div>
+        <div class="answer-sub">
+          Line numbers are displayed in the left margin of the editor.
+          They are essential for finding errors — when the compiler reports
+          "error on line 7", you can immediately jump to that line.
+          Line numbers are <strong>not</strong> part of your code.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">③</div>
+      <div class="answer-content">
+        <div class="answer-main">Automatic Indentation</div>
+        <div class="answer-sub">
+          JGrasp automatically indents new lines inside
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">{ }</code>
+          blocks. Pressing Enter after an opening brace
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">{</code>
+          will indent the cursor to the correct level. Proper indentation
+          makes code significantly easier to read and debug.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">④</div>
+      <div class="answer-content">
+        <div class="answer-main">Control Structure Diagram (CSD)</div>
+        <div class="answer-sub">
+          The CSD is drawn automatically in the left margin alongside your code.
+          It draws <strong>bracket-like shapes</strong> around
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">if</code>
+          blocks, <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">for</code>
+          loops, <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">while</code>
+          loops, and method bodies — making the structure of your program
+          immediately visible without running it.
+        </div>
+        <span class="reason-tag">💡 The CSD is one of JGrasp's unique distinguishing features not found in most other IDEs.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">⑤</div>
+      <div class="answer-content">
+        <div class="answer-main">Find & Replace</div>
+        <div class="answer-sub">
+          Access via <em>Edit → Find/Replace</em> or
+          <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:0.85rem;">Ctrl + H</kbd>.
+          Allows you to search for any text in your file and optionally
+          replace it with different text — useful when renaming variables
+          throughout a large program.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">⑥</div>
+      <div class="answer-content">
+        <div class="answer-main">Undo / Redo</div>
+        <div class="answer-sub">
+          <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:0.85rem;">Ctrl + Z</kbd>
+          undoes your last action.
+          <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:0.85rem;">Ctrl + Y</kbd>
+          redoes it. JGrasp keeps a full history of changes so you can
+          safely experiment and undo mistakes.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 4 — TOOLBAR ══ -->
+  <div class="section-block" id="toolbar">
+    <div class="section-header">
+      <div class="section-label">Section 4</div>
+      <div class="section-title">🔧 The Toolbar — Quick Reference</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Toolbar Buttons — What Each One Does</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Button / Icon</th><th>Name</th><th>What It Does</th><th>Menu Equivalent</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>📄</td>
+            <td><strong>New</strong></td>
+            <td class="ans-cell">Creates a new, blank Java source file</td>
+            <td>File → New</td>
+          </tr>
+          <tr>
+            <td>📂</td>
+            <td><strong>Open</strong></td>
+            <td class="ans-cell">Opens an existing <code style="font-family:monospace;">.java</code> file from your computer</td>
+            <td>File → Open</td>
+          </tr>
+          <tr>
+            <td>💾</td>
+            <td><strong>Save</strong></td>
+            <td class="ans-cell">Saves the current file — <strong>must save before compiling</strong></td>
+            <td>File → Save</td>
+          </tr>
+          <tr>
+            <td>🔨</td>
+            <td><strong>Compile</strong></td>
+            <td class="ans-cell">Runs <code style="font-family:monospace;">javac</code> on the current file to check for syntax errors</td>
+            <td>Build → Compile</td>
+          </tr>
+          <tr>
+            <td>▶️</td>
+            <td><strong>Run</strong></td>
+            <td class="ans-cell">Executes the compiled program using the JVM</td>
+            <td>Build → Run</td>
+          </tr>
+          <tr>
+            <td>🔨▶️</td>
+            <td><strong>Compile & Run</strong></td>
+            <td class="ans-cell">Compiles then immediately runs — only if compilation succeeds</td>
+            <td>Build → Compile and Run</td>
+          </tr>
+          <tr>
+            <td>🐛</td>
+            <td><strong>Debug</strong></td>
+            <td class="ans-cell">Starts the program in debug mode — pauses at breakpoints</td>
+            <td>Debug → Debug</td>
+          </tr>
+          <tr>
+            <td>■</td>
+            <td><strong>Stop</strong></td>
+            <td class="ans-cell">Terminates a running or stuck (infinite loop) program immediately</td>
+            <td>Build → Stop</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box" style="margin-top:14px;">
+      <strong>⚠️ Important Order:</strong> You must always
+      <strong>Save → Compile → Run</strong> in that order.
+      If you run without saving first, you will be running an
+      <em>older version</em> of your code. If you run without compiling first,
+      the old <code>.class</code> file (or no file) will execute — not your
+      latest changes.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 5 — COMPILE & RUN ══ -->
+  <div class="section-block" id="compile-run">
+    <div class="section-header">
+      <div class="section-label">Section 5</div>
+      <div class="section-title">▶️ Compiling & Running a Java Program in JGrasp</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Step-by-Step: Your First Program in JGrasp</div>
+
+    <ul class="step-list">
+      <li>Open JGrasp. Go to <em>File → New</em> to create a new file.</li>
+      <li>Type your Java code in the editor. The filename <strong>must match</strong> the class name exactly (e.g., <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">HelloWorld.java</code> for a class named <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">HelloWorld</code>).</li>
+      <li>Go to <em>File → Save</em> (or press <kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;">Ctrl+S</kbd>) to save the file.</li>
+      <li>Click the <strong>Compile</strong> button (🔨) or press <em>Build → Compile</em>. Watch the Compiler Messages panel at the bottom.</li>
+      <li>If there are <strong>no errors</strong>, the message "Compilation Successful" (or similar) appears. If there are errors, they are listed with line numbers — fix them and recompile.</li>
+      <li>Click the <strong>Run</strong> button (▶️) or press <em>Build → Run</em>. The I/O Window opens and your program's output appears.</li>
+      <li>If your program uses <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">Scanner</code> for input, type in the I/O Window and press Enter when prompted.</li>
+    </ul>
+
+    <div class="code-block" style="margin-top:14px;">
+      <span class="code-label">HelloWorld.java</span>
+<span class="kw">public class</span> <span class="cls">HelloWorld</span> {
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Hello, JGrasp!"</span>);
+    }
+}
+<span class="com">// After compiling and running, the I/O Window displays:
+// Hello, JGrasp!</span>
+    </div>
+
+    <div class="question-group-title" style="margin-top:20px;">📌 Understanding Compiler Messages</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Message Type</th><th>What it Means</th><th>What to Do</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#16a34a;">Compilation Successful</strong></td>
+            <td class="ans-cell">No syntax errors found — a <code style="font-family:monospace;">.class</code> file was created</td>
+            <td>Click Run to execute your program</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#dc2626;">error: ';' expected</strong></td>
+            <td class="ans-cell">A semicolon is missing at the end of a statement</td>
+            <td>Go to the reported line number and add the semicolon</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#dc2626;">error: cannot find symbol</strong></td>
+            <td class="ans-cell">A variable or method name is misspelled or not declared</td>
+            <td>Check spelling and ensure the variable has been declared</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#dc2626;">class HelloWorld is public, should be in a file named HelloWorld.java</strong></td>
+            <td class="ans-cell">The filename does not match the class name</td>
+            <td>Rename the file to exactly match the class name (case-sensitive)</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#d97706;">warning</strong></td>
+            <td class="ans-cell">The code will still compile but may have potential issues</td>
+            <td>Review the warning — it may indicate a potential bug</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 6 — FILE MANAGEMENT ══ -->
+  <div class="section-block" id="files">
+    <div class="section-header">
+      <div class="section-label">Section 6</div>
+      <div class="section-title">📁 File Management in JGrasp</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Working with Java Files</div>
+
+    <div class="answer-item">
+      <div class="answer-number">①</div>
+      <div class="answer-content">
+        <div class="answer-main">File Extensions — .java vs .class</div>
+        <div class="answer-sub">
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.java</code>
+          — The <strong>source file</strong> you write and edit. This is human-readable Java code.<br>
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.class</code>
+          — The <strong>compiled bytecode</strong> file created by <code>javac</code>.
+          This is what the JVM actually runs. You never edit this file directly.
+        </div>
+        <span class="reason-tag">💡 You write .java files. JGrasp creates .class files automatically when you compile.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">②</div>
+      <div class="answer-content">
+        <div class="answer-main">Naming Rules — Critical!</div>
+        <div class="answer-sub">
+          The filename <strong>must exactly match</strong> the public class name inside the file,
+          including capitalisation. Java is <strong>case-sensitive</strong>.<br><br>
+          ✅ Class named <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">StudentGrades</code>
+          → File must be saved as
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">StudentGrades.java</code><br>
+          ❌ <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">studentgrades.java</code> or
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">Student_Grades.java</code>
+          will cause a compiler error.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">③</div>
+      <div class="answer-content">
+        <div class="answer-main">Opening Existing Files</div>
+        <div class="answer-sub">
+          Use <em>File → Open</em> to navigate to an existing
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.java</code>
+          file on your computer and open it in the editor.
+          JGrasp can have multiple files open simultaneously — each appears
+          as a tab in the editor or in the Project Manager panel.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">④</div>
+      <div class="answer-content">
+        <div class="answer-main">Saving Files</div>
+        <div class="answer-sub">
+          Always save using <em>File → Save</em> or
+          <kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;">Ctrl+S</kbd>
+          <strong>before compiling</strong>. JGrasp may show an asterisk (*)
+          in the title bar to indicate unsaved changes. Compiling an unsaved
+          file will compile the previously saved version, not your latest edits.
+        </div>
+        <span class="reason-tag">⚠️ Unsaved changes = the compiler does not see your latest code!</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">⑤</div>
+      <div class="answer-content">
+        <div class="answer-main">Print & Export</div>
+        <div class="answer-sub">
+          Use <em>File → Print</em> to print your source code with syntax
+          highlighting preserved. JGrasp also supports printing the CSD diagram
+          alongside your code — useful for submitting assignments that require
+          a visual structure diagram.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 7 — SETTINGS ══ -->
+  <div class="section-block" id="settings">
+    <div class="section-header">
+      <div class="section-label">Section 7</div>
+      <div class="section-title">⚙️ JGrasp Settings & Customisation</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Useful Settings for Beginners</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Setting</th><th>Where to Find It</th><th>What It Controls</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Font Size</strong></td>
+            <td>Settings → Editor → Font</td>
+            <td class="ans-cell">Increases or decreases the text size in the editor — useful for readability</td>
+          </tr>
+          <tr>
+            <td><strong>Tab Width</strong></td>
+            <td>Settings → Editor → Indent</td>
+            <td class="ans-cell">Sets how many spaces a Tab keypress inserts (typically 4 spaces)</td>
+          </tr>
+          <tr>
+            <td><strong>Compiler Settings</strong></td>
+            <td>Settings → Compiler Settings</td>
+            <td class="ans-cell">Configure which Java compiler is used and set compiler flags (e.g., -g for debug info)</td>
+          </tr>
+          <tr>
+            <td><strong>Look & Feel</strong></td>
+            <td>Settings → Look &amp; Feel</td>
+            <td class="ans-cell">Changes the visual theme of the JGrasp interface (e.g., dark or light mode)</td>
+          </tr>
+          <tr>
+            <td><strong>CSD On/Off</strong></td>
+            <td>View → CSD</td>
+            <td class="ans-cell">Toggles the Control Structure Diagram on or off in the editor margin</td>
+          </tr>
+          <tr>
+            <td><strong>Line Numbers</strong></td>
+            <td>View → Line Numbers</td>
+            <td class="ans-cell">Toggles the display of line numbers in the editor gutter</td>
+          </tr>
+          <tr>
+            <td><strong>Auto Indent</strong></td>
+            <td>Settings → Editor</td>
+            <td class="ans-cell">Enables or disables automatic indentation when pressing Enter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box" style="margin-top:14px;">
+      <strong>📌 Recommended for Beginners:</strong> Keep the default settings when
+      starting out. The default font size, tab width (4 spaces), CSD visible,
+      and line numbers visible are all ideal for learning. Only adjust settings
+      if something is visually uncomfortable.
+    </div>
+  </div>
+
+  <!-- ══ QUIZ ══ -->
+  <div class="section-block" id="quiz">
+    <div class="section-header">
+      <div class="section-label">Quiz</div>
+      <div class="section-title">🎯 JGrasp Interface & Usage — Interactive Quiz</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="quiz-progress-label" id="progressLabel">Progress: 0 / 30 attempted (0%)</div>
+    <div class="quiz-progress-bar-container">
+      <div class="quiz-progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="score-tracker">
+      <div class="score-box">
+        <div class="sb-label">Score</div>
+        <div class="sb-val" id="liveScore">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Correct</div>
+        <div class="sb-val" id="liveCorrect" style="color:#16a34a;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Incorrect</div>
+        <div class="sb-val" id="liveIncorrect" style="color:#dc2626;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Remaining</div>
+        <div class="sb-val" id="liveRemaining">30</div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION A: Multiple Choice (12 marks) ══ -->
+    <div class="question-group-title" style="margin-top:20px;">
+      📝 Section A — Multiple Choice
+      <span class="marks">1 mark each = 12 marks</span>
+      <span class="difficulty-badge diff-easy">Beginner</span>
+    </div>
+
+    <!-- A1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A1</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What does the acronym <strong>JGrasp</strong> stand for?
+      </div>
+      <div class="mc-options" id="q1-options">
+        <div class="mc-option" onclick="selectMC('q1','A',this)">
+          <input type="radio" name="q1" id="q1a">
+          <label for="q1a">A) Java Graphical Representation of Algorithms, Structures and Processes</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','B',this)">
+          <input type="radio" name="q1" id="q1b">
+          <label for="q1b">B) Java General Runtime and Scripting Platform</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','C',this)">
+          <input type="radio" name="q1" id="q1c">
+          <label for="q1c">C) Java Graphical Resource and Syntax Processor</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','D',this)">
+          <input type="radio" name="q1" id="q1d">
+          <label for="q1d">D) Java Grading, Running and Structured Programming</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q1-feedback"></div>
+      <div class="hint-box" id="q1-hint">💡 Hint: JGrasp was developed at Auburn University and its name describes what it does — it visualises the structure and flow of programs.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q1','A','JGrasp stands for Java Graphical Representation of Algorithms, Structures and Processes — reflecting its unique ability to generate visual diagrams of code structure alongside the editor.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A2</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Where does a running Java program display its output in JGrasp?
+      </div>
+      <div class="mc-options" id="q2-options">
+        <div class="mc-option" onclick="selectMC('q2','A',this)">
+          <input type="radio" name="q2" id="q2a">
+          <label for="q2a">A) In the source code editor</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','B',this)">
+          <input type="radio" name="q2" id="q2b">
+          <label for="q2b">B) In the I/O Window at the bottom of the screen</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','C',this)">
+          <input type="radio" name="q2" id="q2c">
+          <label for="q2c">C) In the Compiler Messages panel</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','D',this)">
+          <input type="radio" name="q2" id="q2d">
+          <label for="q2d">D) In a separate browser window</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q2-feedback"></div>
+      <div class="hint-box" id="q2-hint">💡 Hint: This panel also accepts keyboard input when your program uses Scanner.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q2','B','The I/O (Input/Output) Window at the bottom of the JGrasp interface displays all System.out output and also accepts Scanner keyboard input when the program is running.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A3</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the correct order of steps to successfully run a Java program in JGrasp?
+      </div>
+      <div class="mc-options" id="q3-options">
+        <div class="mc-option" onclick="selectMC('q3','A',this)">
+          <input type="radio" name="q3" id="q3a">
+          <label for="q3a">A) Compile → Save → Run</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','B',this)">
+          <input type="radio" name="q3" id="q3b">
+          <label for="q3b">B) Run → Compile → Save</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','C',this)">
+          <input type="radio" name="q3" id="q3c">
+          <label for="q3c">C) Save → Compile → Run</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','D',this)">
+          <input type="radio" name="q3" id="q3d">
+          <label for="q3d">D) Save → Run → Compile</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q3-feedback"></div>
+      <div class="hint-box" id="q3-hint">💡 Hint: You cannot run code that has not been compiled. You cannot compile code that has not been saved.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q3','C','The correct order is Save → Compile → Run. You must save first so the compiler reads your latest changes. Then compile to check for syntax errors and create the .class file. Only then can you run the program.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A4</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A learner creates a class named <code>StudentRecord</code>.
+        What must the Java file be saved as?
+      </div>
+      <div class="mc-options" id="q4-options">
+        <div class="mc-option" onclick="selectMC('q4','A',this)">
+          <input type="radio" name="q4" id="q4a">
+          <label for="q4a">A) <code>studentrecord.java</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','B',this)">
+          <input type="radio" name="q4" id="q4b">
+          <label for="q4b">B) <code>StudentRecord.java</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','C',this)">
+          <input type="radio" name="q4" id="q4c">
+          <label for="q4c">C) <code>Student_Record.java</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','D',this)">
+          <input type="radio" name="q4" id="q4d">
+          <label for="q4d">D) Any filename ending in <code>.java</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q4-feedback"></div>
+      <div class="hint-box" id="q4-hint">💡 Hint: Java is case-sensitive. The filename must exactly match the public class name.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q4','B','The file must be saved as StudentRecord.java — exactly matching the class name including capitalisation. Java is case-sensitive, so studentrecord.java or Student_Record.java would both cause a compiler error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A5</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What does the <strong>Compiler Messages</strong> panel display when there are
+        no errors in your code?
+      </div>
+      <div class="mc-options" id="q5-options">
+        <div class="mc-option" onclick="selectMC('q5','A',this)">
+          <input type="radio" name="q5" id="q5a">
+          <label for="q5a">A) It displays the program's output</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','B',this)">
+          <input type="radio" name="q5" id="q5b">
+          <label for="q5b">B) A success message indicating compilation was successful</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','C',this)">
+          <input type="radio" name="q5" id="q5c">
+          <label for="q5c">C) A list of all variables in your program</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','D',this)">
+          <input type="radio" name="q5" id="q5d">
+          <label for="q5d">D) It remains empty and shows nothing</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q5-feedback"></div>
+      <div class="hint-box" id="q5-hint">💡 Hint: Successful compilation means javac found no syntax errors and created a .class file.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q5','B','When compilation is successful, the Compiler Messages panel displays a success message (such as &quot;Compilation Successful&quot;). This confirms that a .class file has been created and the program is ready to run.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A6</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which JGrasp toolbar button should you press to immediately stop a
+        program that is stuck in an infinite loop?
+      </div>
+      <div class="mc-options" id="q6-options">
+        <div class="mc-option" onclick="selectMC('q6','A',this)">
+          <input type="radio" name="q6" id="q6a">
+          <label for="q6a">A) The Compile button</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','B',this)">
+          <input type="radio" name="q6" id="q6b">
+          <label for="q6b">B) The Stop button (■)</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','C',this)">
+          <input type="radio" name="q6" id="q6c">
+          <label for="q6c">C) The Save button</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','D',this)">
+          <input type="radio" name="q6" id="q6d">
+          <label for="q6d">D) The Debug button</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q6-feedback"></div>
+      <div class="hint-box" id="q6-hint">💡 Hint: This button is represented by a solid square (■) symbol — universally recognised as the "stop" symbol.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q6','B','The Stop button (■) immediately terminates any running program, including one stuck in an infinite loop. JGrasp will appear to freeze or hang when a program loops forever — pressing Stop forces the JVM to shut down.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A7</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What file extension does the Java <strong>compiler</strong> produce
+        after successfully compiling a <code>.java</code> source file?
+      </div>
+      <div class="mc-options" id="q7-options">
+        <div class="mc-option" onclick="selectMC('q7','A',this)">
+          <input type="radio" name="q7" id="q7a">
+          <label for="q7a">A) <code>.exe</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','B',this)">
+          <input type="radio" name="q7" id="q7b">
+          <label for="q7b">B) <code>.jar</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','C',this)">
+          <input type="radio" name="q7" id="q7c">
+          <label for="q7c">C) <code>.class</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','D',this)">
+          <input type="radio" name="q7" id="q7d">
+          <label for="q7d">D) <code>.bin</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q7-feedback"></div>
+      <div class="hint-box" id="q7-hint">💡 Hint: This file contains Java bytecode — it is executed by the Java Virtual Machine (JVM).</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q7','C','The Java compiler (javac) produces a .class file containing bytecode. This bytecode is platform-independent and is executed by the JVM. You never need to edit .class files directly.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A8</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which panel in JGrasp displays the unique visual shapes around
+        loops and if-blocks alongside your source code?
+      </div>
+      <div class="mc-options" id="q8-options">
+        <div class="mc-option" onclick="selectMC('q8','A',this)">
+          <input type="radio" name="q8" id="q8a">
+          <label for="q8a">A) The Debug Tab</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','B',this)">
+          <input type="radio" name="q8" id="q8b">
+          <label for="q8b">B) The Project Manager</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','C',this)">
+          <input type="radio" name="q8" id="q8c">
+          <label for="q8c">C) The CSD Panel</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','D',this)">
+          <input type="radio" name="q8" id="q8d">
+          <label for="q8d">D) The I/O Window</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q8-feedback"></div>
+      <div class="hint-box" id="q8-hint">💡 Hint: CSD stands for Control Structure Diagram — it appears in the left margin of the editor.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q8','C','The CSD (Control Structure Diagram) Panel is displayed in the left margin of the editor. It automatically draws bracket-like shapes around control structures such as if-blocks, for loops, while loops, and method bodies.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A9</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A learner notices an asterisk (*) in the JGrasp title bar next to
+        the filename. What does this indicate?
+      </div>
+      <div class="mc-options" id="q9-options">
+        <div class="mc-option" onclick="selectMC('q9','A',this)">
+          <input type="radio" name="q9" id="q9a">
+          <label for="q9a">A) The program has compiled successfully</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','B',this)">
+          <input type="radio" name="q9" id="q9b">
+          <label for="q9b">B) The file has unsaved changes</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','C',this)">
+          <input type="radio" name="q9" id="q9c">
+          <label for="q9c">C) The file contains a syntax error</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','D',this)">
+          <input type="radio" name="q9" id="q9d">
+          <label for="q9d">D) The program is currently running</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q9-feedback"></div>
+      <div class="hint-box" id="q9-hint">💡 Hint: Many text editors and IDEs use this symbol to warn you that your work has not been saved yet.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q9','B','An asterisk (*) in the title bar indicates the file has unsaved changes. You should press Ctrl+S or use File → Save before compiling to ensure the compiler processes your latest code.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A10</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which menu in JGrasp contains the options to
+        <strong>Compile</strong> and <strong>Run</strong> your program?
+      </div>
+      <div class="mc-options" id="q10-options">
+        <div class="mc-option" onclick="selectMC('q10','A',this)">
+          <input type="radio" name="q10" id="q10a">
+          <label for="q10a">A) File</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','B',this)">
+          <input type="radio" name="q10" id="q10b">
+          <label for="q10b">B) Edit</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','C',this)">
+          <input type="radio" name="q10" id="q10c">
+          <label for="q10c">C) Build</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','D',this)">
+          <input type="radio" name="q10" id="q10d">
+          <label for="q10d">D) Tools</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q10-feedback"></div>
+      <div class="hint-box" id="q10-hint">💡 Hint: Think about what "building" a program means — it includes compiling and running it.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q10','C','The Build menu contains Compile, Run, Compile and Run, and Stop options. The File menu handles file operations, Edit handles text editing, and Tools contains utilities like Javadoc generation.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A11 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A11</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the purpose of <strong>syntax highlighting</strong> in
+        the JGrasp editor?
+      </div>
+      <div class="mc-options" id="q11-options">
+        <div class="mc-option" onclick="selectMC('q11','A',this)">
+          <input type="radio" name="q11" id="q11a">
+          <label for="q11a">A) It automatically fixes syntax errors in your code</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','B',this)">
+          <input type="radio" name="q11" id="q11b">
+          <label for="q11b">B) It colours different parts of the code to make it easier to read</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','C',this)">
+          <input type="radio" name="q11" id="q11c">
+          <label for="q11c">C) It checks your code against a style guide automatically</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','D',this)">
+          <input type="radio" name="q11" id="q11d">
+          <label for="q11d">D) It highlights lines that contain runtime errors</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q11-feedback"></div>
+      <div class="hint-box" id="q11-hint">💡 Hint: Syntax highlighting is a visual aid only — it does not change how your code runs.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q11','B','Syntax highlighting colours different elements of code — keywords appear in one colour, strings in another, comments in another — making the code significantly easier to read and spot mistakes visually. It is purely cosmetic and does not affect compilation or execution.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q11')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q11')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A12 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A12</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Which keyboard shortcut is used to <strong>save</strong> a file in JGrasp?
+      </div>
+      <div class="mc-options" id="q12-options">
+        <div class="mc-option" onclick="selectMC('q12','A',this)">
+          <input type="radio" name="q12" id="q12a">
+          <label for="q12a">A) Ctrl + C</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','B',this)">
+          <input type="radio" name="q12" id="q12b">
+          <label for="q12b">B) Ctrl + Z</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','C',this)">
+          <input type="radio" name="q12" id="q12c">
+          <label for="q12c">C) Ctrl + S</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','D',this)">
+          <input type="radio" name="q12" id="q12d">
+          <label for="q12d">D) Ctrl + R</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q12-feedback"></div>
+      <div class="hint-box" id="q12-hint">💡 Hint: This is the standard save shortcut used in almost every Windows and Linux application.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q12','C','Ctrl + S saves the current file in JGrasp (and most other applications). Ctrl + C is copy, Ctrl + Z is undo, and Ctrl + R is not a standard JGrasp shortcut.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q12')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q12')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION B: True or False (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✅ Section B — True or False
+      <span class="marks">1 mark each = 10 marks</span>
+      <span class="difficulty-badge diff-medium">Analysis Required</span>
+    </div>
+
+    <!-- B1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B1</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        JGrasp can only be used to write and run Java programs — it cannot
+        be used for any other programming language.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf1-true" onclick="selectTF('tf1','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf1-false" onclick="selectTF('tf1','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf1-feedback"></div>
+      <div class="hint-box" id="tf1-hint">💡 Hint: JGrasp was designed primarily for Java but think about whether it supports other languages too.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf1','false','FALSE — While JGrasp is primarily designed for Java, it also supports several other programming languages including C, C++, Ada, and VHDL. However, its unique visualisation features (CSD, Object Viewer) are optimised for Java.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B2</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        You must save your <code>.java</code> file before compiling it,
+        otherwise the compiler will process your old saved version —
+        not your latest changes.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf2-true" onclick="selectTF('tf2','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf2-false" onclick="selectTF('tf2','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf2-feedback"></div>
+      <div class="hint-box" id="tf2-hint">💡 Hint: The compiler reads from the file on disk — not from what you see in the editor if it hasn't been saved.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf2','true','TRUE — The compiler (javac) reads the .java file from disk. If you have not saved, the disk file still contains your previous version. Always Save (Ctrl+S) before compiling to ensure your latest changes are compiled.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B3</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Line numbers displayed in the JGrasp editor are part of your
+        Java code and will be compiled along with your program.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf3-true" onclick="selectTF('tf3','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf3-false" onclick="selectTF('tf3','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf3-feedback"></div>
+      <div class="hint-box" id="tf3-hint">💡 Hint: Line numbers are a feature of the editor display — they are there to help you navigate, not to be compiled.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf3','false','FALSE — Line numbers are a visual feature of the JGrasp editor display only. They are NOT part of your Java code and are not compiled. They exist purely to help you navigate your code and find errors by line number.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B4</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The JGrasp <strong>Compiler Messages</strong> panel and the
+        <strong>I/O Window</strong> are located in the same bottom panel
+        area, accessible via separate tabs.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf4-true" onclick="selectTF('tf4','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf4-false" onclick="selectTF('tf4','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf4-feedback"></div>
+      <div class="hint-box" id="tf4-hint">💡 Hint: Both panels appear at the bottom of the JGrasp window but serve different purposes.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf4','true','TRUE — Both the Compiler Messages panel and the I/O Window share the bottom panel area of JGrasp. They are accessible as separate tabs — the Compiler Messages tab becomes active after compiling, and the I/O Window tab becomes active when the program runs.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B5</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        A Java program that compiles successfully in JGrasp is guaranteed
+        to produce the correct output when it runs.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf5-true" onclick="selectTF('tf5','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf5-false" onclick="selectTF('tf5','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf5-feedback"></div>
+      <div class="hint-box" id="tf5-hint">💡 Hint: Think about the difference between syntax errors (compile-time) and logic errors (runtime).</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf5','false','FALSE — Successful compilation only means there are no syntax errors. A program can compile perfectly and still produce wrong output due to logic errors, or crash at runtime due to exceptions (e.g., ArrayIndexOutOfBoundsException). Compilation is only the first check.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B6</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The <strong>Project Manager</strong> panel in JGrasp allows you to
+        view and switch between multiple open Java files.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf6-true" onclick="selectTF('tf6','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf6-false" onclick="selectTF('tf6','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf6-feedback"></div>
+      <div class="hint-box" id="tf6-hint">💡 Hint: The Project Manager is the panel on the left side of the JGrasp window.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf6','true','TRUE — The Project Manager panel on the left side of JGrasp displays all open files and the project structure. You can click on any file listed there to switch to it in the editor — particularly useful when working on multi-file projects.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B7</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In JGrasp, the <strong>Find &amp; Replace</strong> feature can
+        only find text — it cannot replace it with different text.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf7-true" onclick="selectTF('tf7','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf7-false" onclick="selectTF('tf7','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf7-feedback"></div>
+      <div class="hint-box" id="tf7-hint">💡 Hint: The feature is called "Find AND Replace" — the name itself is a hint.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf7','false','FALSE — The Find and Replace feature (Edit → Find/Replace or Ctrl+H) can both find AND replace text. This is useful for renaming a variable throughout your entire program in one operation.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B8</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        JGrasp is a free IDE that was developed at Auburn University
+        specifically to support the teaching and learning of programming.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf8-true" onclick="selectTF('tf8','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf8-false" onclick="selectTF('tf8','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf8-feedback"></div>
+      <div class="hint-box" id="tf8-hint">💡 Hint: This was mentioned in Section 1 of the study guide.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf8','true','TRUE — JGrasp is a free, lightweight IDE developed at Auburn University. It was specifically designed for teaching and learning programming, with unique features like the CSD and Object Viewer that are not found in commercial IDEs.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B9</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        When a compiler error message says "error on line 12", you
+        must always fix the error on exactly line 12 and nowhere else.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf9-true" onclick="selectTF('tf9','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf9-false" onclick="selectTF('tf9','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf9-feedback"></div>
+      <div class="hint-box" id="tf9-hint">💡 Hint: Sometimes a missing brace or semicolon on line 10 causes the compiler to only notice the problem when it reaches line 12.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf9','false','FALSE — The compiler reports the line where it detected the problem, but the actual cause of the error may be on an earlier line. For example, a missing closing brace on line 9 might only cause a reported error on line 12. Always check nearby lines above the reported error too.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B10</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The <strong>Compile and Run</strong> button in JGrasp will run
+        your program even if compilation fails.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf10-true" onclick="selectTF('tf10','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf10-false" onclick="selectTF('tf10','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf10-feedback"></div>
+      <div class="hint-box" id="tf10-hint">💡 Hint: If compilation fails, no new .class file is created — so what would run?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf10','false','FALSE — The Compile and Run button only proceeds to Run if compilation is successful. If there are syntax errors, compilation fails, no .class file is created (or the old one remains), and the program will NOT be run. You must fix all errors first.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION C: Fill in the Blank (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔍 Section C — Fill in the Blank
+      <span class="marks">1 mark each = 10 marks</span>
+      <span class="difficulty-badge diff-medium">Knowledge</span>
+    </div>
+
+    <!-- C1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C1</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The Java source file you write and edit has the extension</span>
+        <input type="text" class="fitb-input" id="fitb1" placeholder="e.g. .java" style="min-width:100px;max-width:120px;">
+        <span>and the compiled bytecode file has the extension</span>
+        <input type="text" class="fitb-input" id="fitb1b" placeholder="e.g. .class" style="min-width:100px;max-width:120px;">
+      </div>
+      <div class="feedback-msg" id="fitb1-feedback"></div>
+      <div class="hint-box" id="fitb1-hint">💡 Hint: You write one type of file; the compiler creates the other type automatically.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITBDouble('fitb1','fitb1','fitb1b',['.java','java'],['.class','class'],'Source files are .java (human-readable). Compiled bytecode files are .class (executed by the JVM).')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITBDouble('fitb1','fitb1','fitb1b')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C2</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The keyboard shortcut to <strong>undo</strong> the last action in JGrasp is</span>
+        <input type="text" class="fitb-input" id="fitb2" placeholder="Ctrl + ?" style="min-width:120px;max-width:140px;">
+      </div>
+      <div class="feedback-msg" id="fitb2-feedback"></div>
+      <div class="hint-box" id="fitb2-hint">💡 Hint: This is the standard undo shortcut used in virtually every application on Windows.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb2',['ctrl+z','ctrl + z','ctrl-z'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C3</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The JGrasp panel that shows visual bracket-like shapes around control structures in the left margin of the editor is called the</span>
+        <input type="text" class="fitb-input" id="fitb3" placeholder="type here…" style="min-width:180px;">
+      </div>
+      <div class="feedback-msg" id="fitb3-feedback"></div>
+      <div class="hint-box" id="fitb3-hint">💡 Hint: The acronym stands for Control Structure Diagram.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb3',['csd','csd panel','control structure diagram','control structure diagram panel'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C4</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The correct order to run a Java program in JGrasp is:</span>
+        <input type="text" class="fitb-input" id="fitb4" placeholder="1st step" style="min-width:100px;max-width:120px;">
+        <span>→ Compile →</span>
+        <input type="text" class="fitb-input" id="fitb4b" placeholder="3rd step" style="min-width:80px;max-width:100px;">
+      </div>
+      <div class="feedback-msg" id="fitb4-feedback"></div>
+      <div class="hint-box" id="fitb4-hint">💡 Hint: You must do something before compiling, and something after compiling successfully.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITBDouble('fitb4','fitb4','fitb4b',['save'],['run'],'The correct order is Save → Compile → Run. Save ensures your latest code is on disk. Compile checks for errors. Run executes the compiled program.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITBDouble('fitb4','fitb4','fitb4b')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C5</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>Program output from <code>System.out.println</code> and keyboard input from <code>Scanner</code> both appear in the</span>
+        <input type="text" class="fitb-input" id="fitb5" placeholder="type here…" style="min-width:160px;">
+        <span>panel.</span>
+      </div>
+      <div class="feedback-msg" id="fitb5-feedback"></div>
+      <div class="hint-box" id="fitb5-hint">💡 Hint: I/O stands for Input/Output.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb5',['i/o window','io window','i/o','input/output window','input output window'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C6</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>If a Java class is named <code>PaySlip</code>, the file must be saved as</span>
+        <input type="text" class="fitb-input" id="fitb6" placeholder="filename…" style="min-width:180px;">
+      </div>
+      <div class="feedback-msg" id="fitb6-feedback"></div>
+      <div class="hint-box" id="fitb6-hint">💡 Hint: The filename must exactly match the class name — including capital letters — with the .java extension.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb6',['payslip.java','PaySlip.java'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C7</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>To immediately terminate a program that is stuck in an infinite loop in JGrasp, you press the</span>
+        <input type="text" class="fitb-input" id="fitb7" placeholder="button name…" style="min-width:120px;">
+        <span>button.</span>
+      </div>
+      <div class="feedback-msg" id="fitb7-feedback"></div>
+      <div class="hint-box" id="fitb7-hint">💡 Hint: This button is represented by a solid square symbol (■).</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb7',['stop','stop button'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C8</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>The menu in JGrasp that contains both the Compile and Run options is called the</span>
+        <input type="text" class="fitb-input" id="fitb8" placeholder="menu name…" style="min-width:120px;">
+        <span>menu.</span>
+      </div>
+      <div class="feedback-msg" id="fitb8-feedback"></div>
+      <div class="hint-box" id="fitb8-hint">💡 Hint: Think of what action you are performing when you compile and run — you are "building" your program.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb8',['build','build menu'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C9</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>JGrasp's automatic colouring of keywords, strings, and comments in the editor is called</span>
+        <input type="text" class="fitb-input" id="fitb9" placeholder="type here…" style="min-width:200px;">
+      </div>
+      <div class="feedback-msg" id="fitb9-feedback"></div>
+      <div class="hint-box" id="fitb9-hint">💡 Hint: The feature name describes what it does — it highlights code based on its syntax.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb9',['syntax highlighting','syntax highlight','code highlighting'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C10</div>
+        <span class="quiz-q-type">Fill in the Blank</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">Complete the sentence:</div>
+      <div class="fitb-wrapper">
+        <span>To change the font size of the JGrasp editor, you would go to</span>
+        <input type="text" class="fitb-input" id="fitb10" placeholder="menu path…" style="min-width:220px;">
+      </div>
+      <div class="feedback-msg" id="fitb10-feedback"></div>
+      <div class="hint-box" id="fitb10-hint">💡 Hint: Editor appearance settings are found under the Settings menu.
+	        </div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb10',['settings → editor → font','settings > editor > font','settings, editor, font','settings - editor - font'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION D: Matching (8 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔗 Section D — Match the Term to its Description
+      <span class="marks">1 mark each = 8 marks</span>
+    </div>
+
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">D1–8</div>
+        <span class="quiz-q-type">Matching</span>
+        <span class="marks">8 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Match each JGrasp term to its correct description.
+      </div>
+      <div class="table-wrapper" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Term</th><th>Select the Matching Description</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>D1</strong></td>
+              <td class="ans-cell">I/O Window</td>
+              <td>
+                <select class="match-select" id="match1">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D2</strong></td>
+              <td class="ans-cell">CSD Panel</td>
+              <td>
+                <select class="match-select" id="match2">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D3</strong></td>
+              <td class="ans-cell">Compiler Messages Panel</td>
+              <td>
+                <select class="match-select" id="match3">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D4</strong></td>
+              <td class="ans-cell">Project Manager</td>
+              <td>
+                <select class="match-select" id="match4">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D5</strong></td>
+              <td class="ans-cell">Source Editor</td>
+              <td>
+                <select class="match-select" id="match5">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D6</strong></td>
+              <td class="ans-cell">Toolbar</td>
+              <td>
+                <select class="match-select" id="match6">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D7</strong></td>
+              <td class="ans-cell">Debug Tab</td>
+              <td>
+                <select class="match-select" id="match7">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D8</strong></td>
+              <td class="ans-cell">.class file</td>
+              <td>
+                <select class="match-select" id="match8">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Displays program output and accepts keyboard input at runtime</option>
+                  <option value="B">B) Shows visual bracket shapes around loops and if-blocks in the editor margin</option>
+                  <option value="C">C) Lists syntax errors with line numbers after a failed compilation</option>
+                  <option value="D">D) Allows you to view and switch between multiple open Java files</option>
+                  <option value="E">E) The main area where you type your Java source code</option>
+                  <option value="F">F) Contains quick-access buttons for New, Open, Save, Compile, and Run</option>
+                  <option value="G">G) Stores variable values and call stack information during debugging</option>
+                  <option value="H">H) The compiled bytecode file executed by the Java Virtual Machine</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="feedback-msg" id="match-feedback"></div>
+      <div class="hint-box" id="match-hint">
+        💡 Hint: Review the Interface and Toolbar sections of the study guide.
+        Each term maps to exactly one description — no description is used twice.
+      </div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMatching()">Check All Matches</button>
+        <button class="btn-hint" onclick="toggleHint('match')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMatching()">↺ Reset All</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION E: Short Answer (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      📝 Section E — Short Answer Questions
+      <span class="marks">5 marks each = 10 marks</span>
+      <span class="difficulty-badge diff-analysis">Extended</span>
+    </div>
+
+    <!-- E1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E1</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        A beginner learner opens JGrasp for the first time, types the
+        following program, and clicks the Run button immediately —
+        without saving or compiling first.
+        <div class="code-block" style="margin-top:14px;">
+          <span class="code-label">FirstProgram.java</span>
+<span class="kw">public class</span> <span class="cls">FirstProgram</span> {
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"My first program!"</span>)
+    }
+}
+        </div>
+        <br>
+        <strong>(a)</strong> Explain what will happen when the learner clicks Run without saving or compiling first.<br><br>
+        <strong>(b)</strong> Identify the syntax error in the code above and explain how to fix it.<br><br>
+        <strong>(c)</strong> Describe the correct step-by-step process the learner should follow to successfully run this program in JGrasp.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa1"
+        placeholder="(a) What happens when Run is clicked without saving or compiling…&#10;&#10;(b) Identify and fix the syntax error…&#10;&#10;(c) Correct step-by-step process…"
+        rows="12"
+        oninput="updateSAWordCount('sa1','sa1-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa1-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — (a) Without saving, the compiler would process the previously
+        saved version (or no file exists if never saved), so the learner's new code would not run;
+        without compiling, no up-to-date <code>.class</code> file exists to execute<br>
+        <strong>• 1 mark</strong> — (b) Syntax error correctly identified: missing semicolon
+        at the end of the <code>System.out.println(...)</code> statement on line 3<br>
+        <strong>• 1 mark</strong> — (b) Fix clearly explained: add a semicolon
+        <code>;</code> after the closing parenthesis on that line<br>
+        <strong>• 1 mark</strong> — (c) Steps include: fix the error → Save the file
+        (Ctrl+S or File → Save) → Compile (Build → Compile or 🔨 button)<br>
+        <strong>• 1 mark</strong> — (c) Steps continue: check Compiler Messages for success
+        → click Run (▶️) → observe output "My first program!" in the I/O Window
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#c53030;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="concept-card" style="margin-top:10px;">
+          <p style="margin-bottom:10px;"><strong>(a) What happens when Run is clicked without saving or compiling:</strong></p>
+          <p style="font-size:0.93rem;margin-bottom:10px;">
+            If the file has never been saved, there is no
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.java</code>
+            file on disk and no
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.class</code>
+            file to run — JGrasp will produce an error. Even if the file was
+            previously saved, clicking Run without compiling first means the JVM
+            would attempt to run an old or non-existent
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">.class</code>
+            file — not the learner's latest code. The new code would never execute.
+          </p>
+          <p style="margin-bottom:10px;"><strong>(b) Syntax Error Identified and Fixed:</strong></p>
+          <p style="font-size:0.93rem;margin-bottom:8px;">
+            The syntax error is a <strong>missing semicolon</strong> at the end of the
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println("My first program!")</code>
+            statement. Every Java statement must end with a semicolon
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">;</code>.
+          </p>
+          <div class="code-block" style="font-size:0.84rem;padding:12px 16px;">
+<span class="com">// BEFORE (error):</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"My first program!"</span>)
+
+<span class="com">// AFTER (fixed):</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"My first program!"</span>);
+          </div>
+          <p style="margin-top:10px;margin-bottom:8px;"><strong>(c) Correct Step-by-Step Process:</strong></p>
+          <ol style="padding-left:20px;font-size:0.93rem;line-height:2;">
+            <li>Fix the syntax error — add the missing semicolon after the println statement.</li>
+            <li>Save the file using <strong>File → Save</strong> or
+              <kbd style="background:#e2e8f0;padding:1px 5px;border-radius:4px;">Ctrl+S</kbd>.
+              Ensure the filename is <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">FirstProgram.java</code>
+              to match the class name.
+            </li>
+            <li>Click the <strong>Compile</strong> button (🔨) or use
+              <strong>Build → Compile</strong>. Watch the Compiler Messages panel.
+            </li>
+            <li>Confirm the Compiler Messages panel shows a
+              <strong>success message</strong> (no errors). A
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">FirstProgram.class</code>
+              file is now created.
+            </li>
+            <li>Click the <strong>Run</strong> button (▶️) or use
+              <strong>Build → Run</strong>. The I/O Window opens and displays:
+              <code style="background:#0d0d1a;color:#86efac;padding:1px 5px;border-radius:4px;font-family:monospace;">My first program!</code>
+            </li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- E2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E2</div>
+        <span class="quiz-q-type">Short Answer</span>
+        <span class="marks">5 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Answer ALL parts of the following question about the JGrasp interface:<br><br>
+        <strong>(a)</strong> Name and describe the purpose of <strong>three</strong>
+        different panels found in the JGrasp interface.<br><br>
+        <strong>(b)</strong> Explain why the <strong>CSD (Control Structure Diagram)</strong>
+        is considered one of JGrasp's most unique and valuable features for
+        beginner programmers.<br><br>
+        <strong>(c)</strong> A learner wants to change the font size of the editor
+        to make code easier to read. Describe the exact steps they should follow
+        in JGrasp to do this.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa2"
+        placeholder="(a) Name and describe three panels…&#10;&#10;(b) Explain the value of the CSD for beginners…&#10;&#10;(c) Steps to change the font size…"
+        rows="12"
+        oninput="updateSAWordCount('sa2','sa2-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa2-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (5 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — (a) First panel correctly named with accurate
+        description of its purpose (any from: Source Editor, I/O Window, CSD Panel,
+        Compiler Messages, Project Manager, Debug Tab, Toolbar)<br>
+        <strong>• 1 mark</strong> — (a) Second and third panels correctly named and
+        described (award 1 mark for both being correct)<br>
+        <strong>• 1 mark</strong> — (b) Explanation addresses that the CSD visually
+        shows program structure (loops, if-blocks, method bodies) as bracket-like shapes
+        alongside the code — without needing to run the program — helping beginners
+        understand code flow at a glance<br>
+        <strong>• 1 mark</strong> — (b) Explains that it is unique to JGrasp / not
+        found in most other IDEs, and that it makes structural errors (e.g., missing
+        braces, incorrectly nested loops) immediately visible<br>
+        <strong>• 1 mark</strong> — (c) Correct steps: Settings → Editor → Font →
+        change the font size value and apply
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#c53030;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="concept-card" style="margin-top:10px;">
+          <p style="margin-bottom:10px;"><strong>(a) Three JGrasp Panels:</strong></p>
+          <p style="font-size:0.93rem;margin-bottom:6px;">
+            <strong>1. Source Editor</strong> — The central panel where you type your
+            Java source code. It features syntax highlighting, line numbers, and
+            automatic indentation to make writing code easier and more readable.
+          </p>
+          <p style="font-size:0.93rem;margin-bottom:6px;">
+            <strong>2. I/O Window</strong> — Located at the bottom of the JGrasp
+            window. It displays all output produced by
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">System.out.println</code>
+            when your program runs, and also accepts keyboard input when your program
+            uses <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">Scanner</code>.
+          </p>
+          <p style="font-size:0.93rem;margin-bottom:10px;">
+            <strong>3. Compiler Messages Panel</strong> — Also at the bottom, in a
+            separate tab from the I/O Window. After you compile, this panel lists
+            any syntax errors found — with the line number, error type, and a brief
+            description of each problem — so you can quickly find and fix them.
+          </p>
+          <p style="margin-bottom:8px;"><strong>(b) Value of the CSD for Beginners:</strong></p>
+          <p style="font-size:0.93rem;margin-bottom:10px;">
+            The CSD is unique to JGrasp and is not found in most professional IDEs.
+            It automatically draws bracket-like shapes in the left margin of the editor
+            around every control structure — including
+            <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">if</code>
+            blocks, <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">for</code>
+            loops, <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">while</code>
+            loops, and method bodies. For beginners, this is invaluable because it
+            makes the logical structure of the program immediately visible without
+            needing to run the code. It helps learners spot structural mistakes such
+            as missing closing braces, incorrectly nested loops, or if-blocks that
+            are not where the programmer intended — all purely by looking at the
+            diagram in the editor.
+          </p>
+          <p style="margin-bottom:8px;"><strong>(c) Steps to Change Font Size:</strong></p>
+          <ol style="padding-left:20px;font-size:0.93rem;line-height:2;">
+            <li>Click the <strong>Settings</strong> menu in the JGrasp menu bar.</li>
+            <li>Select <strong>Editor</strong> from the dropdown.</li>
+            <li>Click <strong>Font</strong> in the submenu.</li>
+            <li>A dialog box opens — change the font size to the desired value
+              (e.g., 14 or 16 for easier readability).</li>
+            <li>Click <strong>OK</strong> or <strong>Apply</strong> to confirm.
+              The editor text size updates immediately.</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- ══ SUBMIT ALL ══ -->
+    <button class="btn-submit-all" onclick="submitAll()">
+      🎯 Submit Quiz &amp; See Final Score
+    </button>
+
+    <!-- ══ RESULTS PANEL ══ -->
+    <div class="quiz-results-panel" id="resultsPanel">
+      <div style="font-size:2rem;">🎓</div>
+      <div class="results-label">Your Final Score</div>
+      <div class="results-score" id="finalScore">0 / 50</div>
+      <div class="results-grade" id="finalGrade">—</div>
+      <div style="opacity:0.8;font-size:0.9rem;margin-top:8px;" id="resultsBreakdown"></div>
+      <button class="btn-retake" onclick="retakeQuiz()">↺ Retake Quiz</button>
+    </div>
+
+  </div><!-- end #quiz section-block -->
+</div><!-- end .container -->
+
+<footer>
+  <p>🖥️ JGrasp Interface &amp; Usage — Study Guide &amp; Quiz | Interactive Learning Tool</p>
+  <p style="margin-top:6px;">Built for beginner Java learners | JGrasp IDE Focus</p>
+</footer>
+
+<script>
+  /* ══════════════════════════════════════════════════
+     STATE
+  ══════════════════════════════════════════════════ */
+  const TOTAL_QUESTIONS = 30;
+  const TOTAL_MARKS     = 50;
+
+  const state = {
+    attempted : 0,
+    correct   : 0,
+    incorrect : 0,
+    score     : 0,
+    answered  : {}
+  };
+
+  /* ══════════════════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════════════════ */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-tab')
+      .forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  /* ══════════════════════════════════════════════════
+     PROGRESS & SCORE
+  ══════════════════════════════════════════════════ */
+  function updateProgress() {
+    const pct = Math.round((state.attempted / TOTAL_QUESTIONS) * 100);
+    document.getElementById('progressBar').style.width   = pct + '%';
+    document.getElementById('progressLabel').textContent =
+      `Progress: ${state.attempted} / ${TOTAL_QUESTIONS} attempted (${pct}%)`;
+    document.getElementById('liveScore').textContent     = state.score;
+    document.getElementById('liveCorrect').textContent   = state.correct;
+    document.getElementById('liveIncorrect').textContent = state.incorrect;
+    document.getElementById('liveRemaining').textContent =
+      TOTAL_QUESTIONS - state.attempted;
+  }
+
+  function recordAnswer(qId, isCorrect, marks) {
+    if (state.answered[qId]) return;
+    state.answered[qId] = true;
+    state.attempted++;
+    if (isCorrect) { state.correct++;  state.score += marks; }
+    else           { state.incorrect++;                       }
+    updateProgress();
+  }
+
+  /* ══════════════════════════════════════════════════
+     MULTIPLE CHOICE
+  ══════════════════════════════════════════════════ */
+  function selectMC(qId, val, el) {
+    if (state.answered[qId]) return;
+    document.querySelectorAll(`#${qId}-options .mc-option`)
+      .forEach(o => {
+        o.classList.remove('selected');
+        o.querySelector('input').checked = false;
+      });
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+    el.dataset.val = val;
+  }
+
+  function checkMC(qId, correct, explanation) {
+    if (state.answered[qId]) return;
+    const selEl = document.querySelector(
+      `#${qId}-options .mc-option.selected`
+    );
+    if (!selEl) {
+      showFeedback(qId, 'info-fb', '⚠️ Please select an answer first.');
+      return;
+    }
+    const chosen  = selEl.dataset.val;
+    const isRight = chosen === correct;
+
+    document.querySelectorAll(`#${qId}-options .mc-option`).forEach(o => {
+      if (o.dataset.val === correct)       o.classList.add('correct');
+      else if (o === selEl && !isRight)    o.classList.add('incorrect');
+      o.classList.remove('selected');
+      o.style.pointerEvents = 'none';
+    });
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight
+      ? '✅ Correct! '
+      : `❌ Incorrect. The correct answer was ${correct}. `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function resetMC(qId) {
+    if (state.answered[qId]) return;
+    document.querySelectorAll(`#${qId}-options .mc-option`).forEach(o => {
+      o.classList.remove('selected', 'correct', 'incorrect');
+      o.querySelector('input').checked = false;
+      o.style.pointerEvents = '';
+    });
+    hideFeedback(qId);
+  }
+
+  /* ══════════════════════════════════════════════════
+     TRUE / FALSE
+  ══════════════════════════════════════════════════ */
+  function selectTF(qId, val, el) {
+    if (state.answered[qId]) return;
+    document.getElementById(`${qId}-true`).classList.remove('selected');
+    document.getElementById(`${qId}-false`).classList.remove('selected');
+    el.classList.add('selected');
+    el.dataset.val = val;
+  }
+
+  function checkTF(qId, correct, explanation) {
+    if (state.answered[qId]) return;
+    const trueBtn  = document.getElementById(`${qId}-true`);
+    const falseBtn = document.getElementById(`${qId}-false`);
+    const selBtn   =
+      trueBtn.classList.contains('selected')  ? trueBtn  :
+      falseBtn.classList.contains('selected') ? falseBtn : null;
+
+    if (!selBtn) {
+      showFeedback(qId, 'info-fb', '⚠️ Please select True or False first.');
+      return;
+    }
+
+    const isRight = selBtn.dataset.val === correct;
+    [trueBtn, falseBtn].forEach(btn => {
+      btn.classList.remove('selected');
+      if (btn.dataset.val === correct)      btn.classList.add('correct');
+      else if (btn === selBtn && !isRight)  btn.classList.add('incorrect');
+      btn.style.pointerEvents = 'none';
+    });
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight
+      ? '✅ Correct! '
+      : `❌ Incorrect. The answer is ${correct.toUpperCase()}. `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function resetTF(qId) {
+    if (state.answered[qId]) return;
+    ['true', 'false'].forEach(v => {
+      const btn = document.getElementById(`${qId}-${v}`);
+      btn.classList.remove('selected', 'correct', 'incorrect');
+      btn.style.pointerEvents = '';
+    });
+    hideFeedback(qId);
+  }
+
+  /* ══════════════════════════════════════════════════
+     FILL IN THE BLANK
+  ══════════════════════════════════════════════════ */
+  function checkFITB(inputId, acceptedAnswers) {
+    const qId = inputId;
+    if (state.answered[qId]) return;
+    const input = document.getElementById(inputId);
+    const val   = input.value.trim().toLowerCase();
+    if (!val) {
+      showFeedback(qId, 'info-fb', '⚠️ Please enter an answer first.');
+      return;
+    }
+    const isRight = acceptedAnswers.map(a => a.toLowerCase()).includes(val);
+    input.classList.add(isRight ? 'correct' : 'incorrect');
+    input.disabled = true;
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight
+      ? '✅ Correct! '
+      : `❌ Incorrect. Accepted answer(s): ${acceptedAnswers.join(' / ')}. `;
+    showFeedback(qId, fb, prefix);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function checkFITBDouble(qId, id1, id2, acc1, acc2, explanation) {
+    if (state.answered[qId]) return;
+    const i1 = document.getElementById(id1);
+    const i2 = document.getElementById(id2);
+    const v1 = i1.value.trim().toLowerCase();
+    const v2 = i2.value.trim().toLowerCase();
+    if (!v1 || !v2) {
+      showFeedback(qId, 'info-fb', '⚠️ Please fill in both blanks.');
+      return;
+    }
+    const r1 = acc1.map(a => a.toLowerCase()).includes(v1);
+    const r2 = acc2.map(a => a.toLowerCase()).includes(v2);
+    const isRight = r1 && r2;
+
+    i1.classList.add(r1 ? 'correct' : 'incorrect'); i1.disabled = true;
+    i2.classList.add(r2 ? 'correct' : 'incorrect'); i2.disabled = true;
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight
+      ? '✅ Correct! '
+      : `❌ Not quite. Expected: "${acc1[0]}" and "${acc2[0]}". `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function resetFITB(inputId) {
+    if (state.answered[inputId]) return;
+    const input = document.getElementById(inputId);
+    input.value = '';
+    input.classList.remove('correct', 'incorrect');
+    input.disabled = false;
+    hideFeedback(inputId);
+  }
+
+  function resetFITBDouble(qId, id1, id2) {
+    if (state.answered[qId]) return;
+    [id1, id2].forEach(id => {
+      const el = document.getElementById(id);
+      el.value = '';
+      el.classList.remove('correct', 'incorrect');
+      el.disabled = false;
+    });
+    hideFeedback(qId);
+  }
+
+  /* ══════════════════════════════════════════════════
+     MATCHING
+  ══════════════════════════════════════════════════ */
+  const MATCH_ANSWERS = {
+    match1:'A', match2:'B', match3:'C', match4:'D',
+    match5:'E', match6:'F', match7:'G', match8:'H'
+  };
+
+  function checkMatching() {
+    if (state.answered['matching']) return;
+    let correct = 0;
+    const total = Object.keys(MATCH_ANSWERS).length;
+
+    Object.entries(MATCH_ANSWERS).forEach(([id, ans]) => {
+      const sel = document.getElementById(id);
+      if (sel.value === ans) {
+        sel.classList.add('correct');
+        correct++;
+      } else {
+        sel.classList.add('incorrect');
+      }
+      sel.disabled = true;
+    });
+
+    const fb = correct >= Math.ceil(total / 2) ? 'correct-fb' : 'incorrect-fb';
+    showFeedback('match', fb,
+      `You matched ${correct} / ${total} correctly. Score: ${correct} mark(s).`);
+
+    state.answered['matching'] = true;
+    state.attempted++;
+    state.correct   += correct;
+    state.score     += correct;
+    state.incorrect += (total - correct);
+    updateProgress();
+  }
+
+  function resetMatching() {
+    if (state.answered['matching']) return;
+    Object.keys(MATCH_ANSWERS).forEach(id => {
+      const sel = document.getElementById(id);
+      sel.value = '';
+      sel.classList.remove('correct', 'incorrect');
+      sel.disabled = false;
+    });
+    hideFeedback('match');
+  }
+
+  /* ══════════════════════════════════════════════════
+     SHORT ANSWER WORD COUNT
+  ══════════════════════════════════════════════════ */
+  function updateSAWordCount(textareaId, counterId) {
+    const ta  = document.getElementById(textareaId);
+    const ctr = document.getElementById(counterId);
+    if (!ta || !ctr) return;
+    const words = ta.value.trim().split(/\s+/).filter(w => w.length > 0);
+    ctr.textContent = words.length;
+  }
+
+  /* ══════════════════════════════════════════════════
+     HINT
+  ══════════════════════════════════════════════════ */
+  function toggleHint(qId) {
+    const hintBox = document.getElementById(`${qId}-hint`);
+    if (hintBox) hintBox.classList.toggle('show');
+  }
+
+  /* ══════════════════════════════════════════════════
+     FEEDBACK HELPERS
+  ══════════════════════════════════════════════════ */
+  function showFeedback(qId, type, msg) {
+    const fb = document.getElementById(`${qId}-feedback`);
+    if (!fb) return;
+    fb.className = `feedback-msg ${type} show`;
+    fb.innerHTML = msg;
+  }
+
+  function hideFeedback(qId) {
+    const fb = document.getElementById(`${qId}-feedback`);
+    if (fb) { fb.className = 'feedback-msg'; fb.innerHTML = ''; }
+  }
+
+  /* ══════════════════════════════════════════════════
+     SUBMIT ALL & RESULTS
+  ══════════════════════════════════════════════════ */
+  function submitAll() {
+    const panel = document.getElementById('resultsPanel');
+    panel.classList.add('show');
+
+    const score = state.score;
+    const pct   = Math.round((score / TOTAL_MARKS) * 100);
+
+    document.getElementById('finalScore').textContent = `${score} / ${TOTAL_MARKS}`;
+
+    let grade, msg;
+    if      (pct >= 80) { grade = '🏆 Distinction'; msg = 'Outstanding — excellent understanding of JGrasp!'; }
+    else if (pct >= 70) { grade = '⭐ Merit';         msg = 'Great work — strong knowledge of the interface!'; }
+    else if (pct >= 60) { grade = '✅ Pass';          msg = 'Well done — you passed!'; }
+    else if (pct >= 50) { grade = '📚 Near Pass';     msg = 'Almost there — review the panels and toolbar sections.'; }
+    else                { grade = '🔄 Needs Review';  msg = 'Revisit the study guide sections and try again.'; }
+
+    document.getElementById('finalGrade').textContent     = `${grade} (${pct}%)`;
+    document.getElementById('resultsBreakdown').innerHTML =
+      `${msg}<br><br>` +
+      `Correct: ${state.correct} &nbsp;|&nbsp; ` +
+      `Incorrect: ${state.incorrect} &nbsp;|&nbsp; ` +
+      `Attempted: ${state.attempted} / ${TOTAL_QUESTIONS}`;
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function retakeQuiz() {
+    location.reload();
+  }
+
+  /* ══════════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════════ */
+  updateProgress();
+</script>
+</body>
+</html>

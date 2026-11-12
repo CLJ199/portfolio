@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tamagotchi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      position: relative;
+      flex-direction: column;
+    }
+    .needs {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 200px;
+      border: 2px solid #000;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+    }
+    .needs h2 {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+      text-align: center;
+    }
+    .meter-container {
+      margin-bottom: 10px;
+    }
+    .meter-container span {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    .meter {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .meter div {
+      height: 20px;
+      background-color: #76c7c0;
+      width: 100%;
+      transition: width 0.5s;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .buttons button {
+      font-size: 16px;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #76c7c0;
+      color: #fff;
+    }
+    .food-icons {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .food-icons img {
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+    }
+    .hearts {
+      margin-top: 10px;
+      font-size: 24px;
+      text-align: center;
+    }
+    .pet {
+      font-size: 100px;
+      transition: transform 0.2s;
+      position: relative;
+    }
+    .emoji-effect {
+      position: absolute;
+      animation: floatUp 2s ease-out forwards;
+      font-size: 32px;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-100px); }
+    }
+    #petMessage {
+      font-size: 24px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+      min-height: 28px;
+    }
+    .time-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      text-align: center;
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 10px;
+      width: 150px;
+    }
+    .time-container h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .time-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    .time-bar div {
+      height: 20px;
+      background-color: #ffcc00;
+      width: 0%;
+      transition: width 1s;
+    }
+    .days-container {
+      position: absolute;
+      top: 0%;
+      left: 85.8%;
+      font-size: 18px;
+      font-weight: bold;
+	  border: 2px solid #000;
+	  border-radius: 5px;
+	  background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="needs">
+    <h2>Needs</h2>
+    <div class="meter-container">
+      <span>Happiness:</span>
+      <div class="meter"><div id="happinessBar"></div></div>
+    </div>
+    <div class="meter-container">
+      <span>Bladder:</span>
+      <div class="meter"><div id="bladderBar"></div></div>
+    </div>
+    <div class="buttons">
+      <button onclick="playWithPet()">Play</button>
+      <button onclick="feedPet()">Feed</button>
+      <button onclick="goToBathroom()">Poof</button>
+    </div>
+    <div class="food-icons" id="foodIcons"></div>
+    <div class="hearts" id="health">❤️❤️❤️</div>
+  </div>
+
+  <div id="petMessage"></div>
+  <div class="pet" id="petEmoji">🙂</div>
+
+  <div class="time-container">
+    <h3 id="timeEmoji">🌅</h3>
+    <div class="time-bar">
+      <div id="timeProgress"></div>
+    </div>
+  </div>
+
+  <!-- New section to display days passed -->
+  <div class="days-container" id="daysPassedContainer">
+    Days Passed: <span id="daysPassed">0</span>
+  </div>
+
+  <script>
+    let health = 3;
+    let happiness = 100;
+    let bladder = 0;
+    let foodIcons = 3;
+    let foodTimer = null;
+    let timeProgress = 0;
+    let timeInterval = 0;
+    let daysPassed = 0;  // New variable to track the number of days passed
+
+    function playWithPet() {
+      happiness += 10;
+      if (happiness > 100) happiness = 100;
+      document.getElementById('happinessBar').style.width = happiness + '%';
+      updateFace('🥰');
+      spawnEmoji('🥰');
+      updatePetMessage();
+    }
+
+    function feedPet() {
+      if (foodIcons >= 3) {
+        bladder += 30;
+        if (bladder > 100) bladder = 100;
+        document.getElementById('bladderBar').style.width = bladder + '%';
+      } else {
+        foodIcons = 3;
+        updateFoodIcons();
+        clearTimeout(foodTimer);
+        foodTimer = null;
+      }
+      updateFace('😋');
+      spawnEmoji('😋');
+      updatePetMessage();
+    }
+
+    function goToBathroom() {
+      if (bladder >= 50) {
+        bladder = 0;
+        document.getElementById('bladderBar').style.width = bladder + '%';
+        updateFace('🤩');
+        for (let i = 0; i < 4; i++) {
+          spawnEmoji('💩');
+        }
+        updatePetMessage();
+      }
+    }
+
+    function updateFace(emoji) {
+      const pet = document.getElementById('petEmoji');
+      pet.innerText = emoji;
+      setTimeout(() => {
+        pet.innerText = '🙂';
+      }, 2000);
+    }
+
+    function spawnEmoji(symbol) {
+      const pet = document.getElementById('petEmoji');
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji-effect';
+      emoji.innerText = symbol;
+
+      // Position the emoji relative to the pet emoji
+      const petRect = pet.getBoundingClientRect();
+      const petCenterX = petRect.left + petRect.width / 2;
+      const petCenterY = petRect.top + petRect.height / 2;
+
+      // Set random position near the pet
+      emoji.style.left = `${petCenterX - 50 + Math.random() * 100}px`;
+      emoji.style.top = `${petCenterY - 50 + Math.random() * 100}px`;
+
+      document.body.appendChild(emoji);
+      setTimeout(() => document.body.removeChild(emoji), 2000);
+    }
+
+    function updateFoodIcons() {
+      const container = document.getElementById('foodIcons');
+      container.innerHTML = '';
+      for (let i = 0; i < foodIcons; i++) {
+        const img = document.createElement('img');
+        img.src = 'https://img.icons8.com/emoji/48/000000/red-apple.png';
+        img.alt = `Food ${i + 1}`;
+        container.appendChild(img);
+      }
+    }
+
+    function resetGame() {
+      health = 3;
+      happiness = 100;
+      bladder = 0;
+      foodIcons = 3;
+      document.getElementById('health').innerText = '❤️❤️❤️';
+      document.getElementById('happinessBar').style.width = happiness + '%';
+      document.getElementById('bladderBar').style.width = bladder + '%';
+      updateFoodIcons();
+      clearTimeout(foodTimer);
+      foodTimer = null;
+      updatePetMessage();
+    }
+
+    function decreaseHappiness() {
+      happiness -= 1;
+      if (happiness < 0) happiness = 0;
+      document.getElementById('happinessBar').style.width = happiness + '%';
+      if (happiness === 0) {
+        resetGame();
+      }
+      updatePetMessage();
+    }
+
+    function increaseBladder() {
+      bladder += 1;
+      if (bladder > 100) bladder = 100;
+      document.getElementById('bladderBar').style.width = bladder + '%';
+      if (bladder === 100) {
+        health--;
+        document.getElementById('health').innerText = '❤️'.repeat(health);
+        if (health === 0) {
+          resetGame();
+        }
+        bladder = 0;
+        document.getElementById('bladderBar').style.width = bladder + '%';
+      }
+      updatePetMessage();
+    }
+
+    function decreaseFoodIcons() {
+      if (foodIcons > 0) {
+        foodIcons--;
+        updateFoodIcons();
+        if (foodIcons === 0) {
+          foodTimer = setTimeout(() => {
+            decreaseHealthDueToHunger();
+          }, 120000);
+        }
+      }
+      updatePetMessage();
+    }
+
+    function decreaseHealthDueToHunger() {
+      if (foodIcons === 0) {
+        health--;
+        document.getElementById('health').innerText = '❤️'.repeat(health);
+        updateFace('😣');
+        spawnEmoji('😣');
+        if (health === 0) {
+          resetGame();
+        } else {
+          foodTimer = setTimeout(() => {
+            decreaseHealthDueToHunger();
+          }, 120000);
+        }
+      }
+    }
+
+    function updatePetMessage() {
+      const message = document.getElementById('petMessage');
+      if (foodIcons < 2) {
+        message.innerText = "I'm hungry!";
+      } else if (bladder > 50) {
+        message.innerText = "I need to pee!";
+      } else if (happiness < 50) {
+        message.innerText = "Pet me!";
+      } else {
+        message.innerText = "";
+      }
+    }
+
+    function updateTime() {
+      timeProgress += 100 / 15; // Each interval is 1/15th of the bar
+      if (timeProgress > 100) {
+        timeProgress = 0;
+        timeInterval = 0;
+        // Increment daysPassed every time a full cycle completes
+        daysPassed++;
+        document.getElementById('daysPassed').innerText = daysPassed;
+      } else {
+        timeInterval++;
+      }
+
+      document.getElementById('timeProgress').style.width = timeProgress + "%";
+
+      if (timeInterval < 5) {
+        document.getElementById('timeEmoji').innerText = "🌅"; // Morning
+        document.getElementById('petEmoji').innerText = '🙂'; // Default pet emoji
+      } else if (timeInterval < 10) {
+        document.getElementById('timeEmoji').innerText = "☀️"; // Day
+        document.getElementById('petEmoji').innerText = '🙂'; // Default pet emoji
+      } else {
+        document.getElementById('timeEmoji').innerText = "🌑"; // Night
+        document.getElementById('petEmoji').innerText = '😴'; // Sleep emoji at night
+      }
+    }
+
+    setInterval(updateTime, 10000); // Update time every second
+
+    resetGame();
+    setInterval(decreaseHappiness, 2000);
+    setInterval(increaseBladder, 1000);
+    setInterval(decreaseFoodIcons, 20000);
+  </script>
+</body>
+</html>

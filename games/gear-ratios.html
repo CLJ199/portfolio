@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Gear Ratio Learning Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .gear-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .gear-option {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: grab;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            user-select: none;
+            font-weight: bold;
+            border: 2px solid transparent;
+        }
+
+        .gear-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .gear-option:active {
+            cursor: grabbing;
+        }
+
+        .info-panel {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-panel h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .info-text {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .stats-panel {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid #667eea;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .stat-label {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .canvas-area {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            display: block;
+            background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .instruction {
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .driving-gear-label {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Context Menu Styles */
+        #contextMenu {
+            position: absolute;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+
+        #contextMenu.visible {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            user-select: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .context-menu-item:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .context-menu-item.delete:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .context-menu-item.set-driver:hover {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚙️ Interactive Gear Ratio Learning Tool</h1>
+        <p class="subtitle">Drag gears to see ratios and interactions in real-time</p>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="instruction">
+                💡 Drag gears from the menu onto the canvas. Right-click to delete or set as driver!
+            </div>
+
+            <div class="gear-menu">
+                <h2>Available Gears</h2>
+                <div class="gear-option" draggable="true" data-teeth="12">
+                    Small Gear (12 teeth)
+                </div>
+                <div class="gear-option" draggable="true" data-teeth="20">
+                    Medium Gear (20 teeth)
+                </div>
+                <div class="gear-option" draggable="true" data-teeth="30">
+                    Large Gear (30 teeth)
+                </div>
+                <div class="gear-option" draggable="true" data-teeth="40">
+                    X-Large Gear (40 teeth)
+                </div>
+                <div class="gear-option" draggable="true" data-teeth="60">
+                    XX-Large Gear (60 teeth)
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>Gear Ratio Formula</h3>
+                <p class="info-text">
+                    <strong>GR = Driven Teeth ÷ Driving Teeth</strong>
+                </p>
+                <p class="info-text" style="margin-top: 10px; font-size: 0.8em;">
+                    The gear ratio tells you how many times the driving gear must turn for the driven gear to turn once.
+                </p>
+            </div>
+
+            <div class="controls">
+                <button onclick="clearAllGears()">Clear All</button>
+            </div>
+
+            <div class="stats-panel">
+                <h3 style="margin-bottom: 10px; color: #667eea;">Connected Gears</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Active Gears:</span>
+                    <span class="stat-value" id="gearCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Gear Pairs:</span>
+                    <span class="stat-value" id="pairCount">0</span>
+                </div>
+                <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+                <div id="ratioDisplay" style="font-size: 0.85em; color: #666; line-height: 1.6;">
+                    No gears connected yet
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-area">
+            <canvas id="gearCanvas"></canvas>
+            <div id="contextMenu">
+                <div class="context-menu-item set-driver" onclick="setAsDriver()">⭐ Set as Driver</div>
+                <div class="context-menu-item delete" onclick="deleteSelectedGear()">🗑️ Delete Gear</div>
+            </div>
+            <div class="driving-gear-label">
+                🔄 The blue gear with a star is the driver
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gearCanvas');
+        const ctx = canvas.getContext('2d');
+        const contextMenu = document.getElementById('contextMenu');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Gear class with p5.js-style tooth design
+        class Gear {
+            constructor(x, y, teeth, isDriving = false) {
+                this.x = x;
+                this.y = y;
+                this.teeth = teeth;
+                
+                // Calculate radius based on teeth count
+                this.radius = Math.max(20, teeth * 2);
+                this.outerRadius = this.radius * 2;
+                this.innerRadius = this.radius;
+                
+                this.rotation = 0;
+                this.angularVelocity = isDriving ? 0.05 : 0;
+                this.isDriving = isDriving;
+                this.connectedGears = [];
+                this.dragging = false;
+                this.dragOffsetX = 0;
+                this.dragOffsetY = 0;
+                this.isSpinning = isDriving;
+                this.rotationDirection = isDriving ? 1 : 0;
+                
+                // Color based on type
+                this.color = isDriving ? '#4da6ff' : '#ff6b6b';
+            }
+
+            drawGear(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+
+                // Determine tooth size based on teeth count
+                const toothWidth = this.outerRadius * 1.2;
+                const toothHeight = this.outerRadius * 0.28;
+
+                // Draw each tooth
+                ctx.fillStyle = this.color;
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+
+                for (let i = 0; i < this.teeth; i++) {
+                    const angle = (i / this.teeth) * Math.PI * 2;
+                    
+                    ctx.save();
+                    ctx.rotate(angle);
+                    
+                    // Draw rectangular tooth
+                    ctx.fillRect(0, 0, toothWidth, toothHeight);
+                    ctx.strokeRect(0, 0, toothWidth, toothHeight);
+                    
+                    ctx.restore();
+                }
+
+                ctx.restore();
+
+                // Draw outer circle
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.outerRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw inner circle (hub)
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.innerRadius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw star on driving gear
+                if (this.isDriving) {
+                    ctx.fillStyle = '#ffff00';
+                    this.drawStar(ctx, this.x, this.y, 5, this.innerRadius * 0.5, this.innerRadius * 0.25);
+                    ctx.fill();
+                }
+
+                // Draw drag highlight
+                if (this.dragging) {
+                    ctx.strokeStyle = '#ffff00';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.outerRadius + 5, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+
+            drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+                let step = Math.PI / spikes;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy - outerRadius);
+                for (let i = 0; i < spikes * 2; i++) {
+                    let r = i % 2 == 0 ? outerRadius : innerRadius;
+                    ctx.lineTo(cx + Math.sin(i * step) * r, cy - Math.cos(i * step) * r);
+                }
+                ctx.closePath();
+            }
+
+            update() {
+                this.rotation += this.angularVelocity;
+            }
+
+            checkCollision(other) {
+                const distance = Math.hypot(this.x - other.x, this.y - other.y);
+                const minDistance = this.outerRadius + other.outerRadius;
+                return distance <= minDistance;
+            }
+
+            isPointInside(px, py) {
+                const distance = Math.hypot(this.x - px, this.y - py);
+                return distance <= this.outerRadius;
+            }
+        }
+
+        const gears = [];
+        const BASE_VELOCITY = 0.05;
+        let selectedGear = null;
+        let drivingGear = null;
+
+        // Create driving gear
+        drivingGear = new Gear(canvas.width * 0.25, canvas.height * 0.5, 20, true);
+        gears.push(drivingGear);
+
+        // Drag and drop functionality
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Hide context menu on regular click
+            contextMenu.classList.remove('visible');
+
+            for (let gear of gears) {
+                if (gear.isPointInside(x, y)) {
+                    gear.dragging = true;
+                    gear.dragOffsetX = x - gear.x;
+                    gear.dragOffsetY = y - gear.y;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            for (let gear of gears) {
+                if (gear.dragging) {
+                    gear.x = x - gear.dragOffsetX;
+                    gear.y = y - gear.dragOffsetY;
+
+                    // Keep within bounds
+                    gear.x = Math.max(gear.outerRadius, Math.min(canvas.width - gear.outerRadius, gear.x));
+                    gear.y = Math.max(gear.outerRadius, Math.min(canvas.height - gear.outerRadius, gear.y));
+
+                    // Update connections while dragging
+                    updateConnections();
+                }
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            for (let gear of gears) {
+                gear.dragging = false;
+            }
+        });
+
+        // Right-click context menu
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Find if a gear was clicked
+            selectedGear = null;
+            for (let gear of gears) {
+                if (gear.isPointInside(x, y)) {
+                    selectedGear = gear;
+                    break;
+                }
+            }
+
+            // Show context menu if a gear is selected
+            if (selectedGear) {
+                contextMenu.style.left = (e.clientX - rect.left) + 'px';
+                contextMenu.style.top = (e.clientY - rect.top) + 'px';
+                
+                // Hide/show "Set as Driver" option based on whether gear is already the driver
+                const setDriverBtn = contextMenu.querySelector('.set-driver');
+                if (selectedGear.isDriving) {
+                    setDriverBtn.style.display = 'none';
+                } else {
+                    setDriverBtn.style.display = 'block';
+                }
+                
+                contextMenu.classList.add('visible');
+            }
+        });
+
+        // Hide context menu when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (e.target !== contextMenu && !contextMenu.contains(e.target)) {
+                contextMenu.classList.remove('visible');
+            }
+        });
+
+        function setAsDriver() {
+            if (selectedGear && !selectedGear.isDriving) {
+                // Remove driver status from current driving gear
+                drivingGear.isDriving = false;
+                drivingGear.color = '#ff6b6b';
+                drivingGear.angularVelocity = 0;
+                drivingGear.rotationDirection = 0;
+
+                // Set new driving gear
+                selectedGear.isDriving = true;
+                selectedGear.color = '#4da6ff';
+                selectedGear.angularVelocity = 0.05;
+                selectedGear.rotationDirection = 1;
+                drivingGear = selectedGear;
+
+                contextMenu.classList.remove('visible');
+                updateConnections();
+            }
+        }
+
+        function deleteSelectedGear() {
+            if (selectedGear && !selectedGear.isDriving) {
+                const index = gears.indexOf(selectedGear);
+                if (index > -1) {
+                    gears.splice(index, 1);
+                    selectedGear = null;
+                    contextMenu.classList.remove('visible');
+                    updateConnections();
+                }
+            }
+        }
+
+        // Drag from menu
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('gear-option')) {
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('teeth', e.target.dataset.teeth);
+                contextMenu.classList.remove('visible');
+            }
+        });
+
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const teeth = parseInt(e.dataTransfer.getData('teeth'));
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            addGear(x, y, teeth);
+        });
+
+        function addGear(x, y, teeth) {
+            const newGear = new Gear(x, y, teeth);
+            gears.push(newGear);
+            updateConnections();
+        }
+
+        function clearAllGears() {
+            while (gears.length > 1) {
+                gears.pop();
+            }
+            // Reset driving gear
+            drivingGear.isDriving = true;
+            drivingGear.color = '#4da6ff';
+            drivingGear.angularVelocity = 0.05;
+            drivingGear.rotationDirection = 1;
+            contextMenu.classList.remove('visible');
+            updateConnections();
+        }
+
+        function updateConnections() {
+            // Clear all connections first
+            for (let gear of gears) {
+                gear.connectedGears = [];
+            }
+
+            // Reset all non-driving gear directions
+            for (let gear of gears) {
+                if (!gear.isDriving) {
+                    gear.rotationDirection = 0;
+                }
+            }
+
+            // First pass: Assign rotation directions to all gears via BFS
+            assignRotationDirections();
+
+            // Second pass: Create connections only if they're physically valid
+            for (let i = 0; i < gears.length; i++) {
+                for (let j = i + 1; j < gears.length; j++) {
+                    if (gears[i].checkCollision(gears[j])) {
+                        // Check if connection is physically valid
+                        if (gears[i].rotationDirection !== 0 && gears[j].rotationDirection !== 0) {
+                            // Both have directions assigned - they must be opposite
+                            if (gears[i].rotationDirection !== gears[j].rotationDirection) {
+                                gears[i].connectedGears.push(gears[j]);
+                                gears[j].connectedGears.push(gears[i]);
+                            }
+                        } else {
+                            // At least one doesn't have a direction - can connect
+                            gears[i].connectedGears.push(gears[j]);
+                            gears[j].connectedGears.push(gears[i]);
+                        }
+                    }
+                }
+            }
+
+            // Re-assign directions now that valid connections are established
+            for (let gear of gears) {
+                if (!gear.isDriving) {
+                    gear.rotationDirection = 0;
+                }
+            }
+            assignRotationDirections();
+
+            // Find all gears connected to the driving gear
+            let spinningGears = new Set();
+            spinningGears.add(drivingGear);
+
+            let queue = [drivingGear];
+            while (queue.length > 0) {
+                let currentGear = queue.shift();
+                for (let connectedGear of currentGear.connectedGears) {
+                    if (!spinningGears.has(connectedGear)) {
+                        spinningGears.add(connectedGear);
+                        queue.push(connectedGear);
+                    }
+                }
+            }
+
+            // Calculate velocities for all spinning gears
+            for (let gear of gears) {
+                if (spinningGears.has(gear)) {
+                    let velocityInfo = calculateVelocityAndDirection(gear);
+                    gear.angularVelocity = velocityInfo.velocity;
+                } else {
+                    gear.angularVelocity = 0;
+                }
+            }
+
+            updateStats();
+        }
+
+        function assignRotationDirections() {
+            // BFS to assign consistent rotation directions to all gears
+            let visited = new Set();
+            let queue = [drivingGear];
+            drivingGear.rotationDirection = 1;
+            visited.add(drivingGear);
+
+            while (queue.length > 0) {
+                let currentGear = queue.shift();
+
+                for (let connectedGear of currentGear.connectedGears) {
+                    if (!visited.has(connectedGear)) {
+                        // Connected gears rotate in opposite directions
+                        connectedGear.rotationDirection = -currentGear.rotationDirection;
+                        visited.add(connectedGear);
+                        queue.push(connectedGear);
+                    }
+                }
+            }
+        }
+
+        function calculateVelocityAndDirection(targetGear) {
+            // Find path from target gear to driving gear
+            let visited = new Set();
+            let path = findPathToDriver(targetGear, visited);
+            
+            if (path.length === 0) {
+                return {velocity: 0, direction: 1};
+            }
+
+            // Calculate cumulative ratio and direction along the path
+            let cumulativeRatio = 1;
+            let direction = 1;
+
+            // Path goes from target gear back to driving gear
+            for (let i = 0; i < path.length - 1; i++) {
+                let currentGear = path[i];
+                let nextGear = path[i + 1];
+                
+                // Ratio between these two gears
+                let ratio = nextGear.teeth / currentGear.teeth;
+                cumulativeRatio *= ratio;
+                
+                // Each gear connection reverses direction
+                direction *= -1;
+            }
+
+            // Final velocity = base velocity * cumulative ratio
+            let velocity = BASE_VELOCITY * cumulativeRatio * direction;
+
+            return {velocity: velocity, direction: direction};
+        }
+
+        function findPathToDriver(startGear, visited) {
+            // BFS to find shortest path to driving gear
+            let queue = [{gear: startGear, path: [startGear]}];
+            visited.add(startGear);
+
+            while (queue.length > 0) {
+                let {gear: current, path: currentPath} = queue.shift();
+
+                if (current.isDriving) {
+                    return currentPath;
+                }
+
+                for (let connected of current.connectedGears) {
+                    if (!visited.has(connected)) {
+                        visited.add(connected);
+                        queue.push({
+                            gear: connected,
+                            path: [...currentPath, connected]
+                        });
+                    }
+                }
+            }
+
+            return [];
+        }
+
+        function updateStats() {
+            document.getElementById('gearCount').textContent = gears.length - 1;
+
+            let pairCount = 0;
+            let ratioHTML = '';
+
+            for (let i = 0; i < gears.length; i++) {
+                if (gears[i].isDriving) {
+                    for (let connected of gears[i].connectedGears) {
+                        pairCount++;
+                        const drivingTeeth = gears[i].teeth;
+                        const drivenTeeth = connected.teeth;
+                        const gearRatio = (drivenTeeth / drivingTeeth).toFixed(2);
+                        
+                        ratioHTML += `<div style="margin: 8px 0; padding: 8px; background: #f0f0f0; border-radius: 3px;">
+                            <strong>${drivingTeeth} : ${drivenTeeth}</strong><br>
+                            Ratio: <span style="color: #667eea;">${gearRatio}:1</span><br>
+                            <small>${drivenTeeth > drivingTeeth ? 'Speed Reduction' : 'Speed Multiplication'}</small>
+                        </div>`;
+                    }
+                }
+            }
+
+            document.getElementById('pairCount').textContent = pairCount;
+            document.getElementById('ratioDisplay').innerHTML = ratioHTML || 'No gears connected yet';
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.fillStyle = '#f9f9f9';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+
+            // Update and draw gears
+            for (let gear of gears) {
+                gear.update();
+                gear.drawGear(ctx);
+            }
+
+            // Draw connections
+            for (let gear of gears) {
+                if (gear.connectedGears.length > 0) {
+                    for (let connected of gear.connectedGears) {
+                        // Draw connection line
+                        ctx.strokeStyle = '#4CAF50';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([]);
+                        ctx.beginPath();
+                        ctx.moveTo(gear.x, gear.y);
+                        ctx.lineTo(connected.x, connected.y);
+                        ctx.stroke();
+
+                        // Draw connection indicator circle
+                        ctx.fillStyle = 'rgba(76, 175, 80, 0.2)';
+                        ctx.beginPath();
+                        ctx.arc(gear.x, gear.y, gear.outerRadius + 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

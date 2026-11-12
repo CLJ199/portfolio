@@ -1,0 +1,307 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(to bottom, rgba(2, 6, 23, 1), rgba(3, 7, 18, 1));
+}
+
+.hero-mesh {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
+}
+
+.modern-panel {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.76));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+}
+
+.showcase-panel {
+  position: relative;
+  border-radius: 1.75rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(8, 15, 31, 0.98), rgba(15, 23, 42, 0.88));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(34, 211, 238, 0.05);
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: repeat(2, minmax(150px, 1fr));
+  gap: 1rem;
+  min-height: 430px;
+}
+
+.showcase-block {
+  position: relative;
+  border-radius: 1.25rem;
+  border: 1px dashed rgba(103, 232, 249, 0.25);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(30, 41, 59, 0.58));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(165, 243, 252, 0.75);
+  text-align: center;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.showcase-block::before,
+.image-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(45deg, transparent 48%, rgba(34, 211, 238, 0.08) 49%, transparent 50%);
+  background-size: 24px 24px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.showcase-block.large {
+  grid-row: 1 / span 2;
+}
+
+.showcase-block.small {
+  min-height: 150px;
+}
+
+.stat-card {
+  background: rgba(8, 15, 31, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.info-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.55);
+  padding: 1rem;
+}
+
+.info-chip-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(103 232 249);
+}
+
+.info-chip-text {
+  font-size: 0.85rem;
+  color: rgb(203 213 225);
+  line-height: 1.5;
+}
+
+.section-tag {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  color: rgb(34 211 238);
+}
+
+.section-title {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.1;
+  font-weight: 800;
+  margin-top: 0.9rem;
+}
+
+.section-copy {
+  margin-top: 1rem;
+  color: rgb(203 213 225);
+  line-height: 1.9;
+  max-width: 48rem;
+}
+
+.image-placeholder {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px dashed rgba(103, 232, 249, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 59, 0.56));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(165, 243, 252, 0.76);
+  padding: 1rem;
+}
+
+.image-placeholder.tall {
+  min-height: 520px;
+}
+
+.image-placeholder.medium {
+  min-height: 247px;
+}
+
+.image-placeholder.small {
+  min-height: 200px;
+}
+
+.feature-card {
+  padding: 1.4rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.74));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feature-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(255 255 255);
+}
+
+.feature-card p {
+  margin-top: 0.75rem;
+  color: rgb(203 213 225);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.price-card {
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.price-card.featured {
+  border-color: rgba(34, 211, 238, 0.28);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(34, 211, 238, 0.08);
+}
+
+.price-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgb(34 211 238);
+  font-weight: 700;
+}
+
+.price-card h3 {
+  margin-top: 0.85rem;
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.price-card ul {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.7rem;
+  color: rgb(203 213 225);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgb(226 232 240);
+}
+
+.input-field {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.75);
+  padding: 0.95rem 1rem;
+  color: white;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.input-field::placeholder {
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.input-field:focus {
+  border-color: rgba(34, 211, 238, 0.8);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.14);
+}
+
+.estimate-box {
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tip-item {
+  position: relative;
+  padding-left: 1.2rem;
+  line-height: 1.6;
+}
+
+.tip-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgb(34 211 238);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+}
+
+.contact-card {
+  border-radius: 1.25rem;
+  padding: 1.2rem;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contact-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgb(148 163 184);
+}
+
+.contact-value {
+  margin-top: 0.6rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .showcase-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .showcase-block.large {
+    grid-row: auto;
+    min-height: 260px;
+  }
+}

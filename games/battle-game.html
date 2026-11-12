@@ -1,0 +1,4260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battleship Tactical Strategy Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #5f5f5f 0%, #777777 100%);
+      min-height: 100vh;
+      padding: 5px;
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-menu,
+    .gamemode-selection {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      gap: 30px;
+    }
+
+    .main-menu.active,
+    .gamemode-selection.active,
+    .game-screen.active {
+      display: flex;
+    }
+
+    .menu-title {
+      font-size: 3.5em;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .menu-subtitle {
+      font-size: 1.2em;
+      color: #ddd;
+      margin-bottom: 40px;
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-width: 300px;
+    }
+
+    .menu-btn {
+      padding: 15px 40px;
+      font-size: 1.2em;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .menu-btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .menu-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .menu-btn-exit {
+      background: #555;
+      color: white;
+    }
+
+    .menu-btn-exit:hover {
+      background: #777;
+      transform: translateY(-3px);
+    }
+
+    .gamemode-title {
+      font-size: 2.5em;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .gamemode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 350px;
+    }
+
+    .gamemode-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .ai-mode-card {
+      border: 1px solid rgba(255, 193, 7, 0.45);
+      box-shadow: 0 0 18px rgba(255, 193, 7, 0.08);
+    }
+
+    .ai-mode-card::after {
+      content: 'AI OPPONENT';
+      display: block;
+      margin-top: 10px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+    }
+
+    .gamemode-card:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-5px);
+    }
+
+    .gamemode-card h3 {
+      color: #fff;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .gamemode-card p {
+      color: #ddd;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+
+    .game-screen {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      min-height: 100vh;
+      padding: 4px;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.32);
+      padding: 6px 10px;
+      border-radius: 4px;
+      color: white;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+      font-size: 0.75em;
+      min-height: 30px;
+    }
+
+    .game-title {
+      font-size: 1em;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .game-info {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .back-to-menu-btn,
+    .rotate-btn,
+    .end-turn-btn,
+    .confirm-btn,
+    .toggle-visibility-btn,
+    .action-mode-btn,
+    .cancel-action-btn {
+      padding: 4px 10px;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 0.8em;
+      white-space: nowrap;
+    }
+
+    .back-to-menu-btn {
+      background: #f5576c;
+    }
+
+    .back-to-menu-btn:hover {
+      background: #d63447;
+      transform: translateY(-1px);
+    }
+
+    .rotate-btn {
+      background: #ff9800;
+    }
+
+    .rotate-btn:hover {
+      background: #e68900;
+    }
+
+    .end-turn-btn {
+      background: #43a047;
+    }
+
+    .end-turn-btn:hover {
+      background: #2e7d32;
+    }
+
+    .confirm-btn {
+      background: #6a5acd;
+    }
+
+    .confirm-btn:hover {
+      background: #5946c4;
+    }
+
+    .toggle-visibility-btn {
+      background: #546e7a;
+    }
+
+    .toggle-visibility-btn:hover {
+      background: #455a64;
+    }
+
+    .action-mode-btn {
+      background: #00897b;
+    }
+
+    .action-mode-btn:hover {
+      background: #00796b;
+    }
+
+    .cancel-action-btn {
+      background: #8d6e63;
+    }
+
+    .cancel-action-btn:hover {
+      background: #795548;
+    }
+
+    .action-mode-btn.active {
+      outline: 1px solid #fff;
+      background: #00a693;
+    }
+
+    .rotate-btn:disabled,
+    .confirm-btn:disabled,
+    .toggle-visibility-btn:disabled,
+    .end-turn-btn:disabled,
+    .menu-btn:disabled,
+    .action-mode-btn:disabled,
+    .cancel-action-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+      filter: grayscale(0.25);
+    }
+
+    .phase-bar {
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 0.72em;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .phase-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
+    .board-score-strip {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .side-score-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 0.78em;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.28);
+      min-height: 38px;
+      flex-wrap: wrap;
+    }
+
+    .side-score-box.red {
+      border: 2px solid rgba(200, 50, 50, 0.5);
+      color: #ffd0d0;
+    }
+
+    .side-score-box.blue {
+      border: 2px solid rgba(50, 100, 200, 0.5);
+      color: #d5e4ff;
+    }
+
+    .center-score-box {
+      padding: 8px 12px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.75em;
+      text-align: center;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .score-label {
+      color: #bbb;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-value {
+      color: #4a9eff;
+    }
+
+    .board-wrap-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .game-board-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: auto;
+      overflow-y: visible;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 4px;
+      padding: 8px 4px;
+      width: 100%;
+    }
+
+    .board-wrapper {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+      align-items: start;
+      justify-items: start;
+      min-width: fit-content;
+    }
+
+    .column-labels-spacer {
+      width: 28px;
+      height: 16px;
+    }
+
+    .column-labels {
+      display: flex;
+      gap: 0;
+      justify-content: flex-start;
+    }
+
+    .column-label {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #d0d0d0;
+      font-size: 0.6em;
+      flex-shrink: 0;
+    }
+
+    .row-labels,
+    .row-labels-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .row-label,
+    .row-label-right {
+      width: 28px;
+      height: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #d0d0d0;
+      font-size: 0.55em;
+      flex-shrink: 0;
+    }
+
+    .row-label-right {
+      margin-left: 2px;
+    }
+
+    .game-board {
+      display: flex;
+      flex-direction: column;
+      background: #202020;
+      border: 2px solid #444;
+      border-radius: 2px;
+      gap: 0;
+      min-width: fit-content;
+    }
+
+    .board-row {
+      display: flex;
+      gap: 0;
+    }
+
+    .board-tile {
+      width: 16px;
+      height: 16px;
+      border: 0.5px solid #353535;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.42em;
+      color: #ddd;
+      background: #121212;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .board-tile:hover {
+      filter: brightness(1.1);
+    }
+
+    .board-tile.red-side {
+      background: rgba(200, 50, 50, 0.18);
+    }
+
+    .board-tile.dmz {
+      background: rgba(140, 140, 140, 0.22);
+      border: 1px solid #ff3333;
+    }
+
+    .board-tile.blue-side {
+      background: rgba(50, 100, 200, 0.18);
+    }
+
+    .board-tile.selected {
+      outline: 1px solid #fff;
+      outline-offset: -1px;
+    }
+
+    .board-tile.red-selected {
+      background: rgba(200, 50, 50, 0.6) !important;
+      border-color: #fff !important;
+    }
+
+    .board-tile.dmz-selected {
+      background: rgba(200, 200, 50, 0.5) !important;
+      border-color: #fff !important;
+    }
+
+    .board-tile.blue-selected {
+      background: rgba(50, 100, 200, 0.6) !important;
+      border-color: #fff !important;
+    }
+
+    .board-tile.preview-valid {
+      box-shadow: inset 0 0 0 1px #7cff7c;
+      background: rgba(124, 255, 124, 0.25) !important;
+    }
+
+    .board-tile.preview-invalid {
+      box-shadow: inset 0 0 0 1px #ff6b6b;
+      background: rgba(255, 107, 107, 0.25) !important;
+    }
+
+    .board-tile.move-source {
+      box-shadow: inset 0 0 0 1px #ffd54f;
+      background: rgba(255, 213, 79, 0.28) !important;
+    }
+
+    .board-tile.attack-source {
+      box-shadow: inset 0 0 0 1px #ff8a65;
+      background: rgba(255, 138, 101, 0.30) !important;
+    }
+
+    .board-tile.attack-target-valid {
+      box-shadow: inset 0 0 0 1px #66ffcc;
+      background: rgba(102, 255, 204, 0.18) !important;
+    }
+
+    .board-tile.attack-target-invalid {
+      box-shadow: inset 0 0 0 1px #ef5350;
+      background: rgba(239, 83, 80, 0.16) !important;
+    }
+
+    .board-tile.discovered-red {
+      box-shadow: inset 0 0 0 1px rgba(255, 120, 120, 0.35);
+    }
+
+    .board-tile.discovered-blue {
+      box-shadow: inset 0 0 0 1px rgba(120, 170, 255, 0.35);
+    }
+
+    .board-tile.move-valid {
+      box-shadow: inset 0 0 0 1px #4fc3f7;
+      background: rgba(79, 195, 247, 0.25) !important;
+    }
+
+    .board-tile.move-invalid {
+      box-shadow: inset 0 0 0 1px #ef5350;
+      background: rgba(239, 83, 80, 0.20) !important;
+    }
+
+    .board-tile.occupied-red {
+      background: rgba(220, 70, 70, 0.9) !important;
+      color: white;
+      font-weight: bold;
+    }
+
+    .board-tile.occupied-blue {
+      background: rgba(70, 120, 220, 0.9) !important;
+      color: white;
+      font-weight: bold;
+    }
+
+    /*
+     * Hidden enemies have no visual footprint. In AI mode the
+     * renderer normally does not add this class at all, but keeping
+     * this rule neutral prevents any accidental unit silhouette.
+     */
+    .board-tile.hidden-enemy {
+      color: transparent !important;
+    }
+
+    .board-tile.anchor-tile {
+      outline: 1px solid #fff;
+      outline-offset: -1px;
+    }
+
+    .tile-cost-badge {
+      position: absolute;
+      bottom: 0;
+      right: 1px;
+      font-size: 0.34em;
+      line-height: 1;
+      color: #ffe082;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      pointer-events: none;
+    }
+
+    .game-info-panel {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px 10px;
+      border-radius: 4px;
+      color: white;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+      font-size: 0.75em;
+      min-height: 25px;
+    }
+
+    .panel-section {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .panel-section h4 {
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c0c0c0;
+    }
+
+    .panel-value {
+      font-size: 0.95em;
+      font-weight: bold;
+      color: #4a9eff;
+    }
+
+    .panel-value.selected-unit {
+      color: #ffd54f;
+    }
+
+    .status-error {
+      color: #ff8a80 !important;
+    }
+
+    .units-panel {
+      display: flex;
+      gap: 8px;
+      min-height: 140px;
+      margin-top: 8px;
+      align-items: flex-start;
+    }
+
+    .player-units-table {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      min-height: 180px;
+    }
+
+    .player-units-table.red {
+      border: 2px solid rgba(200, 50, 50, 0.5);
+    }
+
+    .player-units-table.blue {
+      border: 2px solid rgba(50, 100, 200, 0.5);
+    }
+
+    .table-header {
+      padding: 6px 8px;
+      font-weight: bold;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .table-header.red {
+      background: rgba(200, 50, 50, 0.3);
+      color: #ffcccc;
+    }
+
+    .table-header.blue {
+      background: rgba(50, 100, 200, 0.3);
+      color: #ccddff;
+    }
+
+    .table-content {
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .table-legend,
+    .unit-row {
+      display: grid;
+      grid-template-columns: 2.2fr 0.9fr 1fr 0.9fr 0.9fr 1fr 1fr;
+      column-gap: 10px;
+      align-items: center;
+    }
+
+    .unit-row {
+      padding: 5px 6px;
+      margin-bottom: 2px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.68em;
+      color: white;
+    }
+
+    .unit-row:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .unit-row.selected {
+      outline: 1px solid #ffd54f;
+      background: rgba(255, 213, 79, 0.12);
+    }
+
+    .unit-row.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .unit-name {
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .unit-stat,
+    .unit-cost {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .unit-cost {
+      color: #ffeb3b;
+      font-weight: bold;
+    }
+
+    .unit-size { color: #90caf9; }
+    .unit-health { color: #ef9a9a; }
+    .unit-damage { color: #a5d6a7; }
+    .unit-range { color: #80cbc4; }
+    .unit-rate { color: #ce93d8; }
+
+    .table-legend {
+      padding: 5px 6px;
+      font-size: 0.62em;
+      color: #d0d0d0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      text-transform: uppercase;
+    }
+
+    .legend-center {
+      text-align: center;
+    }
+
+    @media (max-width: 1200px) {
+      .table-legend,
+      .unit-row {
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      }
+
+      .unit-rate,
+      .unit-health,
+      .legend-rate,
+      .legend-health {
+        display: none;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .unit-range,
+      .legend-range {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .units-panel {
+        flex-direction: column;
+      }
+
+      .board-score-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================================
+       LONG-RANGE ATTACK / COIN FLIP
+       ============================================================ */
+
+    .board-tile.attack-target-long-range {
+      box-shadow: inset 0 0 0 2px #ffb74d;
+      background: rgba(255, 183, 77, 0.22) !important;
+    }
+
+    /* ============================================================
+       ATTACK IMPACT / COMBAT FEEDBACK
+       ============================================================ */
+
+    .attack-impact-marker {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      font-family: Georgia, serif;
+      font-weight: 900;
+      font-size: clamp(12px, 1.2vw, 22px);
+      letter-spacing: 1px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+      animation: attackImpact 1.05s ease-out forwards;
+    }
+
+    .attack-impact-marker.hit {
+      color: #ff5252;
+    }
+
+    .attack-impact-marker.miss {
+      color: #f5f5f5;
+    }
+
+    .attack-impact-marker.destroyed {
+      color: #ffb74d;
+      font-size: clamp(11px, 1vw, 18px);
+    }
+
+    .attack-impact-ring {
+      position: absolute;
+      width: 55%;
+      height: 55%;
+      border: 3px solid currentColor;
+      border-radius: 50%;
+      opacity: 0.95;
+      animation: attackImpactRing 0.75s ease-out forwards;
+    }
+
+    @keyframes attackImpact {
+      0% {
+        opacity: 0;
+        transform: scale(0.45);
+      }
+      18% {
+        opacity: 1;
+        transform: scale(1.12);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.0);
+      }
+    }
+
+    @keyframes attackImpactRing {
+      0% {
+        opacity: 0.95;
+        transform: scale(0.35);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.8);
+      }
+    }
+
+    .board-tile.attack-hit-flash {
+      animation: attackTileFlash 0.6s ease-out;
+    }
+
+    @keyframes attackTileFlash {
+      0%, 100% { filter: brightness(1); }
+      25% { filter: brightness(2.0); }
+      55% { filter: brightness(1.35); }
+    }
+
+    .coin-flip-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .coin-flip-panel {
+      width: min(360px, 90vw);
+      padding: 24px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #1d2430, #0e131b);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+      color: white;
+      text-align: center;
+    }
+
+    .coin-flip-title {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .coin-flip-subtitle {
+      margin: 0 0 18px;
+      color: #d0d7e2;
+      line-height: 1.45;
+      font-size: 0.9rem;
+    }
+
+    .coin-flip-distance {
+      margin: 8px 0 18px;
+      color: #ffcc80;
+      font-weight: 700;
+    }
+
+    .coin-flip-button {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .coin-flip-button:disabled {
+      cursor: default;
+    }
+
+    .attack-coin {
+      width: 132px;
+      height: 132px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.2, 0.75, 0.25, 1);
+      margin: 0 auto 20px;
+    }
+
+    .attack-coin.flipping {
+      animation: attackCoinFlip 0.9s ease-in-out;
+    }
+
+    @keyframes attackCoinFlip {
+      0% {
+        transform: rotateY(0deg) rotateX(0deg);
+      }
+      100% {
+        transform: rotateY(1800deg) rotateX(8deg);
+      }
+    }
+
+    .coin-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 7px solid #d8a93b;
+      background:
+        radial-gradient(circle at 35% 30%, #fff3b0, #d8a93b 48%, #8e6417 100%);
+      box-shadow:
+        inset 0 0 0 3px rgba(255,255,255,0.35),
+        0 10px 25px rgba(0,0,0,0.5);
+      color: #4b3510;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .coin-face.back {
+      transform: rotateY(180deg);
+    }
+
+    .coin-result {
+      min-height: 28px;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .coin-instruction {
+      color: #aeb7c5;
+      font-size: 0.78rem;
+    }
+
+    .coin-flip-panel.result .coin-instruction {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="mainMenu" class="main-menu active">
+      <div>
+        <h1 class="menu-title">⚔️ TACTICAL STRATEGY</h1>
+        <p class="menu-subtitle">Battleship-Inspired Combat Game</p>
+      </div>
+      <div class="menu-buttons">
+        <button class="menu-btn menu-btn-primary" onclick="goToGamemodeSelection()">Start Game</button>
+        <button class="menu-btn menu-btn-exit" onclick="exitGame()">Exit</button>
+      </div>
+    </div>
+
+    <div id="gamemodeSelection" class="gamemode-selection">
+      <h2 class="gamemode-title">Select Game Mode</h2>
+      <div class="gamemode-buttons">
+        <div class="gamemode-card" onclick="startGame('standard')">
+          <h3>Standard Mode</h3>
+          <p>Starting Budget: \$1,000 per player</p>
+        </div>
+        <div class="gamemode-card" onclick="startGame('long_game')">
+          <h3>Long Game Mode</h3>
+          <p>Starting Budget: \$500 per player</p>
+        </div>
+        <div class="gamemode-card ai-mode-card" onclick="startGame('standard_ai')">
+          <h3>Standard vs AI</h3>
+          <p>Play as Red against an AI opponent</p>
+        </div>
+        <div class="gamemode-card ai-mode-card" onclick="startGame('long_game_ai')">
+          <h3>Long Game vs AI</h3>
+          <p>\$500 starting budget • AI opponent</p>
+        </div>
+        <button class="menu-btn menu-btn-exit" onclick="backToMainMenu()">Back to Menu</button>
+      </div>
+    </div>
+
+    <div id="gameScreen" class="game-screen">
+      <div class="game-header">
+        <h1 class="game-title">Tactical Strategy Battle</h1>
+
+        <div class="game-info">
+          <div class="panel-section">
+            <h4>Mode:</h4>
+            <span class="panel-value" id="gamemodeDisplay">-</span>
+          </div>
+          <div class="panel-section">
+            <h4>Phase:</h4>
+            <span class="panel-value" id="phaseDisplay">-</span>
+          </div>
+          <div class="panel-section">
+            <h4>Turn:</h4>
+            <span class="panel-value" id="turnDisplay">RED - Turn 1</span>
+          </div>
+          <div class="panel-section">
+            <h4>Active Budget:</h4>
+            <span class="panel-value" id="budgetDisplay">\$0</span>
+          </div>
+          <div class="panel-section">
+            <h4>Unit:</h4>
+            <span class="panel-value selected-unit" id="selectedUnitDisplay">None</span>
+          </div>
+          <div class="panel-section">
+            <h4>Facing:</h4>
+            <span class="panel-value" id="rotationDisplay">Horizontal</span>
+          </div>
+          <div class="panel-section">
+            <h4>Action:</h4>
+            <span class="panel-value" id="actionModeDisplay">Place</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="placeModeBtn" class="action-mode-btn active" onclick="setActionMode('place')">Place Mode</button>
+          <button id="moveModeBtn" class="action-mode-btn" onclick="setActionMode('move')">Move Mode</button>
+          <button id="attackModeBtn" class="action-mode-btn" onclick="setActionMode('attack')">Attack Mode</button>
+          <button id="cancelActionBtn" class="cancel-action-btn" onclick="cancelCurrentAction()">Cancel</button>
+          <button id="rotateBtn" class="rotate-btn" onclick="rotateSelectedUnit()">Rotate</button>
+          <button id="confirmBtn" class="confirm-btn" onclick="confirmSetup()">Confirm Setup</button>
+          <button id="revealBtn" class="toggle-visibility-btn" onclick="toggleRevealMode()">Reveal Board</button>
+          <button id="endTurnBtn" class="end-turn-btn" onclick="endTurn()">End Turn</button>
+          <button class="back-to-menu-btn" onclick="backToMainMenu()">Back</button>
+        </div>
+      </div>
+
+      <div class="phase-bar" id="phaseBar"></div>
+
+      <div class="board-wrap-stack">
+        <div class="board-score-strip">
+          <div class="side-score-box red">
+            <span class="score-label">Red Player Points:</span>
+            <span class="score-value" id="redTopPointsDisplay">0</span>
+            <span class="score-label">Budget:</span>
+            <span class="score-value" id="redTopBudgetDisplay">\$0</span>
+          </div>
+
+          <div class="center-score-box">
+            <span id="centerStatusMini">Setup Phase</span>
+          </div>
+
+          <div class="side-score-box blue">
+            <span class="score-label">Blue Player Points:</span>
+            <span class="score-value" id="blueTopPointsDisplay">0</span>
+            <span class="score-label">Budget:</span>
+            <span class="score-value" id="blueTopBudgetDisplay">\$0</span>
+          </div>
+        </div>
+
+        <div class="game-board-container">
+          <div class="board-wrapper">
+            <div class="column-labels-spacer"></div>
+            <div class="column-labels" id="columnLabels"></div>
+            <div class="column-labels-spacer"></div>
+
+            <div class="row-labels" id="rowLabels"></div>
+            <div class="game-board" id="gameBoard"></div>
+            <div class="row-labels-right" id="rowLabelsRight"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-info-panel">
+        <div class="panel-section">
+          <h4>Tile Cursor:</h4>
+          <span class="panel-value" id="hoverTileDisplay">None</span>
+        </div>
+        <div class="panel-section">
+          <h4>Selected Tile:</h4>
+          <span class="panel-value" id="selectedTileDisplay">None</span>
+        </div>
+        <div class="panel-section">
+          <h4>Selected Unit Anchor:</h4>
+          <span class="panel-value" id="boardSelectedUnitDisplay">None</span>
+        </div>
+        <div class="panel-section">
+          <h4>Move Source:</h4>
+          <span class="panel-value" id="moveSourceDisplay">None</span>
+        </div>
+        <div class="panel-section">
+          <h4>Attack Source:</h4>
+          <span class="panel-value" id="attackSourceDisplay">None</span>
+        </div>
+        <div class="panel-section">
+          <h4>Red Units:</h4>
+          <span class="panel-value" id="redUnitsDisplay">0</span>
+        </div>
+        <div class="panel-section">
+          <h4>Blue Units:</h4>
+          <span class="panel-value" id="blueUnitsDisplay">0</span>
+        </div>
+        <div class="panel-section">
+          <h4>Red Budget:</h4>
+          <span class="panel-value" id="redBudgetDisplay">\$0</span>
+        </div>
+        <div class="panel-section">
+          <h4>Blue Budget:</h4>
+          <span class="panel-value" id="blueBudgetDisplay">\$0</span>
+        </div>
+        <div class="panel-section">
+          <h4>Status:</h4>
+          <span class="panel-value" id="statusDisplay">Select a unit, then click a tile to place it.</span>
+        </div>
+      </div>
+
+      <div class="units-panel">
+        <div class="player-units-table red">
+          <div class="table-header red">Red Player Units</div>
+          <div class="table-legend">
+            <div>Name</div>
+            <div class="legend-center">Cost</div>
+            <div class="legend-center">Size</div>
+            <div class="legend-center legend-health">HP</div>
+            <div class="legend-center">DMG</div>
+            <div class="legend-center legend-range">RNG</div>
+            <div class="legend-center legend-rate">Rate</div>
+          </div>
+          <div class="table-content" id="redUnitsTable"></div>
+        </div>
+
+        <div class="player-units-table blue">
+          <div class="table-header blue">Blue Player Units</div>
+          <div class="table-legend">
+            <div>Name</div>
+            <div class="legend-center">Cost</div>
+            <div class="legend-center">Size</div>
+            <div class="legend-center legend-health">HP</div>
+            <div class="legend-center">DMG</div>
+            <div class="legend-center legend-range">RNG</div>
+            <div class="legend-center legend-rate">Rate</div>
+          </div>
+          <div class="table-content" id="blueUnitsTable"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCREENS = {
+      MAIN_MENU: 'main_menu',
+      GAMEMODE_SELECTION: 'gamemode_selection',
+      GAME: 'game'
+    };
+
+    const SCREEN_DOM_IDS = {
+      [SCREENS.MAIN_MENU]: 'mainMenu',
+      [SCREENS.GAMEMODE_SELECTION]: 'gamemodeSelection',
+      [SCREENS.GAME]: 'gameScreen'
+    };
+
+    const PHASES = {
+      SETUP_RED: 'setup_red',
+      SETUP_BLUE: 'setup_blue',
+      BATTLE: 'battle'
+    };
+
+    const ACTION_MODES = {
+      PLACE: 'place',
+      MOVE: 'move',
+      ATTACK: 'attack'
+    };
+
+
+    /*
+     * Holds an attack that is waiting for the long-range coin flip.
+     * While this is non-null, the board is temporarily paused.
+     */
+    let pendingCoinFlipAttack = null;
+
+    /*
+     * Keeps an attack turn open long enough for the player to see
+     * the shot, impact, and result before the opponent responds.
+     */
+    let attackResolutionPromise = Promise.resolve();
+    let resolveAttackResolution = null;
+    let attackResolutionPending = false;
+
+    const COMBAT_TIMING = {
+      playerImpactPause: 1100,
+      aiAttackWindup: 650,
+      aiTurnStartDelay: 850,
+      aiMoveWindup: 500,
+      coinResultPause: 950
+    };
+
+    const GAME_CONFIG = {
+      board: {
+        totalWidth: 52,
+        totalHeight: 24,
+        redNormalWidth: 23,
+        dmzWidth: 6,
+        blueNormalWidth: 23
+      },
+      gamemodes: {
+        standard: {
+          name: 'Standard Mode',
+          startingBudget: 1000,
+          pointGeneration: false,
+          ai: false
+        },
+        long_game: {
+          name: 'Long Game Mode',
+          startingBudget: 500,
+          pointGeneration: true,
+          ai: false
+        },
+        standard_ai: {
+          name: 'Standard Mode vs AI',
+          startingBudget: 1000,
+          pointGeneration: false,
+          ai: true
+        },
+        long_game_ai: {
+          name: 'Long Game Mode vs AI',
+          startingBudget: 500,
+          pointGeneration: true,
+          ai: true
+        }
+      },
+      units: [
+        { id: 'command_base', name: 'Command Base', cost: 0, width: 2, height: 2, health: 80, damage: 0, range: 0, rate: '-', short: 'CB' },
+        { id: 'rifle_squad', name: 'Rifle Squad', cost: 125, width: 2, height: 2, health: 2, damage: 2, range: 6, rate: '1/T', short: 'RF' },
+        { id: 'grenadier_squad', name: 'Grenadier Squad', cost: 225, width: 2, height: 2, health: 2, damage: 4, range: 6, rate: '2/T', short: 'GR' },
+        { id: 'sniper', name: 'Sniper', cost: 300, width: 1, height: 1, health: 1, damage: 4, range: Infinity, rate: '1/T', short: 'SN' },
+        { id: 'pillbox', name: 'Pillbox', cost: 225, width: 2, height: 2, health: 6, damage: 'G', range: 8, rate: 'G', short: 'PB' },
+        { id: 'apc', name: 'APC', cost: 400, width: 3, height: 2, health: 6, damage: 0, range: 0, rate: '-', short: 'AP' },
+        { id: 'ifv', name: 'IFV', cost: 500, width: 3, height: 3, health: 6, damage: 6, range: 10, rate: '2/T', short: 'IF' },
+        { id: 'tank', name: 'Tank', cost: 600, width: 4, height: 4, health: 10, damage: 8, range: 12, rate: '3/T', short: 'TK' },
+        { id: 'artillery', name: 'Artillery', cost: 800, width: 4, height: 4, health: 3, damage: 10, range: Infinity, rate: '5/T', short: 'AR' },
+        { id: 'medic', name: 'Medic', cost: 250, width: 2, height: 2, health: 2, damage: 1, range: 4, rate: '1/T', short: 'MD' },
+        { id: 'mechanic', name: 'Mechanic', cost: 250, width: 2, height: 2, health: 2, damage: 1, range: 4, rate: '1/T', short: 'MC' },
+        { id: 'nuclear_option', name: 'Nuclear Option', cost: 0, width: 1, height: 1, health: 1, damage: 0, range: 0, rate: '-', short: 'NU' }
+      ]
+    };
+
+    const redNormalDisplay = 'ABCDEFGHIJKLMNOPQRSTUVW'.split('');
+    const dmzDisplay = ['X', 'Y', 'Z', 'Z', 'Y', 'X'];
+    const blueNormalDisplay = 'WVUTSRQPONMLKJIHGFEDCBA'.split('');
+    const displayColumns = [...redNormalDisplay, ...dmzDisplay, ...blueNormalDisplay];
+
+    const RED_START = 0;
+    const RED_END = 22;
+    const DMZ_START = 23;
+    const DMZ_END = 28;
+    const BLUE_START = 29;
+    const BLUE_END = 51;
+
+    function freshState() {
+      return {
+        currentScreen: SCREENS.MAIN_MENU,
+        gamemode: null,
+        aiEnabled: false,
+        aiPlayer: 'blue',
+        aiBusy: false,
+        phase: null,
+        budget: { red: 0, blue: 0 },
+        points: { red: 0, blue: 0 },
+        currentTurn: 'red',
+        turn: 1,
+        battleTick: 0,
+        selectedTile: null,
+        hoverTile: null,
+        selectedUnit: null,
+        selectedBoardUnitId: null,
+        rotation: 'horizontal',
+        revealMode: false,
+        viewingPlayer: 'red',
+        actionMode: ACTION_MODES.PLACE,
+        moveSourceUnitId: null,
+        attackSourceUnitId: null,
+        units: {
+          red: [],
+          blue: []
+        },
+        occupancy: {},
+        discoveredTiles: {
+          red: {},
+          blue: {}
+        },
+        /*
+         * A tile being discovered does NOT reveal a unit.
+         * Units are only revealed to a player after that player
+         * actually hits the enemy unit.
+         */
+        revealedUnits: {
+          red: {},
+          blue: {}
+        },
+        /*
+         * AI-only combat memory. The AI is never given the Red
+         * player's unit locations. It only records the results of
+         * its own shots and uses those results to make guesses.
+         */
+        aiShotHistory: {
+          red: {},
+          blue: {}
+        },
+        previewTiles: []
+      };
+    }
+
+    let gameState = freshState();
+    let uniqueCounter = 0;
+
+    function init() {
+      showScreen(SCREENS.MAIN_MENU);
+    }
+
+    function showScreen(screenKey) {
+      Object.values(SCREEN_DOM_IDS).forEach(domId => {
+        document.getElementById(domId).classList.remove('active');
+      });
+      document.getElementById(SCREEN_DOM_IDS[screenKey]).classList.add('active');
+      gameState.currentScreen = screenKey;
+    }
+
+    function goToGamemodeSelection() {
+      showScreen(SCREENS.GAMEMODE_SELECTION);
+    }
+
+    function backToMainMenu() {
+      gameState = freshState();
+      showScreen(SCREENS.MAIN_MENU);
+    }
+
+    function startGame(mode) {
+      gameState = freshState();
+      gameState.gamemode = mode;
+      gameState.aiEnabled = !!GAME_CONFIG.gamemodes[mode]?.ai;
+      gameState.aiPlayer = 'blue';
+      gameState.phase = PHASES.SETUP_RED;
+      gameState.currentTurn = 'red';
+      gameState.viewingPlayer = 'red';
+      gameState.turn = 1;
+      gameState.battleTick = 0;
+      gameState.actionMode = ACTION_MODES.PLACE;
+      gameState.budget = {
+        red: GAME_CONFIG.gamemodes[mode].startingBudget,
+        blue: GAME_CONFIG.gamemodes[mode].startingBudget
+      };
+      gameState.points = { red: 0, blue: 0 };
+
+      showScreen(SCREENS.GAME);
+      initializeGame();
+    }
+
+    function exitGame() {
+      alert('Thanks for playing! Goodbye.');
+    }
+
+    function initializeGame() {
+      createGameBoard();
+      populateUnitsTables();
+      renderPhaseBar();
+      renderBoardFromState();
+      updateGameHeader();
+      setStatus('Place Command Base first. All other units are locked until it is placed.');
+    }
+
+    function renderPhaseBar() {
+      const bar = document.getElementById('phaseBar');
+      const phases = [
+        { key: PHASES.SETUP_RED, label: '1. Red Setup' },
+        { key: PHASES.SETUP_BLUE, label: '2. Blue Setup' },
+        { key: PHASES.BATTLE, label: '3. Battle' }
+      ];
+
+      bar.innerHTML = '';
+      phases.forEach(p => {
+        const pill = document.createElement('div');
+        pill.className = 'phase-pill';
+
+        let prefix = '';
+        if (phaseValue(gameState.phase) > phaseValue(p.key)) prefix = '✓ ';
+        if (gameState.phase === p.key) prefix = '▶ ';
+
+        pill.textContent = `${prefix}${p.label}`;
+        bar.appendChild(pill);
+      });
+    }
+
+    function phaseValue(phase) {
+      if (phase === PHASES.SETUP_RED) return 1;
+      if (phase === PHASES.SETUP_BLUE) return 2;
+      if (phase === PHASES.BATTLE) return 3;
+      return 0;
+    }
+
+    function playerHasCommandBase(player) {
+      return gameState.units[player].some(u => u.id === 'command_base');
+    }
+
+    function getSelectedBoardUnit() {
+      if (!gameState.selectedBoardUnitId) return null;
+      return findPlacedUnit(gameState.selectedBoardUnitId);
+    }
+
+    function updateGameHeader() {
+      document.getElementById('gamemodeDisplay').textContent =
+        GAME_CONFIG.gamemodes[gameState.gamemode]?.name || '-';
+
+      document.getElementById('phaseDisplay').textContent =
+        gameState.phase === PHASES.SETUP_RED ? 'Red Setup'
+        : gameState.phase === PHASES.SETUP_BLUE ? 'Blue Setup'
+        : gameState.phase === PHASES.BATTLE ? 'Battle'
+        : '-';
+
+      document.getElementById('budgetDisplay').textContent =
+        '$' + gameState.budget[gameState.currentTurn].toLocaleString();
+
+      document.getElementById('turnDisplay').textContent =
+        `${gameState.currentTurn.toUpperCase()} - Turn ${gameState.turn}`;
+
+      document.getElementById('selectedUnitDisplay').textContent =
+        gameState.selectedUnit ? `${gameState.selectedUnit.name} (${gameState.selectedUnit.cost})`
+        : getSelectedBoardUnit() ? `${getSelectedBoardUnit().name} [Board]`
+        : 'None';
+
+      document.getElementById('rotationDisplay').textContent =
+        gameState.rotation === 'horizontal' ? 'Horizontal' : 'Vertical';
+
+      document.getElementById('actionModeDisplay').textContent =
+        gameState.actionMode === ACTION_MODES.PLACE ? 'Place'
+        : gameState.actionMode === ACTION_MODES.MOVE ? 'Move'
+        : 'Attack';
+
+      document.getElementById('redUnitsDisplay').textContent = gameState.units.red.length;
+      document.getElementById('blueUnitsDisplay').textContent = gameState.units.blue.length;
+      document.getElementById('selectedTileDisplay').textContent = gameState.selectedTile || 'None';
+      document.getElementById('hoverTileDisplay').textContent = gameState.hoverTile || 'None';
+      document.getElementById('moveSourceDisplay').textContent =
+        getMoveSourceUnit() ? `${getMoveSourceUnit().short} @ ${getMoveSourceUnit().anchorDisplay}` : 'None';
+      document.getElementById('attackSourceDisplay').textContent =
+        getAttackSourceUnit() ? `${getAttackSourceUnit().short} @ ${getAttackSourceUnit().anchorDisplay}` : 'None';
+      document.getElementById('boardSelectedUnitDisplay').textContent =
+        getSelectedBoardUnit() ? `${getSelectedBoardUnit().short} @ ${getSelectedBoardUnit().anchorDisplay}` : 'None';
+
+      document.getElementById('redBudgetDisplay').textContent = '$' + gameState.budget.red.toLocaleString();
+      document.getElementById('blueBudgetDisplay').textContent = '$' + gameState.budget.blue.toLocaleString();
+
+      document.getElementById('redTopBudgetDisplay').textContent = '$' + gameState.budget.red.toLocaleString();
+      document.getElementById('blueTopBudgetDisplay').textContent = '$' + gameState.budget.blue.toLocaleString();
+      document.getElementById('redTopPointsDisplay').textContent = gameState.points.red;
+      document.getElementById('blueTopPointsDisplay').textContent = gameState.points.blue;
+
+      document.getElementById('centerStatusMini').textContent =
+        gameState.phase === PHASES.SETUP_RED ? 'Red Setup Phase'
+        : gameState.phase === PHASES.SETUP_BLUE ? 'Blue Setup Phase'
+        : `Battle Phase - ${gameState.currentTurn.toUpperCase()} Turn`;
+
+      renderPhaseBar();
+      updateActionButtons();
+      updateActionModeButtons();
+    }
+
+    function updateActionButtons() {
+      const rotateBtn = document.getElementById('rotateBtn');
+      const confirmBtn = document.getElementById('confirmBtn');
+      const revealBtn = document.getElementById('revealBtn');
+      const endTurnBtn = document.getElementById('endTurnBtn');
+      const cancelActionBtn = document.getElementById('cancelActionBtn');
+      const moveModeBtn = document.getElementById('moveModeBtn');
+      const attackModeBtn = document.getElementById('attackModeBtn');
+
+      const placementAllowedNow = isPlacementAllowedNow();
+      const selected = gameState.selectedUnit;
+      const canRotate = selected && selected.width !== selected.height;
+
+      rotateBtn.disabled = !(placementAllowedNow && canRotate);
+      confirmBtn.disabled = !isSetupPhase();
+      revealBtn.disabled = false;
+      endTurnBtn.disabled = isSetupPhase();
+      cancelActionBtn.disabled =
+        !gameState.selectedUnit &&
+        !gameState.selectedBoardUnitId &&
+        !gameState.moveSourceUnitId &&
+        !gameState.attackSourceUnitId;
+
+      if (isBattlePhase()) {
+        const boardUnit = getSelectedBoardUnit();
+        const hasFriendlyBoardSelection = boardUnit && boardUnit.player === gameState.currentTurn;
+
+        moveModeBtn.disabled = !hasFriendlyBoardSelection;
+        attackModeBtn.disabled = !hasFriendlyBoardSelection || !canUnitEverAttack(boardUnit);
+      }
+    }
+
+    function updateActionModeButtons() {
+      const placeModeBtn = document.getElementById('placeModeBtn');
+      const moveModeBtn = document.getElementById('moveModeBtn');
+      const attackModeBtn = document.getElementById('attackModeBtn');
+
+      placeModeBtn.classList.toggle('active', gameState.actionMode === ACTION_MODES.PLACE);
+      moveModeBtn.classList.toggle('active', gameState.actionMode === ACTION_MODES.MOVE);
+      attackModeBtn.classList.toggle('active', gameState.actionMode === ACTION_MODES.ATTACK);
+
+      if (!isBattlePhase()) {
+        moveModeBtn.disabled = true;
+        attackModeBtn.disabled = true;
+      }
+    }
+
+    function createGameBoard() {
+      const boardContainer = document.getElementById('gameBoard');
+      boardContainer.innerHTML = '';
+
+      const columnLabelsContainer = document.getElementById('columnLabels');
+      columnLabelsContainer.innerHTML = '';
+
+      displayColumns.forEach(col => {
+        const label = document.createElement('div');
+        label.className = 'column-label';
+        label.textContent = col;
+        columnLabelsContainer.appendChild(label);
+      });
+
+      const rowLabelsContainer = document.getElementById('rowLabels');
+      rowLabelsContainer.innerHTML = '';
+      for (let row = 1; row <= GAME_CONFIG.board.totalHeight; row++) {
+        const label = document.createElement('div');
+        label.className = 'row-label';
+        label.textContent = row;
+        rowLabelsContainer.appendChild(label);
+      }
+
+      const rowLabelsRightContainer = document.getElementById('rowLabelsRight');
+      rowLabelsRightContainer.innerHTML = '';
+      for (let row = 1; row <= GAME_CONFIG.board.totalHeight; row++) {
+        const label = document.createElement('div');
+        label.className = 'row-label-right';
+        label.textContent = row;
+        rowLabelsRightContainer.appendChild(label);
+      }
+
+      for (let row = 1; row <= GAME_CONFIG.board.totalHeight; row++) {
+        const rowElement = document.createElement('div');
+        rowElement.className = 'board-row';
+
+        for (let colIndex = 0; colIndex < GAME_CONFIG.board.totalWidth; colIndex++) {
+          rowElement.appendChild(createTile(colIndex, row));
+        }
+
+        boardContainer.appendChild(rowElement);
+      }
+    }
+
+    function createTile(colIndex, row) {
+      const tile = document.createElement('div');
+      const tileType = getTileTypeByColIndex(colIndex);
+
+      tile.className = `board-tile ${tileType}`;
+      tile.dataset.displayCoord = `${displayColumns[colIndex]}${row}`;
+      tile.dataset.row = row;
+      tile.dataset.type = tileType;
+      tile.dataset.colIndex = colIndex;
+      tile.dataset.internalKey = getInternalKey(colIndex, row);
+      tile.title = `${tile.dataset.displayCoord} [${tile.dataset.internalKey}]`;
+
+      tile.addEventListener('click', () => handleTileClick(tile));
+      tile.addEventListener('mouseenter', () => handleTileHover(tile));
+      tile.addEventListener('mouseleave', () => handleTileLeave(tile));
+
+      return tile;
+    }
+
+    function getInternalKey(colIndex, row) {
+      return `c${colIndex}_r${row}`;
+    }
+
+    function getTileTypeByColIndex(colIndex) {
+      if (colIndex >= RED_START && colIndex <= RED_END) return 'red-side';
+      if (colIndex >= DMZ_START && colIndex <= DMZ_END) return 'dmz';
+      return 'blue-side';
+    }
+
+    function getDisplayedDimensions(unit) {
+      if (!unit) return { width: 0, height: 0 };
+      return gameState.rotation === 'horizontal'
+        ? { width: unit.width, height: unit.height }
+        : { width: unit.height, height: unit.width };
+    }
+
+    function getUnitDimensionsForPlacedUnit(placedUnit) {
+      return { width: placedUnit.width, height: placedUnit.height };
+    }
+
+    function getTileByGridIndex(colIndex, rowNumber) {
+      return document.querySelector(`.board-tile[data-col-index="${colIndex}"][data-row="${rowNumber}"]`);
+    }
+
+    function getTileByInternalKey(internalKey) {
+      return document.querySelector(`.board-tile[data-internal-key="${internalKey}"]`);
+    }
+
+    function clearTileSelection() {
+      document.querySelectorAll('.board-tile').forEach(tile => {
+        tile.classList.remove('selected', 'red-selected', 'dmz-selected', 'blue-selected');
+      });
+    }
+
+    function clearPreview() {
+      document.querySelectorAll('.board-tile').forEach(tile => {
+        tile.classList.remove(
+          'preview-valid',
+          'preview-invalid',
+          'move-valid',
+          'move-invalid',
+          'move-source',
+          'attack-source',
+          'attack-target-valid',
+          'attack-target-invalid',
+          'attack-target-long-range'
+        );
+      });
+      gameState.previewTiles = [];
+    }
+
+    function resetTileState() {
+      gameState.selectedTile = null;
+      gameState.hoverTile = null;
+      document.getElementById('selectedTileDisplay').textContent = 'None';
+      document.getElementById('hoverTileDisplay').textContent = 'None';
+      clearTileSelection();
+      clearPreview();
+    }
+
+    function clearActionSelections() {
+      gameState.selectedUnit = null;
+      gameState.selectedBoardUnitId = null;
+      gameState.moveSourceUnitId = null;
+      gameState.attackSourceUnitId = null;
+      gameState.rotation = 'horizontal';
+      clearUnitSelection();
+      resetTileState();
+      updateGameHeader();
+    }
+
+    function clearPlacementSelectionOnly() {
+      gameState.selectedUnit = null;
+      gameState.rotation = 'horizontal';
+      clearUnitSelection();
+      resetTileState();
+      updateGameHeader();
+    }
+
+    function clearBoardUnitSelectionOnly() {
+      gameState.selectedBoardUnitId = null;
+      gameState.moveSourceUnitId = null;
+      gameState.attackSourceUnitId = null;
+      resetTileState();
+      updateGameHeader();
+    }
+
+    function handleTileHover(tileElement) {
+      if (!tileElement) return;
+
+      gameState.hoverTile = tileElement.dataset.displayCoord;
+      const hoverDisplay = document.getElementById('hoverTileDisplay');
+      if (hoverDisplay) hoverDisplay.textContent = gameState.hoverTile;
+
+      clearPreview();
+
+      if (gameState.actionMode === ACTION_MODES.PLACE && gameState.selectedUnit && isPlacementAllowedNow()) {
+        const preview = getPlacementTiles(tileElement, gameState.selectedUnit);
+        preview.tiles.forEach(tile => {
+          tile.classList.add(preview.valid ? 'preview-valid' : 'preview-invalid');
+        });
+        gameState.previewTiles = preview.tiles;
+        return;
+      }
+
+      if (gameState.actionMode === ACTION_MODES.MOVE && isBattlePhase()) {
+        const moveSource = getMoveSourceUnit();
+        if (moveSource) {
+          const movePreview = getMovePreviewTiles(tileElement, moveSource);
+          highlightMoveSource(moveSource);
+          movePreview.tiles.forEach(tile => {
+            tile.classList.add(movePreview.valid ? 'move-valid' : 'move-invalid');
+          });
+          gameState.previewTiles = movePreview.tiles;
+          if (!movePreview.valid) setStatus(movePreview.reason || 'Invalid move.', true);
+          return;
+        }
+      }
+
+      if (gameState.actionMode === ACTION_MODES.ATTACK && isBattlePhase()) {
+        const attackSource = getAttackSourceUnit();
+        if (!attackSource) return;
+
+        highlightAttackSource(attackSource);
+
+        const validation = canAttackTile(attackSource, tileElement);
+
+        tileElement.classList.remove(
+          'attack-target-valid',
+          'attack-target-invalid',
+          'attack-target-long-range'
+        );
+
+        if (!validation.valid) {
+          tileElement.classList.add('attack-target-invalid');
+          setStatus(`${attackSource.name}: ${validation.reason}`, true);
+          return;
+        }
+
+        /*
+         * Every legal target is attackable regardless of distance.
+         * A target beyond the unit's normal range gets the special
+         * long-range state and will require a coin flip.
+         */
+        if (validation.overRange) {
+          tileElement.classList.add('attack-target-long-range');
+
+          setStatus(
+            `${attackSource.name}: ${tileElement.dataset.displayCoord} is ${validation.distance} tiles away, beyond normal range ${validation.range}. ` +
+            `Long-range attack: coin flip required. Heads = 100% damage, Tails = 50% damage.`
+          );
+        } else {
+          tileElement.classList.add('attack-target-valid');
+
+          setStatus(
+            `${attackSource.name}: ${tileElement.dataset.displayCoord} is in normal range ` +
+            `(${validation.distance}/${validation.range}). Click to fire.`
+          );
+        }
+      }
+    }
+
+    function handleTileLeave() {
+      gameState.hoverTile = null;
+      document.getElementById('hoverTileDisplay').textContent = 'None';
+      clearPreview();
+
+      const moveSource = getMoveSourceUnit();
+      if (moveSource && gameState.actionMode === ACTION_MODES.MOVE) {
+        highlightMoveSource(moveSource);
+      }
+
+      const attackSource = getAttackSourceUnit();
+      if (attackSource && gameState.actionMode === ACTION_MODES.ATTACK) {
+        highlightAttackSource(attackSource);
+      }
+    }
+
+    function handleTileClick(tileElement) {
+      /* AI owns the board while it is thinking. */
+      if (isAITurn()) {
+        return;
+      }
+
+      /*
+       * A long-range attack pauses the game while the coin is
+       * being flipped. Do not allow board clicks underneath it.
+       */
+      if (pendingCoinFlipAttack) {
+        return;
+      }
+
+      clearTileSelection();
+
+      tileElement.classList.add('selected');
+      if (tileElement.dataset.type === 'red-side') {
+        tileElement.classList.add('red-selected');
+      } else if (tileElement.dataset.type === 'dmz') {
+        tileElement.classList.add('dmz-selected');
+      } else {
+        tileElement.classList.add('blue-selected');
+      }
+
+      gameState.selectedTile = tileElement.dataset.displayCoord;
+      document.getElementById('selectedTileDisplay').textContent = gameState.selectedTile;
+
+      if (gameState.actionMode === ACTION_MODES.PLACE) {
+        if (isBattlePhase()) {
+          const clickedUnit = getPlacedUnitAtTile(tileElement.dataset.internalKey);
+          if (clickedUnit && clickedUnit.player === gameState.currentTurn) {
+            selectBoardUnit(clickedUnit);
+            return;
+          }
+        }
+        handlePlacementTileClick(tileElement);
+        return;
+      }
+
+      if (gameState.actionMode === ACTION_MODES.MOVE) {
+        handleMoveTileClick(tileElement);
+        return;
+      }
+
+      if (gameState.actionMode === ACTION_MODES.ATTACK) {
+        handleAttackTileClick(tileElement);
+        return;
+      }
+    }
+
+    function handlePlacementTileClick(tileElement) {
+      if (isBattlePhase()) {
+        const clickedUnit = getPlacedUnitAtTile(tileElement.dataset.internalKey);
+        if (clickedUnit) {
+          if (clickedUnit.player === gameState.currentTurn) {
+            selectBoardUnit(clickedUnit);
+          } else {
+            setStatus('Enemy units cannot be selected directly while in Place Mode.', true);
+          }
+          return;
+        }
+      }
+
+      if (!gameState.selectedUnit) {
+        setStatus('Select a unit first.');
+        return;
+      }
+
+      if (!isPlacementAllowedNow()) {
+        setStatus('Placement is not available right now.', true);
+        return;
+      }
+
+      attemptPlacement(tileElement);
+    }
+
+    function handleMoveTileClick(tileElement) {
+      if (!isBattlePhase()) {
+        setStatus('Movement is only available during battle.', true);
+        return;
+      }
+
+      const clickedUnit = getPlacedUnitAtTile(tileElement.dataset.internalKey);
+
+      if (!gameState.moveSourceUnitId) {
+        if (!clickedUnit) {
+          setStatus('Select one of your units as the move source.', true);
+          return;
+        }
+        if (clickedUnit.player !== gameState.currentTurn) {
+          setStatus('You can only move your own units.', true);
+          return;
+        }
+        if (clickedUnit.skipNextTurn) {
+          setStatus(`${clickedUnit.name} must skip this turn after moving.`, true);
+          return;
+        }
+
+        gameState.selectedBoardUnitId = clickedUnit.uniqueId;
+        gameState.moveSourceUnitId = clickedUnit.uniqueId;
+        clearPreview();
+        highlightMoveSource(clickedUnit);
+        updateGameHeader();
+        setStatus(`Move source selected: ${clickedUnit.name} at ${clickedUnit.anchorDisplay}. Click destination tile.`);
+        return;
+      }
+
+      const moveSource = getMoveSourceUnit();
+      if (!moveSource) {
+        gameState.moveSourceUnitId = null;
+        setStatus('Move source was lost. Please select it again.', true);
+        updateGameHeader();
+        return;
+      }
+
+      if (clickedUnit && clickedUnit.uniqueId === moveSource.uniqueId) {
+        gameState.moveSourceUnitId = null;
+        clearPreview();
+        updateGameHeader();
+        setStatus('Move source cleared.');
+        return;
+      }
+
+      attemptMove(moveSource, tileElement);
+    }
+
+    function handleAttackTileClick(tileElement) {
+      if (!isBattlePhase()) {
+        setStatus('Attacking is only available during battle.', true);
+        return;
+      }
+
+      if (!gameState.attackSourceUnitId) {
+        const clickedUnit = getPlacedUnitAtTile(tileElement.dataset.internalKey);
+        if (clickedUnit && clickedUnit.player === gameState.currentTurn) {
+          selectBoardUnit(clickedUnit);
+          setStatus(`Selected ${clickedUnit.name}. Click Attack Mode, then choose a target.`);
+          return;
+        }
+        setStatus('Select one of your units first, then choose Attack Mode.', true);
+        return;
+      }
+
+      const attackSource = getAttackSourceUnit();
+      if (!attackSource) {
+        gameState.attackSourceUnitId = null;
+        setStatus('Attack source was lost. Please select it again.', true);
+        updateGameHeader();
+        return;
+      }
+
+      const clickedUnit = getPlacedUnitAtTile(tileElement.dataset.internalKey);
+
+      // Clicking another friendly unit changes the attack source.
+      if (clickedUnit && clickedUnit.player === gameState.currentTurn && clickedUnit.uniqueId !== attackSource.uniqueId) {
+        selectBoardUnit(clickedUnit);
+        gameState.attackSourceUnitId = clickedUnit.uniqueId;
+        gameState.actionMode = ACTION_MODES.ATTACK;
+        clearPreview();
+        highlightAttackSource(clickedUnit);
+        updateActionModeButtons();
+        updateActionButtons();
+        setStatus(`Attack source switched to ${clickedUnit.name}. Hover over a target tile to check range.`);
+        return;
+      }
+
+      resolveTileAttack(attackSource, tileElement);
+    }
+
+    function getPlacementTiles(anchorTile, unit) {
+      const dims = getDisplayedDimensions(unit);
+      const startColIndex = Number(anchorTile.dataset.colIndex);
+      const startRow = Number(anchorTile.dataset.row);
+      const tiles = [];
+      let valid = true;
+      let reason = '';
+
+      for (let dy = 0; dy < dims.height; dy++) {
+        for (let dx = 0; dx < dims.width; dx++) {
+          const targetCol = startColIndex + dx;
+          const targetRow = startRow + dy;
+          const tile = getTileByGridIndex(targetCol, targetRow);
+
+          if (!tile) {
+            valid = false;
+            reason = 'Unit would extend beyond the board.';
+            continue;
+          }
+
+          tiles.push(tile);
+
+          if (!isTileAllowedForCurrentPlayer(tile)) {
+            valid = false;
+            reason = 'Placement must stay on your own side only.';
+          }
+
+          if (gameState.occupancy[tile.dataset.internalKey]) {
+            valid = false;
+            reason = 'That space is already occupied.';
+          }
+        }
+      }
+
+      if (tiles.length !== dims.width * dims.height) {
+        valid = false;
+        reason = 'Unit would extend beyond the board.';
+      }
+
+      if (gameState.selectedUnit.cost > gameState.budget[gameState.currentTurn]) {
+        valid = false;
+        reason = 'Not enough budget.';
+      }
+
+      const specialValidation = validateSpecialPlacementRules(unit);
+      if (!specialValidation.valid) {
+        valid = false;
+        reason = specialValidation.reason;
+      }
+
+      return { tiles, valid, reason, dims };
+    }
+
+    function getMovePreviewTiles(anchorTile, placedUnit) {
+      const dims = getUnitDimensionsForPlacedUnit(placedUnit);
+      const startColIndex = Number(anchorTile.dataset.colIndex);
+      const startRow = Number(anchorTile.dataset.row);
+      const tiles = [];
+      let valid = true;
+      let reason = '';
+
+      for (let dy = 0; dy < dims.height; dy++) {
+        for (let dx = 0; dx < dims.width; dx++) {
+          const targetCol = startColIndex + dx;
+          const targetRow = startRow + dy;
+          const tile = getTileByGridIndex(targetCol, targetRow);
+
+          if (!tile) {
+            valid = false;
+            reason = 'Move would extend beyond the board.';
+            continue;
+          }
+
+          tiles.push(tile);
+
+          if (!isTileAllowedForPlayer(tile, placedUnit.player)) {
+            valid = false;
+            reason = 'Movement must stay on your own side only.';
+          }
+
+          const occupantId = gameState.occupancy[tile.dataset.internalKey];
+          if (occupantId && occupantId !== placedUnit.uniqueId) {
+            valid = false;
+            reason = 'Destination is occupied.';
+          }
+        }
+      }
+
+      if (tiles.length !== dims.width * dims.height) {
+        valid = false;
+        reason = 'Move would extend beyond the board.';
+      }
+
+      if (placedUnit.anchorInternal === anchorTile.dataset.internalKey) {
+        valid = false;
+        reason = 'Choose a different destination tile.';
+      }
+
+      return { tiles, valid, reason, dims };
+    }
+
+    function isTileAllowedForCurrentPlayer(tile) {
+      return isTileAllowedForPlayer(tile, gameState.currentTurn);
+    }
+
+    function isTileAllowedForPlayer(tile, player) {
+      if (player === 'red') return tile.dataset.type === 'red-side';
+      return tile.dataset.type === 'blue-side';
+    }
+
+    function isValidAttackTargetTileForCurrentPlayer(tile) {
+      if (gameState.currentTurn === 'red') {
+        return tile.dataset.type === 'dmz' || tile.dataset.type === 'blue-side';
+      }
+      return tile.dataset.type === 'dmz' || tile.dataset.type === 'red-side';
+    }
+
+    function validateSpecialPlacementRules(unit) {
+      const playerUnits = gameState.units[gameState.currentTurn];
+
+      if (unit.id === 'command_base' && playerUnits.some(u => u.id === 'command_base')) {
+        return { valid: false, reason: 'Only one Command Base is allowed per player.' };
+      }
+
+      if (unit.id === 'nuclear_option') {
+        return { valid: false, reason: 'Nuclear Option is disabled until later logic is implemented.' };
+      }
+
+      if (isBattlePhase() && unit.id === 'command_base') {
+        return { valid: false, reason: 'Command Base can only be placed during setup.' };
+      }
+
+      return { valid: true, reason: '' };
+    }
+
+    function attemptPlacement(anchorTile) {
+      const result = getPlacementTiles(anchorTile, gameState.selectedUnit);
+
+      clearPreview();
+      result.tiles.forEach(tile => {
+        tile.classList.add(result.valid ? 'preview-valid' : 'preview-invalid');
+      });
+
+      if (!result.valid) {
+        setStatus(result.reason || 'Invalid placement.', true);
+        return;
+      }
+
+      placeUnit(anchorTile, result);
+    }
+
+    function attemptMove(moveSource, anchorTile) {
+      const result = getMovePreviewTiles(anchorTile, moveSource);
+
+      clearPreview();
+      highlightMoveSource(moveSource);
+      result.tiles.forEach(tile => {
+        tile.classList.add(result.valid ? 'move-valid' : 'move-invalid');
+      });
+
+      if (!result.valid) {
+        setStatus(result.reason || 'Invalid move.', true);
+        return;
+      }
+
+      movePlacedUnit(moveSource, anchorTile, result);
+    }
+
+    function nextUniqueId(unitId, player) {
+      uniqueCounter += 1;
+      return `${unitId}_${player}_${uniqueCounter}`;
+    }
+
+    function placeUnit(anchorTile, placementResult) {
+      const unit = gameState.selectedUnit;
+      const player = gameState.currentTurn;
+
+      const placedUnit = {
+        uniqueId: nextUniqueId(unit.id, player),
+        id: unit.id,
+        name: unit.name,
+        short: unit.short,
+        player,
+        cost: unit.cost,
+        width: placementResult.dims.width,
+        height: placementResult.dims.height,
+        rotation: gameState.rotation,
+        maxHealth: unit.health,
+        currentHealth: unit.health,
+        damage: unit.damage,
+        range: unit.range,
+        rate: unit.rate,
+        lastAttackTick: null,
+        skipNextTurn: false,
+        skipNextTurnConsumed: false,
+        anchorDisplay: anchorTile.dataset.displayCoord,
+        anchorInternal: anchorTile.dataset.internalKey,
+        tiles: placementResult.tiles.map(tile => ({
+          internalKey: tile.dataset.internalKey,
+          displayCoord: tile.dataset.displayCoord,
+          colIndex: Number(tile.dataset.colIndex),
+          row: Number(tile.dataset.row)
+        }))
+      };
+
+      placementResult.tiles.forEach(tile => {
+        gameState.occupancy[tile.dataset.internalKey] = placedUnit.uniqueId;
+      });
+
+      gameState.units[player].push(placedUnit);
+      gameState.budget[player] -= unit.cost;
+
+      const actionPhase = gameState.phase;
+      const placedName = unit.name;
+      const placedAt = anchorTile.dataset.displayCoord;
+      const remainingBudget = gameState.budget[player];
+
+      clearPlacementSelectionOnly();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+
+      if (actionPhase === PHASES.SETUP_RED || actionPhase === PHASES.SETUP_BLUE) {
+        if (unit.id === 'command_base') {
+          setStatus(`${player.toUpperCase()} placed Command Base. Other units are now unlocked.`);
+        } else {
+          setStatus(`${player.toUpperCase()} placed ${placedName} at ${placedAt} (${placedUnit.width}x${placedUnit.height}).`);
+        }
+      } else {
+        setStatus(`${player.toUpperCase()} placed ${placedName} at ${placedAt}. You may place more units this turn. Remaining budget: $${remainingBudget.toLocaleString()}.`);
+      }
+    }
+
+    function movePlacedUnit(placedUnit, anchorTile, moveResult) {
+      placedUnit.tiles.forEach(tileData => {
+        delete gameState.occupancy[tileData.internalKey];
+      });
+
+      placedUnit.anchorDisplay = anchorTile.dataset.displayCoord;
+      placedUnit.anchorInternal = anchorTile.dataset.internalKey;
+      placedUnit.tiles = moveResult.tiles.map(tile => ({
+        internalKey: tile.dataset.internalKey,
+        displayCoord: tile.dataset.displayCoord,
+        colIndex: Number(tile.dataset.colIndex),
+        row: Number(tile.dataset.row)
+      }));
+
+      placedUnit.tiles.forEach(tileData => {
+        gameState.occupancy[tileData.internalKey] = placedUnit.uniqueId;
+      });
+
+      placedUnit.skipNextTurn = true;
+      placedUnit.skipNextTurnConsumed = false;
+
+      const player = placedUnit.player;
+      const unitName = placedUnit.name;
+      const destination = placedUnit.anchorDisplay;
+
+      clearActionSelections();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+      setStatus(`${player.toUpperCase()} moved ${unitName} to ${destination}. Turn automatically ended.`);
+      advanceTurnAfterMove();
+    }
+
+    function advanceBattleTurn() {
+      gameState.currentTurn = gameState.currentTurn === 'red' ? 'blue' : 'red';
+      gameState.viewingPlayer = gameState.currentTurn;
+      gameState.battleTick += 1;
+
+      if (gameState.currentTurn === 'red') {
+        gameState.turn += 1;
+      }
+
+      clearExpiredSkipFlagsForCurrentTurnPlayer();
+
+      if (isAITurn()) {
+        runAITurn();
+      }
+    }
+
+    function advanceTurnAfterMove() {
+      if (!isBattlePhase()) return;
+      advanceBattleTurn();
+      gameState.actionMode = ACTION_MODES.PLACE;
+      clearActionSelections();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+    }
+
+    function clearUnitSelection() {
+      document.querySelectorAll('.unit-row').forEach(row => row.classList.remove('selected'));
+      document.getElementById('selectedUnitDisplay').textContent = 'None';
+    }
+
+    function rotateSelectedUnit() {
+      if (!isPlacementAllowedNow()) {
+        setStatus('Rotation is only available while preparing a placement.', true);
+        return;
+      }
+
+      if (!gameState.selectedUnit) {
+        setStatus('Select a unit before rotating.', true);
+        return;
+      }
+
+      if (gameState.selectedUnit.width === gameState.selectedUnit.height) {
+        setStatus(`${gameState.selectedUnit.name} is square and does not need rotation.`);
+        updateActionButtons();
+        return;
+      }
+
+      gameState.rotation = gameState.rotation === 'horizontal' ? 'vertical' : 'horizontal';
+      const dims = getDisplayedDimensions(gameState.selectedUnit);
+      document.getElementById('rotationDisplay').textContent =
+        gameState.rotation === 'horizontal' ? 'Horizontal' : 'Vertical';
+
+      setStatus(`Rotation set to ${gameState.rotation}. ${gameState.selectedUnit.name} footprint: ${dims.width}x${dims.height}`);
+      updateActionButtons();
+    }
+
+    function confirmSetup() {
+      if (gameState.phase === PHASES.SETUP_RED) {
+        if (!playerHasCommandBase('red')) {
+          setStatus('Red must place Command Base before confirming setup.', true);
+          return;
+        }
+        gameState.phase = PHASES.SETUP_BLUE;
+        gameState.currentTurn = 'blue';
+        gameState.viewingPlayer = gameState.aiEnabled ? 'red' : 'blue';
+        gameState.actionMode = ACTION_MODES.PLACE;
+        clearActionSelections();
+        populateUnitsTables();
+        renderBoardFromState();
+        updateGameHeader();
+        setStatus(
+          gameState.aiEnabled
+            ? 'AI is preparing its forces...'
+            : 'Blue setup: place Command Base first. All other units are now unlocked after it is placed.'
+        );
+        if (gameState.aiEnabled) {
+          scheduleAISetup();
+        }
+        return;
+      }
+
+      if (gameState.phase === PHASES.SETUP_BLUE) {
+        if (!playerHasCommandBase('blue')) {
+          setStatus('Blue must place Command Base before confirming setup.', true);
+          return;
+        }
+        gameState.phase = PHASES.BATTLE;
+        gameState.currentTurn = 'red';
+        gameState.viewingPlayer = 'red';
+        gameState.turn = 1;
+        gameState.battleTick = 1;
+        gameState.actionMode = ACTION_MODES.PLACE;
+        clearActionSelections();
+        populateUnitsTables();
+        renderBoardFromState();
+        updateGameHeader();
+        setStatus('Battle phase started. Click one of your units to select it, then choose Move or Attack.');
+        return;
+      }
+
+      setStatus('Setup is already complete.', true);
+    }
+
+    function endTurn() {
+      if (isAITurn()) {
+        setStatus('The AI is already taking its turn.', true);
+        return;
+      }
+
+      if (isSetupPhase()) {
+        setStatus('Use Confirm Setup during setup.', true);
+        return;
+      }
+
+      advanceBattleTurn();
+      gameState.actionMode = ACTION_MODES.PLACE;
+      clearActionSelections();
+      populateUnitsTables();
+      renderBoardFromState();
+      updateGameHeader();
+      setStatus(`${gameState.currentTurn.toUpperCase()} player's turn.`);
+    }
+
+    function isSetupPhase() {
+      return gameState.phase === PHASES.SETUP_RED || gameState.phase === PHASES.SETUP_BLUE;
+    }
+
+    function isBattlePhase() {
+      return gameState.phase === PHASES.BATTLE;
+    }
+
+    function isPlacementAllowedNow() {
+      if (isSetupPhase()) return true;
+      return isBattlePhase() && gameState.actionMode === ACTION_MODES.PLACE;
+    }
+
+    function setStatus(message, isError = false) {
+      const el = document.getElementById('statusDisplay');
+      el.textContent = message;
+      el.classList.toggle('status-error', isError);
+    }
+
+    function getOrderedUnits() {
+      const units = [...GAME_CONFIG.units];
+      units.sort((a, b) => {
+        if (a.id === 'command_base' && b.id !== 'command_base') return -1;
+        if (b.id === 'command_base' && a.id !== 'command_base') return 1;
+        return GAME_CONFIG.units.findIndex(u => u.id === a.id) - GAME_CONFIG.units.findIndex(u => u.id === b.id);
+      });
+      return units;
+    }
+
+    function isUnitRowDisabled(unit, player) {
+      if (player !== gameState.currentTurn) return true;
+      if (gameState.actionMode !== ACTION_MODES.PLACE) return true;
+      if (unit.id === 'nuclear_option') return true;
+      if (unit.cost > gameState.budget[player]) return true;
+      if (isSetupPhase() && unit.id === 'command_base' && playerHasCommandBase(player)) return true;
+      if (isSetupPhase() && !playerHasCommandBase(player) && unit.id !== 'command_base') return true;
+      if (isBattlePhase() && unit.id === 'command_base') return true;
+      return false;
+    }
+
+    function populateUnitsTables() {
+      const redTable = document.getElementById('redUnitsTable');
+      const blueTable = document.getElementById('blueUnitsTable');
+
+      redTable.innerHTML = '';
+      blueTable.innerHTML = '';
+
+      getOrderedUnits().forEach(unit => {
+        redTable.appendChild(createUnitRow(unit, 'red'));
+        blueTable.appendChild(createUnitRow(unit, 'blue'));
+      });
+    }
+
+    function createUnitRow(unit, player) {
+      const row = document.createElement('div');
+      row.className = 'unit-row';
+      row.dataset.unitId = unit.id;
+      row.dataset.player = player;
+
+      const disabled = isUnitRowDisabled(unit, player);
+      if (disabled) {
+        row.classList.add('disabled');
+      }
+
+      const displaySize = `${unit.width}x${unit.height}`;
+
+      const nameCell = document.createElement('div');
+      nameCell.className = 'unit-name';
+      nameCell.textContent = unit.name;
+
+      const costCell = document.createElement('div');
+      costCell.className = 'unit-cost';
+      costCell.textContent = String(unit.cost);
+
+      const sizeCell = document.createElement('div');
+      sizeCell.className = 'unit-stat unit-size';
+      sizeCell.textContent = displaySize;
+
+      const hpCell = document.createElement('div');
+      hpCell.className = 'unit-stat unit-health';
+      hpCell.textContent = String(unit.health);
+
+      const dmgCell = document.createElement('div');
+      dmgCell.className = 'unit-stat unit-damage';
+      dmgCell.textContent = String(unit.damage);
+
+      const rangeCell = document.createElement('div');
+      rangeCell.className = 'unit-stat unit-range';
+      rangeCell.textContent = unit.range === Infinity ? '∞' : String(unit.range);
+
+      const rateCell = document.createElement('div');
+      rateCell.className = 'unit-stat unit-rate';
+      rateCell.textContent = unit.rate;
+
+      row.appendChild(nameCell);
+      row.appendChild(costCell);
+      row.appendChild(sizeCell);
+      row.appendChild(hpCell);
+      row.appendChild(dmgCell);
+      row.appendChild(rangeCell);
+      row.appendChild(rateCell);
+
+      row.title = `${unit.name} | Cost: ${unit.cost} | Size: ${displaySize} | HP: ${unit.health} | Damage: ${unit.damage} | Range: ${unit.range === Infinity ? 'Unlimited' : unit.range} | Rate: ${unit.rate}`;
+
+      row.addEventListener('click', () => {
+        if (isAITurn()) {
+          setStatus('The AI is taking its turn. Please wait.', true);
+          return;
+        }
+
+        if (player !== gameState.currentTurn) {
+          setStatus(`It is ${gameState.currentTurn.toUpperCase()} player's turn.`, true);
+          return;
+        }
+
+        if (gameState.actionMode !== ACTION_MODES.PLACE) {
+          setStatus('Switch to Place Mode to buy and place units.', true);
+          return;
+        }
+
+        if (unit.cost > gameState.budget[player]) {
+          setStatus(`Not enough budget for ${unit.name}.`, true);
+          return;
+        }
+
+        if (unit.id === 'nuclear_option') {
+          setStatus('Nuclear Option is disabled until later logic is implemented.', true);
+          return;
+        }
+
+        if (isBattlePhase() && unit.id === 'command_base') {
+          setStatus('Command Base can only be placed during setup.', true);
+          return;
+        }
+
+        if (isSetupPhase()) {
+          const activePlayer = player === gameState.currentTurn;
+          const setupOpenForPlayer =
+            (gameState.phase === PHASES.SETUP_RED && player === 'red') ||
+            (gameState.phase === PHASES.SETUP_BLUE && player === 'blue');
+
+          const affordable = unit.cost <= gameState.budget[player];
+          const commandBasePlaced = playerHasCommandBase(player);
+          const baseGateAllows = commandBasePlaced || unit.id === 'command_base';
+          const allowed = canUnitBeSelected(unit, player) && baseGateAllows;
+
+          if (!setupOpenForPlayer || !activePlayer) {
+            setStatus('Unit purchasing is only available for the active setup player.', true);
+            return;
+          }
+
+          if (!commandBasePlaced && unit.id !== 'command_base') {
+            setStatus('Place Command Base first. All other units remain locked until then.', true);
+            return;
+          }
+
+          if (!affordable) {
+            setStatus(`Not enough budget for ${unit.name}.`, true);
+            return;
+          }
+
+          if (!allowed) {
+            setStatus(getSelectionRestrictionReason(unit, player), true);
+            return;
+          }
+        }
+
+        selectUnit(unit, player, row);
+      });
+
+      return row;
+    }
+
+    function canUnitBeSelected(unit, player) {
+      if (!isSetupPhase()) {
+        if (isBattlePhase()) {
+          if (unit.id === 'command_base') return false;
+          if (unit.id === 'nuclear_option') return false;
+          return true;
+        }
+        return false;
+      }
+
+      const playerUnits = gameState.units[player];
+
+      if (unit.id === 'command_base') {
+        return !playerUnits.some(u => u.id === 'command_base');
+      }
+
+      if (unit.id === 'nuclear_option') {
+        return false;
+      }
+
+      return true;
+    }
+
+    function getSelectionRestrictionReason(unit, player) {
+      const playerUnits = gameState.units[player];
+
+      if (unit.id === 'command_base' && playerUnits.some(u => u.id === 'command_base')) {
+        return 'Only one Command Base is allowed per player.';
+      }
+
+      if (!playerHasCommandBase(player) && unit.id !== 'command_base') {
+        return 'Command Base must be placed first.';
+      }
+
+      if (unit.id === 'nuclear_option') {
+        return 'Nuclear Option is disabled until later logic is implemented.';
+      }
+
+      if (isBattlePhase() && unit.id === 'command_base') {
+        return 'Command Base can only be placed during setup.';
+      }
+
+      return 'That unit cannot be selected right now.';
+    }
+
+    function selectUnit(unit, player, rowElement) {
+      gameState.moveSourceUnitId = null;
+      gameState.attackSourceUnitId = null;
+      gameState.selectedBoardUnitId = null;
+      clearPreview();
+      document.querySelectorAll('.unit-row').forEach(row => row.classList.remove('selected'));
+      rowElement.classList.add('selected');
+
+      gameState.selectedUnit = { ...unit, player };
+      gameState.rotation = 'horizontal';
+
+      document.getElementById('selectedUnitDisplay').textContent = `${unit.name} (${unit.cost})`;
+      document.getElementById('rotationDisplay').textContent = 'Horizontal';
+
+      if (isBattlePhase()) {
+        setStatus(`Selected ${unit.name} (${unit.cost}) for battle placement. You may keep placing units this turn while you can afford them.`);
+      } else {
+        setStatus(`Selected ${unit.name} (${unit.cost}). Click Rotate if needed, then click a tile to place.`);
+      }
+      updateActionButtons();
+    }
+
+    function selectBoardUnit(unit) {
+      if (isAITurn()) {
+        setStatus('The AI is taking its turn. Please wait.', true);
+        return;
+      }
+      if (!unit) return;
+      if (unit.player !== gameState.currentTurn) {
+        setStatus('You can only select your own units.', true);
+        return;
+      }
+
+      gameState.selectedUnit = null;
+      clearUnitSelection();
+      clearPreview();
+
+      gameState.selectedBoardUnitId = unit.uniqueId;
+      gameState.moveSourceUnitId = null;
+      gameState.attackSourceUnitId = null;
+      gameState.actionMode = ACTION_MODES.PLACE;
+
+      highlightSelectedBoardUnit(unit);
+      updateGameHeader();
+
+      const attackReady = isUnitReadyToAttack(unit);
+      const attackStateText = canUnitEverAttack(unit)
+        ? (attackReady.valid ? 'Attack ready' : attackReady.reason)
+        : 'Cannot attack';
+
+      setStatus(`Selected ${unit.name} at ${unit.anchorDisplay}. Choose Move or Attack. ${attackStateText}.`);
+    }
+
+    function setActionMode(mode) {
+      if (isAITurn()) {
+        setStatus('The AI is taking its turn. Please wait.', true);
+        return;
+      }
+
+      if (mode === ACTION_MODES.MOVE && !isBattlePhase()) {
+        setStatus('Move Mode is only available during battle.', true);
+        return;
+      }
+
+      if (mode === ACTION_MODES.ATTACK && !isBattlePhase()) {
+        setStatus('Attack Mode is only available during battle.', true);
+        return;
+      }
+
+      if (isBattlePhase() && (mode === ACTION_MODES.MOVE || mode === ACTION_MODES.ATTACK)) {
+        const selectedBoardUnit = getSelectedBoardUnit();
+        if (!selectedBoardUnit || selectedBoardUnit.player !== gameState.currentTurn) {
+          setStatus('Select one of your units on the board first.', true);
+          return;
+        }
+
+        if (mode === ACTION_MODES.ATTACK) {
+          const readyState = isUnitReadyToAttack(selectedBoardUnit);
+          if (!readyState.valid) {
+            setStatus(readyState.reason, true);
+            return;
+          }
+        }
+
+        if (mode === ACTION_MODES.MOVE && selectedBoardUnit.skipNextTurn) {
+          setStatus(`${selectedBoardUnit.name} must skip this turn after moving.`, true);
+          return;
+        }
+      }
+
+      gameState.actionMode = mode;
+      clearPreview();
+
+      if (mode === ACTION_MODES.PLACE) {
+        gameState.moveSourceUnitId = null;
+        gameState.attackSourceUnitId = null;
+
+        if (isBattlePhase()) {
+          if (getSelectedBoardUnit()) {
+            highlightSelectedBoardUnit(getSelectedBoardUnit());
+            setStatus('Board unit selected. Choose Move or Attack, or select a new unit.');
+          } else {
+            setStatus('Place Mode active. You may place units or click one of your board units to select it.');
+          }
+        } else {
+          setStatus('Place Mode active. Select a unit, then click a tile to place it.');
+        }
+      } else if (mode === ACTION_MODES.MOVE) {
+        const selectedBoardUnit = getSelectedBoardUnit();
+        gameState.moveSourceUnitId = selectedBoardUnit.uniqueId;
+        gameState.attackSourceUnitId = null;
+        highlightMoveSource(selectedBoardUnit);
+        setStatus(`Move Mode active for ${selectedBoardUnit.name}. Click a destination tile on your own side.`);
+      } else {
+        const selectedBoardUnit = getSelectedBoardUnit();
+        gameState.attackSourceUnitId = selectedBoardUnit.uniqueId;
+        gameState.moveSourceUnitId = null;
+        highlightAttackSource(selectedBoardUnit);
+        setStatus(`Attack Mode active for ${selectedBoardUnit.name}. Click any tile in the DMZ or enemy field.`);
+      }
+
+      updateGameHeader();
+      populateUnitsTables();
+    }
+
+    function cancelCurrentAction() {
+      clearActionSelections();
+      setStatus('Current action cleared.');
+      populateUnitsTables();
+    }
+
+    function toggleRevealMode() {
+      if (gameState.aiEnabled) {
+        setStatus('Board reveal mode is disabled during AI games.', true);
+        return;
+      }
+      gameState.revealMode = !gameState.revealMode;
+      renderBoardFromState();
+      setStatus(gameState.revealMode ? 'Board reveal mode enabled.' : 'Board reveal mode disabled.');
+    }
+
+    function highlightMoveSource(unit) {
+      // In an AI game, never visually highlight Blue units for the human player.
+      if (gameState.aiEnabled && unit && unit.player === 'blue') return;
+
+      unit.tiles.forEach(t => {
+        const tile = getTileByInternalKey(t.internalKey);
+        if (tile) tile.classList.add('move-source');
+      });
+    }
+
+    function highlightAttackSource(unit) {
+      // In an AI game, never visually highlight Blue units for the human player.
+      if (gameState.aiEnabled && unit && unit.player === 'blue') return;
+
+      unit.tiles.forEach(t => {
+        const tile = getTileByInternalKey(t.internalKey);
+        if (tile) tile.classList.add('attack-source');
+      });
+    }
+
+    function highlightSelectedBoardUnit(unit) {
+      // Blue is the hidden AI side. Its selection must never create a visual clue.
+      if (gameState.aiEnabled && unit && unit.player === 'blue') return;
+
+      unit.tiles.forEach(t => {
+        const tile = getTileByInternalKey(t.internalKey);
+        if (!tile) return;
+        tile.classList.add('selected');
+        if (tile.dataset.type === 'red-side') tile.classList.add('red-selected');
+        if (tile.dataset.type === 'dmz') tile.classList.add('dmz-selected');
+        if (tile.dataset.type === 'blue-side') tile.classList.add('blue-selected');
+      });
+    }
+
+    function getPlacedUnitAtTile(internalKey) {
+      const unitId = gameState.occupancy[internalKey];
+      if (!unitId) return null;
+      return findPlacedUnit(unitId);
+    }
+
+    function getMoveSourceUnit() {
+      if (!gameState.moveSourceUnitId) return null;
+      return findPlacedUnit(gameState.moveSourceUnitId);
+    }
+
+    function getAttackSourceUnit() {
+      if (!gameState.attackSourceUnitId) return null;
+      return findPlacedUnit(gameState.attackSourceUnitId);
+    }
+
+    function parseRateTurns(rate) {
+      if (rate == null) return null;
+      const normalized = String(rate).trim().toUpperCase();
+      if (normalized === '-' || normalized === 'G' || normalized === '') return null;
+
+      const match = normalized.match(/^(\d+)\s*\/\s*T$/);
+      if (!match) return null;
+
+      const value = Number(match[1]);
+      return Number.isFinite(value) && value > 0 ? value : null;
+    }
+
+    function getAnchorPosition(unit) {
+      const anchorTile = unit.tiles.find(t => t.internalKey === unit.anchorInternal);
+      return anchorTile ? { colIndex: anchorTile.colIndex, row: anchorTile.row } : null;
+    }
+
+    function chebyshevDistance(a, b) {
+      return Math.max(Math.abs(a.colIndex - b.colIndex), Math.abs(a.row - b.row));
+    }
+
+    function getEffectiveAttackRange(unit) {
+      if (!unit) return 0;
+      const range = Number(unit.range);
+      return Number.isFinite(range) && range >= 0 ? range : 0;
+    }
+
+    function canUnitEverAttack(unit) {
+      if (!unit) return false;
+      if (unit.id === 'command_base') return false;
+      if (unit.id === 'apc') return false;
+      if (Number(unit.damage) <= 0 || unit.damage === 'G') return false;
+      return parseRateTurns(unit.rate) !== null;
+    }
+
+    function isUnitReadyToAttack(unit) {
+      if (!canUnitEverAttack(unit)) {
+        return {
+          valid: false,
+          reason: `${unit.name} cannot attack.`
+        };
+      }
+
+      if (unit.skipNextTurn) {
+        return {
+          valid: false,
+          reason: `${unit.name} must skip this turn after moving.`
+        };
+      }
+
+      const cooldownTurns = parseRateTurns(unit.rate);
+      if (cooldownTurns === null) {
+        return {
+          valid: false,
+          reason: `${unit.name} has no valid attack rate.`
+        };
+      }
+
+      if (unit.lastAttackTick == null) {
+        return { valid: true, reason: '' };
+      }
+
+      const ticksSinceAttack = gameState.battleTick - unit.lastAttackTick;
+      if (ticksSinceAttack < cooldownTurns) {
+        return {
+          valid: false,
+          reason: `${unit.name} is reloading. Ready in ${cooldownTurns - ticksSinceAttack} more turn(s).`
+        };
+      }
+
+      return { valid: true, reason: '' };
+    }
+
+    function canAttackTile(attacker, tileElement) {
+      if (!attacker) {
+        return { valid: false, reason: 'No attacker selected.' };
+      }
+
+      if (!tileElement) {
+        return { valid: false, reason: 'No target tile selected.' };
+      }
+
+      if (attacker.player !== gameState.currentTurn) {
+        return {
+          valid: false,
+          reason: 'You can only attack with your own units.'
+        };
+      }
+
+      const readyState = isUnitReadyToAttack(attacker);
+      if (!readyState.valid) return readyState;
+
+      if (!isValidAttackTargetTileForCurrentPlayer(tileElement)) {
+        return {
+          valid: false,
+          reason: 'You may only target the DMZ or enemy field.'
+        };
+      }
+
+      const attackerPos = getAnchorPosition(attacker);
+      if (!attackerPos) {
+        return {
+          valid: false,
+          reason: 'Invalid attacker anchor.'
+        };
+      }
+
+      const targetPos = {
+        colIndex: Number(tileElement.dataset.colIndex),
+        row: Number(tileElement.dataset.row)
+      };
+
+      if (
+        !Number.isFinite(targetPos.colIndex) ||
+        !Number.isFinite(targetPos.row)
+      ) {
+        return {
+          valid: false,
+          reason: 'Invalid target tile position.'
+        };
+      }
+
+      const range = getEffectiveAttackRange(attacker);
+      const distance = chebyshevDistance(attackerPos, targetPos);
+
+      /*
+       * IMPORTANT:
+       * Distance is no longer an outright failure.
+       *
+       * Every legal target can be attacked. If the target is
+       * beyond the unit's normal range, the attack becomes a
+       * long-range attack and requires a coin flip.
+       */
+      const overRange =
+        Number.isFinite(range) &&
+        distance > range;
+
+      return {
+        valid: true,
+        reason: '',
+        distance,
+        range,
+        overRange
+      };
+    }
+
+    function discoverTileForPlayer(player, internalKey) {
+      if (!player || !internalKey) return;
+
+      if (!gameState.discoveredTiles[player]) {
+        gameState.discoveredTiles[player] = {};
+      }
+
+      gameState.discoveredTiles[player][internalKey] = true;
+    }
+
+    function isTileDiscoveredForPlayer(player, internalKey) {
+      return !!(
+        gameState.discoveredTiles[player] &&
+        gameState.discoveredTiles[player][internalKey]
+      );
+    }
+
+    /*
+     * Enemy-unit visibility is deliberately separate from tile
+     * discovery. Firing at an empty tile reveals the tile, but it
+     * does not grant permanent visibility of a unit that may later
+     * move onto that tile.
+     */
+    function revealUnitToPlayer(player, uniqueId) {
+      if (!player || !uniqueId) return;
+
+      if (!gameState.revealedUnits[player]) {
+        gameState.revealedUnits[player] = {};
+      }
+
+      gameState.revealedUnits[player][uniqueId] = true;
+    }
+
+    function isUnitRevealedToPlayer(player, uniqueId) {
+      return !!(
+        gameState.revealedUnits[player] &&
+        gameState.revealedUnits[player][uniqueId]
+      );
+    }
+
+    /*
+     * Creates the coin-flip interface the first time a long-range
+     * attack needs it.
+     */
+    function ensureCoinFlipOverlay() {
+      let overlay = document.getElementById('coinFlipOverlay');
+
+      if (overlay) return overlay;
+
+      overlay = document.createElement('div');
+      overlay.id = 'coinFlipOverlay';
+      overlay.className = 'coin-flip-overlay';
+      overlay.style.display = 'none';
+
+      overlay.innerHTML = `
+        <div class="coin-flip-panel" id="coinFlipPanel">
+          <h2 class="coin-flip-title">⚠️ Long-Range Shot</h2>
+
+          <p class="coin-flip-subtitle" id="coinFlipSubtitle">
+            This target is beyond the unit's normal firing range.
+          </p>
+
+          <div class="coin-flip-distance" id="coinFlipDistance">
+            Distance: -- / Range: --
+          </div>
+
+          <button
+            type="button"
+            class="coin-flip-button"
+            id="coinFlipButton"
+            onclick="flipPendingAttackCoin()"
+            aria-label="Flip attack coin"
+          >
+            <div class="attack-coin" id="attackCoin">
+              <div class="coin-face front">HEADS</div>
+              <div class="coin-face back">TAILS</div>
+            </div>
+          </button>
+
+          <div class="coin-result" id="coinFlipResult"></div>
+
+          <div class="coin-instruction" id="coinFlipInstruction">
+            Click the coin to flip it.<br>
+            Heads = 100% damage &nbsp;•&nbsp; Tails = 50% damage
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      return overlay;
+    }
+
+    /*
+     * Shows the coin and pauses the attack until the player flips it.
+     */
+    function beginLongRangeCoinFlip(attacker, tileElement, validation) {
+      if (pendingCoinFlipAttack) return;
+
+      pendingCoinFlipAttack = {
+        attackerId: attacker.uniqueId,
+        attackerPlayer: attacker.player,
+        targetInternalKey: tileElement.dataset.internalKey,
+        targetDisplayCoord: tileElement.dataset.displayCoord,
+        distance: validation.distance,
+        range: validation.range
+      };
+
+      const overlay = ensureCoinFlipOverlay();
+      const panel = document.getElementById('coinFlipPanel');
+      const subtitle = document.getElementById('coinFlipSubtitle');
+      const distanceDisplay = document.getElementById('coinFlipDistance');
+      const result = document.getElementById('coinFlipResult');
+      const instruction = document.getElementById('coinFlipInstruction');
+      const coin = document.getElementById('attackCoin');
+      const button = document.getElementById('coinFlipButton');
+
+      panel.classList.remove('result');
+
+      subtitle.textContent =
+        `${attacker.name} is firing beyond its normal range.`;
+
+      distanceDisplay.textContent =
+        `Distance: ${validation.distance} tiles • Normal range: ${validation.range} tiles`;
+
+      result.textContent = '';
+
+      instruction.innerHTML =
+        'Click the coin to flip it.<br>' +
+        'Heads = 100% damage &nbsp;•&nbsp; Tails = 50% damage';
+
+      coin.classList.remove('flipping');
+      coin.style.transform = 'rotateY(0deg)';
+
+      button.disabled = false;
+
+      overlay.style.display = 'flex';
+
+      setStatus(
+        `${attacker.name} is attempting a long-range shot. ` +
+        `Flip the coin to determine the damage.`
+      );
+    }
+
+    /*
+     * The player presses the visible coin to determine the result.
+     */
+    function flipPendingAttackCoin() {
+      if (!pendingCoinFlipAttack) return;
+
+      const button = document.getElementById('coinFlipButton');
+      const coin = document.getElementById('attackCoin');
+      const panel = document.getElementById('coinFlipPanel');
+      const result = document.getElementById('coinFlipResult');
+      const instruction = document.getElementById('coinFlipInstruction');
+
+      if (!button || !coin || !result) return;
+
+      button.disabled = true;
+
+      const heads = Math.random() < 0.5;
+
+      /*
+       * Give the coin a real visible flip. The final rotation is
+       * deliberately chosen so the correct face is showing.
+       */
+      const finalRotation = heads ? 1800 : 1980;
+
+      coin.classList.remove('flipping');
+
+      /*
+       * Force a reflow so repeated flips animate correctly.
+       */
+      void coin.offsetWidth;
+
+      coin.classList.add('flipping');
+      coin.style.transform =
+        `rotateY(${finalRotation}deg)`;
+
+      setTimeout(() => {
+        panel.classList.add('result');
+
+        if (heads) {
+          result.textContent =
+            'HEADS — 100% DAMAGE';
+
+          instruction.textContent =
+            'The long-range shot hit at full strength.';
+        } else {
+          result.textContent =
+            'TAILS — 50% DAMAGE';
+
+          instruction.textContent =
+            'The long-range shot hit at half strength.';
+        }
+
+        /*
+         * Give the player a short moment to see the result before
+         * resolving the actual attack.
+         */
+        setTimeout(() => {
+          resolvePendingCoinFlipAttack(heads);
+        }, 700);
+
+      }, 900);
+    }
+
+    /*
+     * Completes the attack after the coin result is known.
+     */
+    function resolvePendingCoinFlipAttack(heads) {
+      const pending = pendingCoinFlipAttack;
+
+      if (!pending) return;
+
+      pendingCoinFlipAttack = null;
+
+      const overlay = document.getElementById('coinFlipOverlay');
+
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+
+      const attacker =
+        findPlacedUnit(pending.attackerId);
+
+      if (!attacker) {
+        setStatus(
+          'The attacking unit is no longer available.',
+          true
+        );
+        return;
+      }
+
+      const targetTile =
+        getTileByInternalKey(
+          pending.targetInternalKey
+        );
+
+      if (!targetTile) {
+        setStatus(
+          'The target tile is no longer available.',
+          true
+        );
+        return;
+      }
+
+      /*
+       * The tile is permanently discovered as soon as the shot
+       * was attempted, regardless of whether the shot hits.
+       */
+      discoverTileForPlayer(
+        attacker.player,
+        pending.targetInternalKey
+      );
+
+      const targetUnit =
+        getPlacedUnitAtTile(
+          pending.targetInternalKey
+        );
+
+      const hitEnemy =
+        !!targetUnit &&
+        targetUnit.player !== attacker.player;
+
+      /*
+       * Record the attack now that the coin has resolved.
+       */
+      attacker.lastAttackTick =
+        gameState.battleTick;
+
+      /*
+       * Long-range damage modifier:
+       *
+       * HEADS = 100%
+       * TAILS = 50%
+       */
+      const baseDamage =
+        Number(attacker.damage) || 0;
+
+      const damageMultiplier =
+        heads ? 1 : 0.5;
+
+      const damage =
+        baseDamage * damageMultiplier;
+
+      /*
+       * Nothing to damage: the shot still reveals the tile and
+       * consumes the attack.
+       */
+      if (!hitEnemy) {
+        recordAIShot(
+          attacker,
+          pending.targetInternalKey,
+          'miss'
+        );
+
+        renderBoardFromState();
+        updateGameHeader();
+        populateUnitsTables();
+
+        setStatus(
+          `${attacker.name} fired at ` +
+          `${pending.targetDisplayCoord} from ` +
+          `${pending.distance} tiles away. ` +
+          `${heads ? 'Heads' : 'Tails'} — ` +
+          `${heads ? '100%' : '50%'} damage. ` +
+          `No enemy unit was hit. ` +
+          `The tile is permanently revealed.`
+        );
+
+        pauseAfterAttack(
+          targetTile,
+          'miss',
+          'MISS',
+          COMBAT_TIMING.coinResultPause
+        );
+        return;
+      }
+
+      /*
+       * The enemy has actually been hit. This is the ONLY event
+       * that permanently reveals that enemy unit to the attacker.
+       */
+      revealUnitToPlayer(
+        attacker.player,
+        targetUnit.uniqueId
+      );
+
+      recordAIShot(
+        attacker,
+        pending.targetInternalKey,
+        'hit',
+        targetUnit.uniqueId
+      );
+
+      /*
+       * Apply the coin result to the actual damage.
+       */
+      targetUnit.currentHealth -= damage;
+
+      const destroyedTarget =
+        targetUnit.currentHealth <= 0;
+
+      const wasCommandBase =
+        targetUnit.id === 'command_base';
+
+      const targetPlayer =
+        targetUnit.player;
+
+      const targetName =
+        targetUnit.name;
+
+      if (destroyedTarget) {
+        removePlacedUnit(
+          targetUnit.uniqueId
+        );
+      }
+
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+
+      /*
+       * Command Base destroyed = victory.
+       */
+      if (
+        destroyedTarget &&
+        wasCommandBase
+      ) {
+        clearActionSelections();
+
+        gameState.actionMode =
+          ACTION_MODES.PLACE;
+
+        renderBoardFromState();
+        updateGameHeader();
+        populateUnitsTables();
+
+        setStatus(
+          `${attacker.name} hit ` +
+          `${pending.targetDisplayCoord} and destroyed ` +
+          `${targetPlayer.toUpperCase()} ` +
+          `${targetName}. ` +
+          `${attacker.player.toUpperCase()} wins!`
+        );
+
+        return;
+      }
+
+      const damageText =
+        Number.isInteger(damage)
+          ? String(damage)
+          : damage.toFixed(1);
+
+      /*
+       * Normal unit destroyed.
+       */
+      if (destroyedTarget) {
+        setStatus(
+          `${attacker.name} hit ` +
+          `${pending.targetDisplayCoord} for ` +
+          `${damageText} damage ` +
+          `(${heads ? 'HEADS — 100%' : 'TAILS — 50%'}). ` +
+          `${targetPlayer.toUpperCase()} ` +
+          `${targetName} was destroyed. ` +
+          `The tile is permanently revealed.`
+        );
+      } else {
+        setStatus(
+          `${attacker.name} hit ` +
+          `${pending.targetDisplayCoord} for ` +
+          `${damageText} damage ` +
+          `(${heads ? 'HEADS — 100%' : 'TAILS — 50%'}). ` +
+          `${targetName} has ` +
+          `${targetUnit.currentHealth} HP remaining. ` +
+          `The tile is permanently revealed.`
+        );
+      }
+
+      pauseAfterAttack(
+        targetTile,
+        destroyedTarget ? 'destroyed' : 'hit',
+        destroyedTarget ? 'DESTROYED' : 'HIT',
+        COMBAT_TIMING.coinResultPause
+      );
+    }
+
+    function showAttackImpact(tileElement, type = 'hit', label = 'HIT') {
+      if (!tileElement) return;
+
+      /* Remove an older marker if a very fast test fires repeatedly. */
+      const oldMarker = tileElement.querySelector('.attack-impact-marker');
+      if (oldMarker) oldMarker.remove();
+
+      tileElement.classList.remove('attack-hit-flash');
+      void tileElement.offsetWidth;
+      tileElement.classList.add('attack-hit-flash');
+
+      const marker = document.createElement('div');
+      marker.className = `attack-impact-marker ${type}`;
+
+      const ring = document.createElement('div');
+      ring.className = 'attack-impact-ring';
+      marker.appendChild(ring);
+
+      const text = document.createElement('span');
+      text.textContent = label;
+      marker.appendChild(text);
+
+      tileElement.appendChild(marker);
+
+      setTimeout(() => {
+        marker.remove();
+        tileElement.classList.remove('attack-hit-flash');
+      }, 1100);
+    }
+
+    function pauseAfterAttack(tileElement, type, label, delay = COMBAT_TIMING.playerImpactPause) {
+      showAttackImpact(tileElement, type, label);
+
+      attackResolutionPending = true;
+      attackResolutionPromise = new Promise(resolve => {
+        resolveAttackResolution = resolve;
+      });
+
+      setTimeout(() => {
+        if (!attackResolutionPending) return;
+
+        advanceTurnAfterAttack();
+        attackResolutionPending = false;
+
+        const resolver = resolveAttackResolution;
+        resolveAttackResolution = null;
+        if (resolver) resolver();
+      }, delay);
+    }
+
+    function waitForAttackResolution() {
+      return attackResolutionPromise;
+    }
+
+    /*
+     * ============================================================
+     * AI SHOT MEMORY / HUNT LOGIC
+     * ============================================================
+     *
+     * The AI must NEVER inspect gameState.occupancy when choosing
+     * a target. It only knows what it has learned from previous
+     * attacks.
+     *
+     * A miss means: "this square was checked and was empty."
+     * A hit means: "there is an enemy unit around/at this square."
+     *
+     * The AI then uses nearby untested squares as likely follow-up
+     * targets. This creates a simple Battleship-style hunt pattern
+     * without giving the AI direct knowledge of the player's army.
+     */
+    function recordAIShot(attacker, internalKey, outcome, unitId = null) {
+      if (!attacker || attacker.player !== 'blue' || !internalKey) return;
+
+      if (!gameState.aiShotHistory.blue) {
+        gameState.aiShotHistory.blue = {};
+      }
+
+      gameState.aiShotHistory.blue[internalKey] = {
+        outcome,
+        unitId,
+        tick: gameState.battleTick
+      };
+    }
+
+    function getAIShotRecord(internalKey) {
+      return gameState.aiShotHistory.blue?.[internalKey] || null;
+    }
+
+    function getAITileCoordinates(tile) {
+      return {
+        colIndex: Number(tile.dataset.colIndex),
+        row: Number(tile.dataset.row)
+      };
+    }
+
+    function areAdjacentTiles(a, b) {
+      const pa = getAITileCoordinates(a);
+      const pb = getAITileCoordinates(b);
+
+      return Math.max(
+        Math.abs(pa.colIndex - pb.colIndex),
+        Math.abs(pa.row - pb.row)
+      ) === 1;
+    }
+
+    function getAIUntestedTiles(legalTiles) {
+      return legalTiles.filter(tile =>
+        !getAIShotRecord(tile.dataset.internalKey)
+      );
+    }
+
+    function getAIHitTiles() {
+      return [...document.querySelectorAll('.board-tile')].filter(tile => {
+        const record = getAIShotRecord(tile.dataset.internalKey);
+        return record &&
+          (record.outcome === 'hit' || record.outcome === 'destroyed');
+      });
+    }
+
+    function getAIGuessScore(tile, hitTiles) {
+      if (!hitTiles.length) return 0;
+
+      let score = 0;
+
+      for (const hitTile of hitTiles) {
+        if (areAdjacentTiles(tile, hitTile)) {
+          score += 100;
+        }
+      }
+
+      return score;
+    }
+
+    function resolveTileAttack(attacker, tileElement) {
+      if (pendingCoinFlipAttack) {
+        return;
+      }
+
+      const validation =
+        canAttackTile(
+          attacker,
+          tileElement
+        );
+
+      clearPreview();
+      highlightAttackSource(attacker);
+
+      tileElement.classList.remove(
+        'attack-target-valid',
+        'attack-target-invalid',
+        'attack-target-long-range'
+      );
+
+      if (!validation.valid) {
+        tileElement.classList.add(
+          'attack-target-invalid'
+        );
+
+        setStatus(
+          validation.reason || 'Invalid attack.',
+          true
+        );
+
+        return;
+      }
+
+      /*
+       * Beyond normal range:
+       * do NOT immediately deal damage.
+       *
+       * Instead, pause the attack and show the coin.
+       */
+      if (validation.overRange) {
+        tileElement.classList.add(
+          'attack-target-long-range'
+        );
+
+        beginLongRangeCoinFlip(
+          attacker,
+          tileElement,
+          validation
+        );
+
+        return;
+      }
+
+      /*
+       * Normal-range attack:
+       * no coin is necessary and damage is 100%.
+       */
+      discoverTileForPlayer(
+        attacker.player,
+        tileElement.dataset.internalKey
+      );
+
+      const targetUnit =
+        getPlacedUnitAtTile(
+          tileElement.dataset.internalKey
+        );
+
+      const hitEnemy =
+        !!targetUnit &&
+        targetUnit.player !== attacker.player;
+
+      const damage =
+        Number(attacker.damage) || 0;
+
+      attacker.lastAttackTick =
+        gameState.battleTick;
+
+      /*
+       * Empty tile or friendly-occupied tile.
+       */
+      if (!hitEnemy) {
+        recordAIShot(
+          attacker,
+          pending.targetInternalKey,
+          'miss'
+        );
+
+        renderBoardFromState();
+        updateGameHeader();
+        populateUnitsTables();
+
+        setStatus(
+          `${attacker.name} fired at ` +
+          `${tileElement.dataset.displayCoord}. ` +
+          `No enemy unit was hit. ` +
+          `The tile is permanently revealed.`
+        );
+
+        pauseAfterAttack(
+          tileElement,
+          'miss',
+          'MISS'
+        );
+        return;
+      }
+
+      /*
+       * The enemy has actually been hit. This is the ONLY event
+       * that permanently reveals that enemy unit to the attacker.
+       */
+      revealUnitToPlayer(
+        attacker.player,
+        targetUnit.uniqueId
+      );
+
+      recordAIShot(
+        attacker,
+        tileElement.dataset.internalKey,
+        'hit',
+        targetUnit.uniqueId
+      );
+
+      /*
+       * Normal attack = 100% damage.
+       */
+      targetUnit.currentHealth -= damage;
+
+      const destroyedTarget =
+        targetUnit.currentHealth <= 0;
+
+      const wasCommandBase =
+        targetUnit.id === 'command_base';
+
+      const targetPlayer =
+        targetUnit.player;
+
+      const targetName =
+        targetUnit.name;
+
+      if (destroyedTarget) {
+        removePlacedUnit(
+          targetUnit.uniqueId
+        );
+      }
+
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+
+      /*
+       * Command Base destroyed = victory.
+       */
+      if (
+        destroyedTarget &&
+        wasCommandBase
+      ) {
+        clearActionSelections();
+
+        gameState.actionMode =
+          ACTION_MODES.PLACE;
+
+        renderBoardFromState();
+        updateGameHeader();
+        populateUnitsTables();
+
+        setStatus(
+          `${attacker.name} hit ` +
+          `${tileElement.dataset.displayCoord} and destroyed ` +
+          `${targetPlayer.toUpperCase()} ` +
+          `${targetName}. ` +
+          `${attacker.player.toUpperCase()} wins!`
+        );
+
+        return;
+      }
+
+      if (destroyedTarget) {
+        setStatus(
+          `${attacker.name} hit ` +
+          `${tileElement.dataset.displayCoord} for ` +
+          `${damage} damage. ` +
+          `${targetPlayer.toUpperCase()} ` +
+          `${targetName} was destroyed. ` +
+          `The tile is permanently revealed.`
+        );
+      } else {
+        setStatus(
+          `${attacker.name} hit ` +
+          `${tileElement.dataset.displayCoord} for ` +
+          `${damage} damage. ` +
+          `${targetName} has ` +
+          `${targetUnit.currentHealth} HP remaining. ` +
+          `The tile is permanently revealed.`
+        );
+      }
+
+      pauseAfterAttack(
+        tileElement,
+        destroyedTarget ? 'destroyed' : 'hit',
+        destroyedTarget ? 'DESTROYED' : 'HIT'
+      );
+    }
+
+    function advanceTurnAfterAttack() {
+      if (!isBattlePhase()) return;
+      advanceBattleTurn();
+      gameState.actionMode = ACTION_MODES.PLACE;
+      clearActionSelections();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+    }
+
+    function removePlacedUnit(uniqueId) {
+      const unit = findPlacedUnit(uniqueId);
+      if (!unit) return;
+
+      unit.tiles.forEach(tileData => {
+        delete gameState.occupancy[tileData.internalKey];
+      });
+
+      gameState.units[unit.player] = gameState.units[unit.player].filter(u => u.uniqueId !== uniqueId);
+    }
+
+    function clearExpiredSkipFlagsForCurrentTurnPlayer() {
+      gameState.units[gameState.currentTurn].forEach(unit => {
+        if (unit.skipNextTurn) {
+          if (!unit.skipNextTurnConsumed) {
+            unit.skipNextTurnConsumed = true;
+          } else {
+            unit.skipNextTurn = false;
+            unit.skipNextTurnConsumed = false;
+          }
+        }
+      });
+    }
+
+    function renderBoardFromState() {
+      /*
+       * In an AI game the human is always Red for visibility.
+       * The AI's turn must never change the player's viewpoint.
+       */
+      const viewer = gameState.aiEnabled ? 'red' : gameState.viewingPlayer;
+
+      document.querySelectorAll('.board-tile').forEach(tile => {
+        tile.textContent = '';
+        tile.classList.remove(
+          'occupied-red',
+          'occupied-blue',
+          'anchor-tile',
+          'hidden-enemy',
+          'move-source',
+          'attack-source',
+          'selected',
+          'red-selected',
+          'dmz-selected',
+          'blue-selected',
+          'discovered-red',
+          'discovered-blue'
+        );
+
+        const oldBadge = tile.querySelector('.tile-cost-badge');
+        if (oldBadge) oldBadge.remove();
+
+        const internalKey = tile.dataset.internalKey;
+        const discoveredForViewer = isTileDiscoveredForPlayer(viewer, internalKey);
+
+        if (discoveredForViewer) {
+          tile.classList.add(viewer === 'red' ? 'discovered-red' : 'discovered-blue');
+        }
+
+        const unitId = gameState.occupancy[internalKey];
+        if (!unitId) return;
+
+        const unit = findPlacedUnit(unitId);
+        if (!unit) return;
+
+        const isAnchor = unit.anchorInternal === internalKey;
+        const isFriendly = unit.player === viewer;
+        const enemyUnitRevealed =
+          isUnitRevealedToPlayer(viewer, unit.uniqueId);
+
+        /*
+         * STRICT FOG OF WAR:
+         *
+         * In an AI game, an enemy unit is visible ONLY if the human
+         * player has actually hit that specific unit.
+         *
+         * Discovering a tile is NOT enough.
+         * Knowing that a tile was fired upon is NOT enough.
+         * The AI's turn is NOT enough.
+         * Setup is NOT enough.
+         *
+         * In PvP, preserve the existing reveal behaviour.
+         */
+        const shouldReveal =
+          isFriendly ||
+          (gameState.aiEnabled
+            ? enemyUnitRevealed
+            : (
+                discoveredForViewer ||
+                gameState.revealMode
+              ));
+
+        if (!shouldReveal) {
+          /*
+           * STRICT FOG OF WAR:
+           *
+           * Do not mark the tile as an occupied/hidden tile. The
+           * enemy footprint itself must be completely invisible.
+           * The board tile must look exactly like an ordinary
+           * unoccupied tile.
+           */
+          return;
+        }
+
+        tile.classList.add(unit.player === 'red' ? 'occupied-red' : 'occupied-blue');
+
+        if (isAnchor) {
+          tile.classList.add('anchor-tile');
+          tile.textContent = `${unit.short}`;
+
+          const badge = document.createElement('div');
+          badge.className = 'tile-cost-badge';
+          badge.textContent = `${unit.currentHealth}`;
+          tile.appendChild(badge);
+        }
+      });
+
+      const selectedBoardUnit = getSelectedBoardUnit();
+      if (
+        selectedBoardUnit &&
+        selectedBoardUnit.player === viewer &&
+        !(gameState.aiEnabled && selectedBoardUnit.player === 'blue')
+      ) {
+        highlightSelectedBoardUnit(selectedBoardUnit);
+      }
+
+      const moveSource = getMoveSourceUnit();
+      if (moveSource && moveSource.player === viewer && gameState.actionMode === ACTION_MODES.MOVE) {
+        highlightMoveSource(moveSource);
+      }
+
+      const attackSource = getAttackSourceUnit();
+      if (attackSource && attackSource.player === viewer && gameState.actionMode === ACTION_MODES.ATTACK) {
+        highlightAttackSource(attackSource);
+      }
+    }
+
+    function isAIGame() {
+      return !!gameState.aiEnabled;
+    }
+
+    function isAITurn() {
+      return isAIGame() &&
+        gameState.currentTurn === gameState.aiPlayer &&
+        (gameState.phase === PHASES.SETUP_BLUE || gameState.phase === PHASES.BATTLE);
+    }
+
+    function aiDelay(ms = 500) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function getAITilesForPlayer(player) {
+      return [...document.querySelectorAll('.board-tile')]
+        .filter(tile => isTileAllowedForPlayer(tile, player));
+    }
+
+    function findAIPlacement(unitDefinition, player = 'blue') {
+      const previousTurn = gameState.currentTurn;
+      const previousSelectedUnit = gameState.selectedUnit;
+      const previousRotation = gameState.rotation;
+
+      gameState.currentTurn = player;
+      gameState.selectedUnit = { ...unitDefinition, player };
+
+      const rotations = unitDefinition.width === unitDefinition.height
+        ? ['horizontal']
+        : shuffleArray(['horizontal', 'vertical']);
+
+      for (const rotation of rotations) {
+        gameState.rotation = rotation;
+        const tiles = shuffleArray(getAITilesForPlayer(player));
+
+        for (const anchorTile of tiles) {
+          const result = getPlacementTiles(anchorTile, gameState.selectedUnit);
+          if (result.valid) {
+            gameState.currentTurn = previousTurn;
+            gameState.selectedUnit = previousSelectedUnit;
+            gameState.rotation = previousRotation;
+            return { anchorTile, result, rotation };
+          }
+        }
+      }
+
+      gameState.currentTurn = previousTurn;
+      gameState.selectedUnit = previousSelectedUnit;
+      gameState.rotation = previousRotation;
+      return null;
+    }
+
+    function aiPlaceUnit(unitDefinition, player = 'blue') {
+      const previousTurn = gameState.currentTurn;
+      const previousSelectedUnit = gameState.selectedUnit;
+      const previousRotation = gameState.rotation;
+
+      const placement = findAIPlacement(unitDefinition, player);
+      if (!placement) return false;
+
+      gameState.currentTurn = player;
+      gameState.selectedUnit = { ...unitDefinition, player };
+      gameState.rotation = placement.rotation;
+
+      placeUnit(placement.anchorTile, placement.result);
+
+      gameState.currentTurn = previousTurn;
+      gameState.selectedUnit = previousSelectedUnit;
+      gameState.rotation = previousRotation;
+
+      return true;
+    }
+
+    async function scheduleAISetup() {
+      if (!isAIGame() || gameState.phase !== PHASES.SETUP_BLUE || gameState.aiBusy) return;
+
+      gameState.aiBusy = true;
+      await aiDelay(250);
+      await runAISetup();
+      gameState.aiBusy = false;
+    }
+
+    async function runAISetup() {
+      if (!isAIGame() || gameState.phase !== PHASES.SETUP_BLUE) return;
+
+      gameState.currentTurn = 'blue';
+      gameState.viewingPlayer = 'red';
+      gameState.actionMode = ACTION_MODES.PLACE;
+
+      setStatus('AI is placing its Command Base...');
+      const commandBase = GAME_CONFIG.units.find(unit => unit.id === 'command_base');
+      aiPlaceUnit(commandBase, 'blue');
+      renderBoardFromState();
+      updateGameHeader();
+      await aiDelay(120);
+
+      /* Build a varied army while respecting the AI's budget. */
+      const purchasable = shuffleArray(
+        GAME_CONFIG.units.filter(unit =>
+          unit.id !== 'command_base' &&
+          unit.id !== 'nuclear_option' &&
+          unit.id !== 'apc'
+        )
+      );
+
+      let attempts = 0;
+      while (attempts < 30) {
+        attempts += 1;
+
+        const affordable = purchasable.filter(unit =>
+          unit.cost <= gameState.budget.blue
+        );
+
+        if (!affordable.length) break;
+
+        const unit = affordable[Math.floor(Math.random() * affordable.length)];
+        const placed = aiPlaceUnit(unit, 'blue');
+
+        if (!placed) {
+          /* Remove units that can no longer fit and try another. */
+          const index = purchasable.findIndex(candidate => candidate.id === unit.id);
+          if (index >= 0) purchasable.splice(index, 1);
+        }
+
+        renderBoardFromState();
+        updateGameHeader();
+        await aiDelay(70);
+      }
+
+      gameState.phase = PHASES.BATTLE;
+      gameState.currentTurn = 'red';
+      gameState.viewingPlayer = 'red';
+      gameState.turn = 1;
+      gameState.battleTick = 1;
+      gameState.actionMode = ACTION_MODES.PLACE;
+      clearActionSelections();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+      setStatus('AI deployment complete. Your battle turn begins.');
+    }
+
+    function getAILegalTargetTiles(attacker) {
+      return [...document.querySelectorAll('.board-tile')]
+        .filter(tile => {
+          const result = canAttackTile(attacker, tile);
+          return result.valid;
+        });
+    }
+
+    function getAITargetTile(attacker) {
+      const legalTiles = getAILegalTargetTiles(attacker);
+      if (!legalTiles.length) return null;
+
+      /*
+       * NEVER inspect occupancy here.
+       *
+       * This is the critical anti-cheating rule. The AI chooses
+       * from board coordinates only, based on what it has learned
+       * from previous shots.
+       */
+      const untestedTiles = getAIUntestedTiles(legalTiles);
+
+      /*
+       * If every legal tile has already been tested, there is no
+       * new information to gain. Reusing an old tile is allowed as
+       * a last resort, but this situation is extremely unlikely in
+       * a normal game.
+       */
+      const candidates = untestedTiles.length
+        ? untestedTiles
+        : legalTiles;
+
+      const hitTiles = getAIHitTiles();
+
+      /*
+       * HUNT MODE:
+       *
+       * After a successful hit, prefer untested neighbouring
+       * squares. This is an assumption, not direct knowledge of
+       * the player's unit location.
+       */
+      if (hitTiles.length && untestedTiles.length) {
+        const scored = untestedTiles.map(tile => ({
+          tile,
+          score: getAIGuessScore(tile, hitTiles) + Math.random() * 20
+        }));
+
+        const bestScore = Math.max(
+          ...scored.map(entry => entry.score)
+        );
+
+        if (bestScore > 0) {
+          const best = scored.filter(
+            entry => entry.score >= bestScore - 20
+          );
+
+          return best[
+            Math.floor(Math.random() * best.length)
+          ].tile;
+        }
+      }
+
+      /*
+       * SEARCH MODE:
+       *
+       * No useful hit has been found, so attack an untested square
+       * completely at random. The AI has no knowledge of Red's
+       * occupancy and cannot deliberately select an occupied tile.
+       */
+      return candidates[
+        Math.floor(Math.random() * candidates.length)
+      ];
+    }
+
+    function getAIAttackers() {
+      return shuffleArray(
+        gameState.units.blue.filter(unit =>
+          canUnitEverAttack(unit) &&
+          isUnitReadyToAttack(unit)
+        )
+      );
+    }
+
+    function getAIMovableUnits() {
+      return shuffleArray(
+        gameState.units.blue.filter(unit =>
+          !unit.skipNextTurn &&
+          unit.id !== 'command_base'
+        )
+      );
+    }
+
+    function findAIMoveDestination(unit) {
+      const tiles = shuffleArray(getAITilesForPlayer('blue'));
+      for (const tile of tiles) {
+        const result = getMovePreviewTiles(tile, unit);
+        if (result.valid) return { tile, result };
+      }
+      return null;
+    }
+
+    async function aiMakePlacement() {
+      if (gameState.budget.blue <= 0) return false;
+
+      const affordable = shuffleArray(
+        GAME_CONFIG.units.filter(unit =>
+          unit.id !== 'command_base' &&
+          unit.id !== 'nuclear_option' &&
+          unit.cost <= gameState.budget.blue
+        )
+      );
+
+      for (const unit of affordable) {
+        if (aiPlaceUnit(unit, 'blue')) {
+          renderBoardFromState();
+          updateGameHeader();
+          populateUnitsTables();
+          setStatus(`AI placed ${unit.name}.`);
+          await aiDelay(350);
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    async function aiMakeAttack() {
+      const attackers = getAIAttackers();
+      if (!attackers.length) return false;
+
+      for (const attacker of attackers) {
+        const targetTile = getAITargetTile(attacker);
+        if (!targetTile) continue;
+
+        gameState.selectedBoardUnitId = attacker.uniqueId;
+        gameState.attackSourceUnitId = attacker.uniqueId;
+        gameState.moveSourceUnitId = null;
+        gameState.actionMode = ACTION_MODES.ATTACK;
+
+        renderBoardFromState();
+        highlightAttackSource(attacker);
+        await aiDelay(180);
+
+        const validation = canAttackTile(attacker, targetTile);
+        if (!validation.valid) continue;
+
+        if (validation.overRange) {
+          targetTile.classList.add('attack-target-long-range');
+          beginLongRangeCoinFlip(attacker, targetTile, validation);
+
+          /* AI flips automatically after showing the coin. */
+          await aiDelay(500);
+          if (pendingCoinFlipAttack) {
+            flipPendingAttackCoin();
+          }
+          await waitForAttackResolution();
+          return true;
+        }
+
+        setStatus(`AI ${attacker.name} is firing at ${targetTile.dataset.displayCoord}...`);
+        await aiDelay(COMBAT_TIMING.aiAttackWindup);
+        resolveTileAttack(attacker, targetTile);
+        await waitForAttackResolution();
+        return true;
+      }
+
+      return false;
+    }
+
+    async function aiMakeMove() {
+      const units = getAIMovableUnits();
+      if (!units.length) return false;
+
+      for (const unit of units) {
+        const destination = findAIMoveDestination(unit);
+        if (!destination) continue;
+
+        gameState.selectedBoardUnitId = unit.uniqueId;
+        gameState.moveSourceUnitId = unit.uniqueId;
+        gameState.attackSourceUnitId = null;
+        gameState.actionMode = ACTION_MODES.MOVE;
+
+        renderBoardFromState();
+        highlightMoveSource(unit);
+        setStatus(`AI ${unit.name} is moving...`);
+        await aiDelay(COMBAT_TIMING.aiMoveWindup);
+
+        movePlacedUnit(
+          unit,
+          destination.tile,
+          destination.result
+        );
+
+        return true;
+      }
+
+      return false;
+    }
+
+    async function runAITurn() {
+      if (!isAITurn() || gameState.aiBusy) return;
+
+      gameState.aiBusy = true;
+      /* Keep the human player's viewpoint during the AI turn so hidden AI units remain hidden. */
+      gameState.viewingPlayer = 'red';
+      gameState.actionMode = ACTION_MODES.PLACE;
+      clearActionSelections();
+      renderBoardFromState();
+      updateGameHeader();
+      populateUnitsTables();
+      setStatus('AI is thinking...');
+
+      await aiDelay(COMBAT_TIMING.aiTurnStartDelay);
+
+      if (!isAITurn()) {
+        gameState.aiBusy = false;
+        return;
+      }
+
+      /* The AI may reinforce once during its turn. */
+      await aiMakePlacement();
+
+      if (!isAITurn()) {
+        gameState.aiBusy = false;
+        return;
+      }
+
+      await aiDelay(100);
+
+      /*
+       * The AI prefers to attack known enemy positions. If it has not
+       * discovered an enemy, it will sometimes move first, which makes
+       * the AI visibly use both its movement and attack systems.
+       */
+      /*
+       * The AI only knows about enemy positions through the results
+       * of its own shots. Do NOT inspect Red's units or occupancy
+       * here. A previous hit is the only information used to enter
+       * hunt mode.
+       */
+      const knownEnemyTargetExists =
+        getAIHitTiles().length > 0;
+
+      const shouldMoveFirst =
+        !knownEnemyTargetExists &&
+        getAIMovableUnits().length > 0 &&
+        Math.random() < 0.45;
+
+      if (shouldMoveFirst) {
+        await aiMakeMove();
+        gameState.aiBusy = false;
+        return;
+      }
+
+      const attacked = await aiMakeAttack();
+
+      if (attacked) {
+        gameState.aiBusy = false;
+        return;
+      }
+
+      const moved = await aiMakeMove();
+
+      /*
+       * aiMakeMove normally ends the turn through
+       * advanceTurnAfterMove(). If no legal move exists, force the
+       * turn to advance so the AI can never stall indefinitely.
+       */
+      if (isAITurn()) {
+        advanceBattleTurn();
+        gameState.actionMode = ACTION_MODES.PLACE;
+        clearActionSelections();
+        renderBoardFromState();
+        updateGameHeader();
+        populateUnitsTables();
+      }
+
+      gameState.aiBusy = false;
+    }
+
+    function findPlacedUnit(uniqueId) {
+      return [...gameState.units.red, ...gameState.units.blue].find(unit => unit.uniqueId === uniqueId) || null;
+    }
+
+    init();
+  </script>
+</body>
+</html>

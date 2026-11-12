@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamagotchi LCD</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #2c2c2c;
+    font-family: monospace;
+    overflow: hidden;
+  }
+
+  .device {
+    width: 340px;
+    background: linear-gradient(145deg, #d0d0c8, #b8b8a8);
+    border-radius: 50px 50px 60px 60px;
+    padding: 20px 25px 30px;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.6),
+      inset 0 2px 3px rgba(255,255,255,0.5),
+      inset 0 -3px 5px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  .brand {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #555;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .screen-bezel {
+    background: #3a3a3a;
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.7);
+  }
+
+  .screen-wrap {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #8b956d;
+  }
+
+  canvas#lcd {
+    display: block;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  /* Scanline overlay */
+  .scanlines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+    border-radius: 8px;
+  }
+
+  /* LCD glare */
+  .glare {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.1) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(255,255,255,0.03) 100%
+    );
+    pointer-events: none;
+    border-radius: 8px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+
+  .btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform 0.08s;
+    box-shadow:
+      0 4px 0 rgba(0,0,0,0.4),
+      0 5px 10px rgba(0,0,0,0.2);
+  }
+  .btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  }
+
+  .btn-a { background: linear-gradient(145deg, #666, #444); }
+  .btn-b { background: linear-gradient(145deg, #666, #444); }
+  .btn-c { background: linear-gradient(145deg, #666, #444); }
+
+  .btn-labels {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 10px 0;
+    font-size: 7px;
+    color: #777;
+    letter-spacing: 1px;
+    font-family: monospace;
+  }
+
+  .bottom-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 8px;
+    font-weight: bold;
+    color: #555;
+    background: linear-gradient(145deg, #c8c8b8, #a8a898);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+  }
+  .btn-sm:active { transform: translateY(1px); box-shadow: none; }
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="brand">● Tamagotchi ●</div>
+  <div class="screen-bezel">
+    <div class="screen-wrap">
+      <canvas id="lcd" width="128" height="128"></canvas>
+      <div class="scanlines"></div>
+      <div class="glare"></div>
+    </div>
+  </div>
+  <div class="btn-labels">
+    <span id="lbl-a">SELECT</span>
+    <span id="lbl-b">EXECUTE</span>
+    <span id="lbl-c">CANCEL</span>
+  </div>
+  <div class="buttons">
+    <button class="btn btn-a" onclick="pressA()">A</button>
+    <button class="btn btn-b" onclick="pressB()">B</button>
+    <button class="btn btn-c" onclick="pressC()">C</button>
+  </div>
+  <div class="bottom-row">
+    <button class="btn-sm" onclick="saveGame()">SAVE</button>
+    <button class="btn-sm" onclick="toggleSound()">SOUND</button>
+    <button class="btn-sm" onclick="resetGame()">RESET</button>
+  </div>
+</div>
+
+<script>
+// ===== LCD CANVAS =====
+const canvas = document.getElementById('lcd');
+const ctx = canvas.getContext('2d');
+const W = 128, H = 128;
+
+// LCD colors — classic green-gray shades
+const LCD_BG     = [139, 149, 109]; // light greenish
+const LCD_DARK   = [30, 35, 20];    // near-black
+const LCD_MID    = [85, 95, 65];    // mid tone
+const LCD_LIGHT  = [115, 125, 90];  // light shade (ghost pixels)
+
+function lcdColor(r, g, b, a) {
+  return `rgba(${r},${g},${b},${a !== undefined ? a : 1})`;
+}
+
+function clearLCD() {
+  ctx.fillStyle = lcdColor(...LCD_BG);
+  ctx.fillRect(0, 0, W, H);
+}
+
+// Pixel-level drawing helpers — everything is in "LCD pixel" coords
+// 1 LCD pixel = 1 canvas pixel at native res, scaled up by CSS
+function setPixel(x, y, shade) {
+  // shade: 0 = dark, 1 = mid, 2 = light/ghost, 3 = bg
+  let c;
+  switch(shade) {
+    case 0: c = LCD_DARK; break;
+    case 1: c = LCD_MID; break;
+    case 2: c = LCD_LIGHT; break;
+    default: c = LCD_BG;
+  }
+  ctx.fillStyle = lcdColor(...c);
+  ctx.fillRect(x, y, 1, 1);
+}
+
+function drawRect(x, y, w, h, shade) {
+  let c;
+  switch(shade) {
+    case 0: c = LCD_DARK; break;
+    case 1: c = LCD_MID; break;
+    case 2: c = LCD_LIGHT; break;
+    default: c = LCD_BG;
+  }
+  ctx.fillStyle = lcdColor(...c);
+  ctx.fillRect(x, y, w, h);
+}
+
+// Bitmap font — 3x5 pixel glyphs
+const FONT = {
+  'A': [0b010,0b101,0b111,0b101,0b101],
+  'B': [0b110,0b101,0b110,0b101,0b110],
+  'C': [0b011,0b100,0b100,0b100,0b011],
+  'D': [0b110,0b101,0b101,0b101,0b110],
+  'E': [0b111,0b100,0b110,0b100,0b111],
+  'F': [0b111,0b100,0b110,0b100,0b100],
+  'G': [0b011,0b100,0b101,0b101,0b011],
+  'H': [0b101,0b101,0b111,0b101,0b101],
+  'I': [0b111,0b010,0b010,0b010,0b111],
+  'J': [0b001,0b001,0b001,0b101,0b010],
+  'K': [0b101,0b101,0b110,0b101,0b101],
+  'L': [0b100,0b100,0b100,0b100,0b111],
+  'M': [0b101,0b111,0b111,0b101,0b101],
+  'N': [0b101,0b111,0b111,0b111,0b101],
+  'O': [0b010,0b101,0b101,0b101,0b010],
+  'P': [0b110,0b101,0b110,0b100,0b100],
+  'Q': [0b010,0b101,0b101,0b111,0b011],
+  'R': [0b110,0b101,0b110,0b101,0b101],
+  'S': [0b011,0b100,0b010,0b001,0b110],
+  'T': [0b111,0b010,0b010,0b010,0b010],
+  'U': [0b101,0b101,0b101,0b101,0b010],
+  'V': [0b101,0b101,0b101,0b101,0b010],
+  'W': [0b101,0b101,0b111,0b111,0b101],
+  'X': [0b101,0b101,0b010,0b101,0b101],
+  'Y': [0b101,0b101,0b010,0b010,0b010],
+  'Z': [0b111,0b001,0b010,0b100,0b111],
+  '0': [0b111,0b101,0b101,0b101,0b111],
+  '1': [0b010,0b110,0b010,0b010,0b111],
+  '2': [0b110,0b001,0b010,0b100,0b111],
+  '3': [0b110,0b001,0b010,0b001,0b110],
+  '4': [0b101,0b101,0b111,0b001,0b001],
+  '5': [0b111,0b100,0b110,0b001,0b110],
+  '6': [0b011,0b100,0b111,0b101,0b111],
+  '7': [0b111,0b001,0b010,0b010,0b010],
+  '8': [0b111,0b101,0b111,0b101,0b111],
+  '9': [0b111,0b101,0b111,0b001,0b110],
+  ':': [0b000,0b010,0b000,0b010,0b000],
+  '!': [0b010,0b010,0b010,0b000,0b010],
+  '?': [0b110,0b001,0b010,0b000,0b010],
+  '.': [0b000,0b000,0b000,0b000,0b010],
+  '-': [0b000,0b000,0b111,0b000,0b000],
+  ' ': [0b000,0b000,0b000,0b000,0b000],
+  '%': [0b101,0b001,0b010,0b100,0b101],
+  '/': [0b001,0b001,0b010,0b100,0b100],
+  '+': [0b000,0b010,0b111,0b010,0b000],
+  '<': [0b001,0b010,0b100,0b010,0b001],
+  '>': [0b100,0b010,0b001,0b010,0b100],
+  '*': [0b101,0b010,0b111,0b010,0b101],
+  '\'': [0b010,0b010,0b000,0b000,0b000],
+  ',': [0b000,0b000,0b000,0b010,0b100],
+};
+
+function drawChar(ch, x, y, shade = 0) {
+  const glyph = FONT[ch.toUpperCase()];
+  if (!glyph) return;
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (glyph[row] & (1 << (2 - col))) {
+        setPixel(x + col, y + row, shade);
+      }
+    }
+  }
+}
+
+function drawText(str, x, y, shade = 0) {
+  for (let i = 0; i < str.length; i++) {
+    drawChar(str[i], x + i * 4, y, shade);
+  }
+}
+
+function drawTextCentered(str, y, shade = 0) {
+  const w = str.length * 4 - 1;
+  const x = Math.floor((W - w) / 2);
+  drawText(str, x, y, shade);
+}
+
+// ===== PIXEL ART SPRITES =====
+// Each sprite is a 2D array: 0=transparent, 1=dark, 2=mid, 3=bg(erase)
+// Sprites are small (like original 8x8 or 16x16)
+
+const SPRITES = {
+  // 16x16 egg
+  egg: [
+    [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,1,0,2,0,2,0,2,0,1,0,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,1,0,2,0,2,0,2,0,2,0,1,0,0,0],
+    [0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,1,0,2,0,2,0,2,0,2,0,2,0,1,0,0],
+    [0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,1,0,0,2,0,2,0,2,0,2,0,0,1,0,0],
+    [0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,1,0,0,2,0,2,0,2,0,0,1,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ],
+
+  // Baby: simple round creature 16x16
+  baby: [
+    [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0],
+    [0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,1,0,1,0,0,0,0,1,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ],
+
+  // Child: more defined body 16x16
+  child: [
+    [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],
+    [0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0],
+    [0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0],
+    [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],
+    [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],
+    [0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ],
+
+  // Teen: spiky + attitude 16x16
+  teen: [
+    [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,0],
+    [0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0],
+    [0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0],
+    [0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],
+    [0,0,1,1,0,0,0,1,0,0,0,1,1,0,0,0],
+    [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+  ],
+
+  // Adult: big, majestic 16x16
+  adult: [
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0],
+    [0,0,1,0,0,0,1,1,1,1,0,0,0,1,0,0],
+    [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+    [0,1,0,0,1,1,0,0,0,1,1,0,0,0,1,0],
+    [1,0,0,0,1,1,0,0,0,1,1,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1],
+    [0,1,0,0,0,1,1,1,1,1,0,0,0,0,1,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0],
+    [0,1,1,0,0,0,0,1,0,0,0,0,0,1,1,0],
+    [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+  ],
+
+  // Elder: crown + wise look 16x16
+  elder: [
+    [0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0],
+    [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],
+    [0,0,0,1,2,0,0,1,0,0,2,1,0,0,0,0],
+    [0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ],
+
+  // Sleeping overlay — closed eyes (draw on top of current sprite)
+  sleepEyes: [
+    // Row offsets from sprite top for eyes closed — drawn separately
+  ],
+
+  // Poop 8x8
+  poop: [
+    [0,0,0,1,1,0,0,0],
+    [0,0,1,0,0,1,0,0],
+    [0,1,0,0,1,0,1,0],
+    [1,0,0,1,0,0,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,1,0,0,1,0,1],
+    [0,1,0,0,0,0,1,0],
+    [0,0,1,1,1,1,0,0],
+  ],
+
+  // Heart 7x6
+  heart: [
+    [0,1,1,0,1,1,0],
+    [1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1],
+    [0,1,1,1,1,1,0],
+    [0,0,1,1,1,0,0],
+    [0,0,0,1,0,0,0],
+  ],
+
+  // Skull 8x8
+  skull: [
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,0,0,0,0,1],
+    [0,1,0,1,1,0,1,0],
+    [0,0,1,0,0,1,0,0],
+    [0,0,1,1,1,1,0,0],
+    [0,0,0,1,1,0,0,0],
+  ],
+
+  // Food icon 8x8
+  food: [
+    [0,0,0,1,0,0,0,0],
+    [0,0,1,1,1,0,0,0],
+    [0,1,1,1,1,1,0,0],
+    [0,1,1,1,1,1,0,0],
+    [1,1,1,1,1,1,1,0],
+    [1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,0,0],
+    [0,0,1,1,1,0,0,0],
+  ],
+
+  // Ball icon 8x8
+  ball: [
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [1,0,0,1,1,0,0,1],
+    [1,0,1,0,0,1,0,1],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,1,1,0,0,1],
+    [0,1,0,0,0,0,1,0],
+    [0,0,1,1,1,1,0,0],
+  ],
+
+  // Zzz 8x5
+  zzz: [
+    [1,1,1,0,0,0,0,0],
+    [0,0,1,0,1,1,0,0],
+    [0,1,0,0,0,1,0,0],
+    [1,1,1,0,1,1,0,1],
+    [0,0,0,0,0,0,0,1],
+  ],
+
+  // Medicine cross 7x7
+  medicine: [
+    [0,0,1,1,1,0,0],
+    [0,0,1,1,1,0,0],
+    [1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1],
+    [0,0,1,1,1,0,0],
+    [0,0,1,1,1,0,0],
+  ],
+
+  // Broom 5x8
+  broom: [
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,1,1,1,0],
+    [1,1,1,1,1],
+    [1,0,1,0,1],
+    [1,0,1,0,1],
+  ],
+
+  moon: [
+    [0,0,1,1,1,0,0,0],
+    [0,1,1,0,0,0,0,0],
+    [1,1,0,0,0,0,0,0],
+    [1,1,0,0,0,0,0,0],
+    [1,1,0,0,0,0,0,0],
+    [0,1,1,0,0,0,0,0],
+    [0,0,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,0],
+  ],
+
+  // Arrow cursor 5x7
+  arrow: [
+    [0,0,1,0,0],
+    [0,1,1,1,0],
+    [1,0,1,0,1],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [0,0,0,0,0],
+  ],
+};
+
+function drawSprite(sprite, x, y, scale = 1) {
+  for (let row = 0; row < sprite.length; row++) {
+    for (let col = 0; col < sprite[row].length; col++) {
+      const v = sprite[row][col];
+      if (v === 0) continue;
+      const shade = v === 2 ? 1 : 0;
+      drawRect(x + col * scale, y + row * scale, scale, scale, shade);
+    }
+  }
+}
+
+// ===== STAT BAR DRAWING =====
+function drawStatBar(x, y, value, label) {
+  // Label
+  drawText(label, x, y, 0);
+  // Bar background
+  drawRect(x, y + 6, 26, 3, 2);
+  // Bar fill
+  const fillW = Math.round((value / 100) * 26);
+  if (fillW > 0) drawRect(x, y + 6, fillW, 3, 0);
+}
+
+// Icon bar at top
+function drawIconBar() {
+  const icons = ['food','ball','moon','medicine','broom'];
+  const iconSprites = [SPRITES.food, SPRITES.ball, SPRITES.moon, SPRITES.medicine, SPRITES.broom];
+  const startX = 4;
+  const spacing = 25;
+
+  for (let i = 0; i < icons.length; i++) {
+    const x = startX + i * spacing;
+    if (i === menuIndex) {
+      // selection bracket
+      drawRect(x - 1, 1, iconSprites[i][0].length + 2, iconSprites[i].length + 2, 2);
+      drawSprite(iconSprites[i], x, 2);
+      // underline
+      drawRect(x - 1, iconSprites[i].length + 3, iconSprites[i][0].length + 2, 1, 0);
+    } else {
+      drawSprite(iconSprites[i], x, 2);
+    }
+  }
+}
+
+// ===== GAME STATE =====
+let pet = null;
+let gameInterval = null;
+let soundEnabled = true;
+let menuIndex = 0;
+let gameState = 'title'; // title, playing, dead
+let animFrame = 0;
+let animTimer = 0;
+let notifText = '';
+let notifTimer = 0;
+let eggClicks = 0;
+
+const STAGES = [
+  { name: 'BABY', minAge: 0, sprite: 'baby' },
+  { name: 'CHILD', minAge: 60, sprite: 'child' },
+  { name: 'TEEN', minAge: 300, sprite: 'teen' },
+  { name: 'ADULT', minAge: 900, sprite: 'adult' },
+  { name: 'ELDER', minAge: 2400, sprite: 'elder' },
+];
+
+function createPet(name) {
+  return {
+    name: (name || 'TAMA').toUpperCase().substring(0, 8),
+    hunger: 80, happiness: 80, energy: 80, hygiene: 80, health: 100,
+    age: 0, stage: 0,
+    isSleeping: false, isSick: false, isDead: false,
+    poopCount: 0, poopTimer: 0,
+    born: Date.now(), totalActions: 0
+  };
+}
+
+// ===== AUDIO =====
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function beep(freq, dur, type='square') {
+  if (!soundEnabled) return;
+  try {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.value = 0.06;
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + dur);
+  } catch(e){}
+}
+
+function playSound(type) {
+  switch(type) {
+    case 'click': beep(800, 0.05); break;
+    case 'feed': beep(523,0.08); setTimeout(()=>beep(659,0.08),80); setTimeout(()=>beep(784,0.1),160); break;
+    case 'play': beep(784,0.08); setTimeout(()=>beep(988,0.08),100); setTimeout(()=>beep(1175,0.12),200); break;
+    case 'sleep': beep(392,0.2,'sine'); setTimeout(()=>beep(330,0.3,'sine'),200); break;
+    case 'clean': beep(600,0.06); setTimeout(()=>beep(800,0.06),60); setTimeout(()=>beep(600,0.06),120); break;
+    case 'heal': beep(440,0.12,'sine'); setTimeout(()=>beep(554,0.12,'sine'),120); setTimeout(()=>beep(659,0.15,'sine'),240); break;
+    case 'sick': beep(200,0.25,'sawtooth'); break;
+    case 'death': beep(400,0.25); setTimeout(()=>beep(300,0.25),250); setTimeout(()=>beep(200,0.4),500); break;
+    case 'hatch': beep(523,0.1); setTimeout(()=>beep(659,0.1),100); setTimeout(()=>beep(784,0.1),200); setTimeout(()=>beep(1047,0.2),300); break;
+    case 'evolve': for(let i=0;i<5;i++) setTimeout(()=>beep(400+i*100,0.1),i*100); break;
+  }
+}
+
+// ===== MAIN RENDER LOOP =====
+function renderLCD() {
+  clearLCD();
+  animTimer++;
+  if (animTimer % 15 === 0) animFrame = (animFrame + 1) % 4;
+
+  if (notifTimer > 0) notifTimer--;
+
+  switch(gameState) {
+    case 'title': renderTitle(); break;
+    case 'playing': renderGame(); break;
+    case 'dead': renderDead(); break;
+  }
+}
+
+function renderTitle() {
+  drawTextCentered('TAMAGOTCHI', 15, 0);
+
+  // Animated egg
+  const eggY = 35 + (animFrame % 2 === 0 ? 0 : 1);
+  drawSprite(SPRITES.egg, 56, eggY);
+
+  // Crack animation based on clicks
+  if (eggClicks > 2) {
+    drawRect(62, eggY + 6, 1, 3, 0);
+    drawRect(63, eggY + 5, 1, 1, 0);
+  }
+  if (eggClicks > 5) {
+    drawRect(66, eggY + 7, 1, 2, 0);
+    drawRect(65, eggY + 9, 1, 1, 0);
+  }
+
+  drawTextCentered('A:CLICK EGG', 62, 0);
+  drawTextCentered('B:HATCH', 72, 0);
+  drawTextCentered('C:LOAD SAVE', 82, 0);
+
+  // Name entry
+  const petNameDisplay = tempName || 'TAMA';
+  drawTextCentered('NAME:' + petNameDisplay, 96, 0);
+  // Blinking cursor
+  if (animFrame < 2) {
+    const nameW = ('NAME:' + petNameDisplay).length * 4;
+    const cx = Math.floor((W - nameW) / 2) + nameW + 1;
+    drawRect(cx, 96, 2, 5, 0);
+  }
+
+  drawTextCentered('...........', 110, 2);
+}
+
+function renderGame() {
+  if (!pet) return;
+
+  // Top icon bar
+  drawIconBar();
+
+  // Separator line
+  drawRect(0, 12, W, 1, 1);
+
+  // Stats area (small, on the left side)
+  drawStatBar(2, 15, pet.hunger, 'HUN');
+  drawStatBar(2, 26, pet.happiness, 'HAP');
+  drawStatBar(2, 37, pet.energy, 'ENG');
+  drawStatBar(2, 48, pet.hygiene, 'HYG');
+
+  // HP bar
+  drawText('HP', 2, 59, 0);
+  drawRect(2, 65, 26, 3, 2);
+  const hpW = Math.round((pet.health / 100) * 26);
+  if (hpW > 0) drawRect(2, 65, hpW, 3, pet.health < 25 ? 0 : 0);
+
+  // Stage + Age on right top
+  const stage = STAGES[pet.stage];
+  drawText(stage.name, 90, 15, 0);
+  const ageStr = formatAge(pet.age);
+  drawText(ageStr, 90, 23, 1);
+
+  // Pet name
+  drawText(pet.name, 90, 33, 0);
+
+  // Sick indicator
+  if (pet.isSick) {
+    drawText('SICK!', 90, 43, 0);
+  }
+
+  // Draw pet sprite in center-right area
+  const spriteData = SPRITES[stage.sprite];
+  const petBaseX = 70;
+  const petBaseY = 55;
+
+  // Animation bounce
+  let offY = 0;
+  if (pet.isSleeping) {
+    offY = animFrame % 2 === 0 ? 0 : 1;
+  } else if (pet.isSick) {
+    offY = 0;
+    // shake horizontally handled by offsetX
+  } else {
+    offY = [0, -2, 0, -1][animFrame];
+  }
+
+  let offX = 0;
+  if (pet.isSick && !pet.isSleeping) {
+    offX = [-1, 0, 1, 0][animFrame];
+  }
+
+  drawSprite(spriteData, petBaseX + offX, petBaseY + offY, 2);
+
+  // Sleeping: draw closed eyes overlay + Zzz
+  if (pet.isSleeping) {
+    // Draw horizontal lines over the eyes area (row 4-5 in sprite, scaled x2)
+    const eyeY = petBaseY + offY + 8;
+    drawRect(petBaseX + offX + 8, eyeY, 4, 2, 3); // erase left eye
+    drawRect(petBaseX + offX + 18, eyeY, 4, 2, 3); // erase right eye
+    drawRect(petBaseX + offX + 8, eyeY + 1, 4, 1, 0); // line left
+    drawRect(petBaseX + offX + 18, eyeY + 1, 4, 1, 0); // line right
+
+    // Zzz
+    const zzzOff = (animFrame % 2) * 2;
+    drawSprite(SPRITES.zzz, 102, 50 - zzzOff);
+  }
+
+  // Poop
+  for (let i = 0; i < pet.poopCount; i++) {
+    drawSprite(SPRITES.poop, 35 + i * 12, 90);
+  }
+
+  // Notification text
+  if (notifTimer > 0 && notifText) {
+    drawRect(0, 100, W, 9, 3);
+    drawRect(0, 100, W, 1, 0);
+    drawRect(0, 108, W, 1, 0);
+    drawTextCentered(notifText, 101, 0);
+  }
+
+  // Bottom info line
+  drawRect(0, 112, W, 1, 2);
+  const menuLabels = ['FEED','PLAY','SLEEP','HEAL','CLEAN'];
+  drawTextCentered('<' + menuLabels[menuIndex] + '>', 116, 0);
+
+  // Mood text
+  const mood = getMood();
+  const moodSymbol = mood === 'happy' ? ':D' : mood === 'sad' ? ':(' : mood === 'hungry' ? ':O' : mood === 'sick' ? ':S' : mood === 'tired' ? '-.-' : ':.';
+  drawText(moodSymbol, 115, 55, 1);
+}
+
+function renderDead() {
+  drawTextCentered('REST IN PEACE', 10, 0);
+
+  // Skull
+  drawSprite(SPRITES.skull, 52, 30, 3);
+
+  drawTextCentered(pet.name, 60, 0);
+  drawTextCentered('AGE:' + formatAge(pet.age), 72, 0);
+  drawTextCentered('STAGE:' + STAGES[pet.stage].name, 82, 0);
+
+  drawTextCentered('B:TRY AGAIN', 100, 1);
+  drawTextCentered('..............', 115, 2);
+}
+
+function formatAge(sec) {
+  if (sec < 60) return sec + 'S';
+  if (sec < 3600) return Math.floor(sec/60) + 'M';
+  return Math.floor(sec/3600) + 'H' + Math.floor((sec%3600)/60) + 'M';
+}
+
+function getMood() {
+  if (!pet || pet.isDead) return 'dead';
+  if (pet.isSick) return 'sick';
+  if (pet.hunger < 20) return 'hungry';
+  if (pet.energy < 20) return 'tired';
+  if (pet.hygiene < 20) return 'dirty';
+  if (pet.happiness < 30) return 'sad';
+  if (pet.happiness > 70 && pet.hunger > 50) return 'happy';
+  return 'neutral';
+}
+
+function showNotif(text) {
+  notifText = text.toUpperCase().substring(0, 25);
+  notifTimer = 60; // ~2 seconds at 30fps
+}
+
+// ===== GAME TICK (1s) =====
+function gameTick() {
+  if (!pet || pet.isDead) return;
+
+  pet.age++;
+
+  if (pet.isSleeping) {
+    pet.energy = Math.min(100, pet.energy + 2);
+    pet.hunger = Math.max(0, pet.hunger - 0.3);
+    if (pet.energy >= 100) {
+      pet.isSleeping = false;
+      showNotif('WOKE UP!');
+    }
+  } else {
+    pet.hunger = Math.max(0, pet.hunger - 0.8);
+    pet.happiness = Math.max(0, pet.happiness - 0.5);
+    pet.energy = Math.max(0, pet.energy - 0.6);
+    pet.hygiene = Math.max(0, pet.hygiene - 0.3);
+  }
+
+  pet.poopTimer++;
+  if (pet.poopTimer > 80 && Math.random() < 0.05) {
+    pet.poopCount = Math.min(3, pet.poopCount + 1);
+    pet.poopTimer = 0;
+    pet.hygiene = Math.max(0, pet.hygiene - 15);
+  }
+
+  if (!pet.isSick) {
+    let sickChance = 0;
+    if (pet.hunger < 15) sickChance += 0.02;
+    if (pet.hygiene < 15) sickChance += 0.02;
+    if (pet.poopCount >= 3) sickChance += 0.03;
+    if (Math.random() < sickChance) {
+      pet.isSick = true;
+      playSound('sick');
+      showNotif('GOT SICK!');
+    }
+  }
+
+  if (pet.isSick) {
+    pet.health = Math.max(0, pet.health - 0.5);
+    pet.happiness = Math.max(0, pet.happiness - 1);
+  }
+  if (pet.hunger <= 0) pet.health = Math.max(0, pet.health - 0.3);
+  if (!pet.isSick && pet.hunger > 50 && pet.energy > 30) {
+    pet.health = Math.min(100, pet.health + 0.1);
+  }
+
+  if (pet.health <= 0) {
+    pet.isDead = true;
+    pet.isSleeping = false;
+    gameState = 'dead';
+    playSound('death');
+    clearInterval(gameInterval);
+  }
+
+  // Evolution
+  for (let i = STAGES.length - 1; i >= 0; i--) {
+    if (pet.age >= STAGES[i].minAge && pet.stage < i) {
+      pet.stage = i;
+      playSound('evolve');
+      showNotif('EVOLVED: ' + STAGES[i].name + '!');
+      break;
+    }
+  }
+}
+
+// ===== ACTIONS =====
+function doAction(action) {
+  if (!pet || pet.isDead) return;
+  pet.totalActions++;
+
+  switch(action) {
+    case 'feed':
+      if (pet.isSleeping) { showNotif('SLEEPING...'); return; }
+      if (pet.hunger >= 100) { showNotif('NOT HUNGRY!'); return; }
+      pet.hunger = Math.min(100, pet.hunger + 25);
+      pet.hygiene = Math.max(0, pet.hygiene - 5);
+      pet.poopTimer += 30;
+      playSound('feed');
+      showNotif('YUM YUM!');
+      break;
+    case 'play':
+      if (pet.isSleeping) { showNotif('SLEEPING...'); return; }
+      if (pet.energy < 10) { showNotif('TOO TIRED!'); return; }
+      pet.happiness = Math.min(100, pet.happiness + 20);
+      pet.energy = Math.max(0, pet.energy - 15);
+      pet.hunger = Math.max(0, pet.hunger - 10);
+      pet.hygiene = Math.max(0, pet.hygiene - 8);
+      playSound('play');
+      showNotif('FUN!');
+      break;
+    case 'sleep':
+      if (pet.isSleeping) {
+        pet.isSleeping = false;
+        showNotif('WOKE UP!');
+      } else {
+        pet.isSleeping = true;
+        playSound('sleep');
+        showNotif('GOOD NIGHT...');
+      }
+      break;
+    case 'heal':
+      if (!pet.isSick) { showNotif('NOT SICK!'); return; }
+      pet.isSick = false;
+      pet.health = Math.min(100, pet.health + 30);
+      playSound('heal');
+      showNotif('FEELING BETTER!');
+      break;
+    case 'clean':
+      if (pet.isSleeping) { showNotif('SLEEPING...'); return; }
+      if (pet.poopCount === 0 && pet.hygiene > 80) { showNotif('ALREADY CLEAN!'); return; }
+      pet.hygiene = Math.min(100, pet.hygiene + 30);
+      pet.poopCount = 0;
+      playSound('clean');
+      showNotif('SPARKLE!');
+      break;
+  }
+}
+
+// ===== BUTTON HANDLERS =====
+let tempName = 'TAMA';
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ';
+let letterIndex = 0;
+
+function pressA() {
+  playSound('click');
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  if (gameState === 'title') {
+    // Cycle letter for name
+    eggClicks++;
+    letterIndex = (letterIndex + 1) % ALPHABET.length;
+    if (tempName.length < 8) {
+      // Preview next letter
+    }
+  } else if (gameState === 'playing') {
+    menuIndex = (menuIndex + 1) % 5;
+  }
+  updateLabels();
+}
+
+function pressB() {
+  playSound('click');
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  if (gameState === 'title') {
+    if (eggClicks < 3) {
+      eggClicks = 3;
+      showNotif('CRACK!');
+      return;
+    }
+    // Hatch
+    pet = createPet(tempName);
+    gameState = 'playing';
+    playSound('hatch');
+    showNotif('WELCOME ' + pet.name + '!');
+    clearInterval(gameInterval);
+    gameInterval = setInterval(gameTick, 1000);
+  } else if (gameState === 'playing') {
+    const actions = ['feed','play','sleep','heal','clean'];
+    doAction(actions[menuIndex]);
+  } else if (gameState === 'dead') {
+    resetGame();
+  }
+  updateLabels();
+}
+
+function pressC() {
+  playSound('click');
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  if (gameState === 'title') {
+    loadGame();
+  } else if (gameState === 'playing') {
+    menuIndex = (menuIndex - 1 + 5) % 5;
+  }
+  updateLabels();
+}
+
+function updateLabels() {
+  const lblA = document.getElementById('lbl-a');
+  const lblB = document.getElementById('lbl-b');
+  const lblC = document.getElementById('lbl-c');
+
+  if (gameState === 'title') {
+    lblA.textContent = 'CRACK';
+    lblB.textContent = 'HATCH';
+    lblC.textContent = 'LOAD';
+  } else if (gameState === 'playing') {
+    lblA.textContent = 'NEXT >';
+    lblB.textContent = 'OK';
+    lblC.textContent = '< PREV';
+  } else {
+    lblA.textContent = '';
+    lblB.textContent = 'RESTART';
+    lblC.textContent = '';
+  }
+}
+
+// ===== SAVE / LOAD =====
+function saveGame() {
+  if (!pet) return;
+  localStorage.setItem('tama_lcd_save', JSON.stringify(pet));
+  showNotif('SAVED!');
+  playSound('click');
+}
+
+function loadGame() {
+  const data = localStorage.getItem('tama_lcd_save');
+  if (!data) { showNotif('NO SAVE!'); return; }
+  try {
+    pet = JSON.parse(data);
+    if (pet.isDead) {
+      gameState = 'dead';
+    } else {
+      gameState = 'playing';
+      clearInterval(gameInterval);
+      gameInterval = setInterval(gameTick, 1000);
+    }
+    showNotif('WELCOME BACK!');
+    updateLabels();
+  } catch(e) {
+    showNotif('BAD SAVE!');
+  }
+}
+
+function resetGame() {
+  clearInterval(gameInterval);
+  pet = null;
+  gameState = 'title';
+  menuIndex = 0;
+  eggClicks = 0;
+  tempName = 'TAMA';
+  letterIndex = 0;
+  localStorage.removeItem('tama_lcd_save');
+  updateLabels();
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  if (soundEnabled && audioCtx.state === 'suspended') audioCtx.resume();
+  showNotif(soundEnabled ? 'SOUND ON' : 'SOUND OFF');
+}
+
+// ===== KEYBOARD SUPPORT =====
+document.addEventListener('keydown', (e) => {
+  switch(e.key) {
+    case 'a': case 'A': case 'ArrowLeft': pressA(); break;
+    case 's': case 'S': case 'ArrowDown': case 'Enter': pressB(); break;
+    case 'd': case 'D': case 'ArrowRight': pressC(); break;
+  }
+});
+
+// ===== NAME INPUT (override with prompt-style in title) =====
+document.addEventListener('keydown', (e) => {
+  if (gameState !== 'title') return;
+  if (e.key === 'Backspace') {
+    tempName = tempName.slice(0, -1);
+    e.preventDefault();
+  } else if (e.key.length === 1 && /[A-Za-z ]/.test(e.key) && tempName.length < 8) {
+    tempName += e.key.toUpperCase();
+    e.preventDefault();
+  }
+});
+
+// ===== INIT =====
+updateLabels();
+
+// Render loop at ~30fps
+setInterval(renderLCD, 33);
+
+// Auto-save every 30s
+setInterval(() => { if (pet && !pet.isDead && gameState === 'playing') saveGame(); }, 30000);
+
+</script>
+</body>
+</html>

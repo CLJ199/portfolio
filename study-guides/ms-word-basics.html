@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Word: A Comprehensive Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #e8f4f8 0%, #b3dfe8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2b5278 0%, #1e3c50 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        main {
+            padding: 40px 30px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #2b5278;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2b5278;
+        }
+
+        h3 {
+            color: #1e3c50;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #2b5278;
+            font-size: 1.15em;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2b5278;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #2b5278;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-table th {
+            background: #2b5278;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.8;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-left: 4px solid #2b5278;
+        }
+
+        .feature-example {
+            background: #f0f8ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .feature-example strong {
+            color: #0066cc;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #2b527815 0%, #1e3c5015 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2b5278;
+        }
+
+        .benefit-card h4 {
+            color: #2b5278;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .benefit-card p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .ribbon-section {
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .ribbon-section h4 {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 15px -20px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2b5278;
+        }
+
+        .feature-item strong {
+            color: #2b5278;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+        }
+
+        .step-by-step {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: #2b5278;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content p {
+            margin-bottom: 0;
+            font-size: 1em;
+        }
+
+        footer {
+            background: #f5f7fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .keyboard-shortcut {
+            display: inline-block;
+            background: #e0e0e0;
+            border: 1px solid #999;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box strong {
+            color: #ff6f00;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            main {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 Microsoft Word: Complete Guide</h1>
+            <p>Master the World's Most Popular Word Processor</p>
+        </header>
+
+        <main>
+            <!-- Section 1: Introduction -->
+            <section id="introduction">
+                <h2>1. Introduction to Microsoft Word</h2>
+
+                <h3>What Is Microsoft Word?</h3>
+                <p><span class="highlight">Microsoft Word</span> is a powerful word processor developed by Microsoft that allows users to create, edit, format, and share documents. It's part of the Microsoft Office suite and has been the industry standard for document creation since 1983. Whether you're writing letters, reports, resumes, or complex documents with tables and graphics, Word provides the tools to do it professionally.</p>
+
+                <div class="info-box">
+                    <strong>Key Fact:</strong> Microsoft Word is available in multiple formats including desktop versions (Windows and Mac), online versions (Word Online), and mobile applications, making it accessible across all devices.
+                </div>
+
+                <h3>How Does Microsoft Word Work?</h3>
+                <p>Microsoft Word operates on a simple principle: you open a blank or template-based document and use various tools to add, format, and organize text and other content. The application features a user-friendly interface with menus, toolbars (called the Ribbon), and a formatting sidebar that gives you instant access to styling options.</p>
+
+                <h4>The Basic Workflow:</h4>
+                <div class="step-by-step">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p><strong>Open or Create:</strong> Launch Word and either start with a blank document or choose from pre-made templates</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <p><strong>Type Content:</strong> Enter your text using the keyboard into the blank page</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <p><strong>Format Text:</strong> Use the Ribbon and formatting tools to style your content (fonts, colors, sizes, etc.)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <p><strong>Organize:</strong> Add headers, footers, page numbers, sections, and other organizational elements</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <p><strong>Review:</strong> Check spelling, grammar, and readability using Word's built-in tools</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <p><strong>Save & Share:</strong> Save your document in various formats or share it with others</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Why Microsoft Word Is Essential</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🏢 Professional Standard</h4>
+                        <p>Used by businesses, schools, and organizations worldwide. Creating documents in Word is expected in most professional environments.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h4>🎓 Educational Tool</h4>
+                        <p>Students use Word for essays, reports, and assignments. It's taught in schools and universities globally.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h4>🔧 Powerful Features</h4>
+                        <p>From simple letters to complex technical documents, Word handles everything with advanced formatting and organization tools.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h4>📱 Cross-Platform</h4>
+                        <p>Works on Windows, Mac, tablets, and phones. Your documents are accessible wherever you are.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h4>🤝 Collaboration Ready</h4>
+                        <p>Share documents, track changes, leave comments, and collaborate with others in real-time.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h4>📚 Template Library</h4>
+                        <p>Thousands of professionally designed templates for resumes, letters, reports, and more available instantly.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: The Word Interface -->
+            <section id="interface">
+                <h2>2. Understanding the Microsoft Word Interface</h2>
+
+                <h3>The Main Components</h3>
+
+                <h4>Title Bar</h4>
+                <p>Located at the very top of the window, the title bar displays the name of your document and the application name. It also contains the minimize, maximize, and close buttons.</p>
+
+                <h4>Quick Access Toolbar</h4>
+                <p>Found in the top-left corner, this toolbar provides quick shortcuts to commonly used functions like Save, Undo, and Redo. You can customize it to add your most-used commands.</p>
+
+                <h4>The Ribbon</h4>
+                <p>This is the most important part of Word's interface. The Ribbon is a horizontal toolbar divided into tabs, each containing groups of related commands. The main tabs include:</p>
+
+                <div class="ribbon-section">
+                    <h4>Ribbon Tabs Explained</h4>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <strong>📌 Home Tab</strong>
+                            <p>Contains basic formatting tools: font, size, bold, italic, underline, text color, highlighting, alignment, and paragraph styles. Most commonly used tab.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>➕ Insert Tab</strong>
+                            <p>Add objects to your document: tables, images, shapes, charts, links, headers, footers, page numbers, and text boxes.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>🎨 Design Tab</strong>
+                            <p>Control overall document appearance: themes, colors, fonts, and design elements that affect the entire document.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>📑 Layout Tab</strong>
+                            <p>Manage page setup: margins, orientation (portrait/landscape), size, columns, indentation, and spacing.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>📖 References Tab</strong>
+                            <p>Create professional documents: table of contents, footnotes, citations, bibliographies, and cross-references.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>✍️ Review Tab</strong>
+                            <p>Check document quality: spelling and grammar, thesaurus, word count, track changes, and comments for collaboration.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>📧 Mailings Tab</strong>
+                            <p>Create mass communications: mail merge for sending personalized letters, labels, or envelopes to multiple recipients.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <strong>👁️ View Tab</strong>
+                            <p>Change how you see your document: different viewing modes, zoom levels, and navigation options.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>The Ruler</h4>
+                <p>Displayed at the top and left of the document, the ruler helps you set margins, indents, and tabs. You can drag elements on the ruler to adjust spacing and alignment.</p>
+
+                <h4>The Document Canvas</h4>
+                <p>This is the blank white area where you type and create your document. The cursor (blinking line) shows where text will appear when you type.</p>
+
+                <h4>The Status Bar</h4>
+                <p>Located at the bottom, the status bar displays useful information like page number, word count, zoom level, and editing mode. You can customize what appears here.</p>
+
+                <h4>Navigation Pane</h4>
+                <p>On the left side (can be toggled on/off), this pane shows the document's structure including headings, pages, and search results, making navigation easier in longer documents.</p>
+            </section>
+
+            <!-- Section 3: Basic Functionality -->
+            <section id="basic-functionality">
+                <h2>3. Basic Text Editing and Formatting</h2>
+
+                <h3>Entering and Editing Text</h3>
+
+                <h4>Typing Text</h4>
+                <p>Simply click in the document and start typing. The text appears where the cursor is positioned. Press <span class="keyboard-shortcut">Enter</span> to create a new paragraph.</p>
+
+                <h4>Selecting Text</h4>
+                <p>To select text, click and drag across the words you want to select. You can also:</p>
+                <ul>
+                    <li>Double-click to select a word</li>
+                    <li>Triple-click to select a paragraph</li>
+                    <li>Use <span class="keyboard-shortcut">Ctrl+A</span> to select all text</li>
+                    <li>Click at the start and <span class="keyboard-shortcut">Shift+Click</span> at the end to select a block</li>
+                </ul>
+
+                <h4>Copying, Cutting, and Pasting</h4>
+                <div class="feature-example">
+                    <strong>Common Shortcuts:</strong><br><br>
+                    <span class="keyboard-shortcut">Ctrl+C</span> — Copy selected text<br>
+                    <span class="keyboard-shortcut">Ctrl+X</span> — Cut selected text (removes it)<br>
+                    <span class="keyboard-shortcut">Ctrl+V</span> — Paste previously copied or cut text<br>
+                    <span class="keyboard-shortcut">Ctrl+Z</span> — Undo your last action<br>
+                    <span class="keyboard-shortcut">Ctrl+Y</span> — Redo an undone action
+                </div>
+
+                <h3>Basic Text Formatting</h3>
+
+                <h4>Font Selection</h4>
+                <p>Select your text, then click the Font dropdown in the Home tab to choose from hundreds of fonts. Common professional fonts include Calibri, Arial, Times New Roman, and Helvetica.</p>
+
+                <h4>Font Size</h4>
+                <p>After selecting text, use the Font Size dropdown to change the size in points (pt). Typical sizes: 10-12 pt for body text, 16-24 pt for headings, and 8-10 pt for footnotes.</p>
+
+                <h4>Text Styling</h4>
+                <div class="feature-example">
+                    <strong>Basic Text Styles:</strong><br><br>
+                    <strong>Bold</strong> (<span class="keyboard-shortcut">Ctrl+B</span>) — Makes text darker and heavier<br>
+                    <em>Italic</em> (<span class="keyboard-shortcut">Ctrl+I</span>) — Slants text for emphasis<br>
+                    <u>Underline</u> (<span class="keyboard-shortcut">Ctrl+U</span>) — Adds a line beneath text<br>
+                    <s>Strikethrough</s> — Draws a line through text (for deleted content)
+                </div>
+
+                <h4>Text Color</h4>
+                <p>In the Home tab, click the Font Color button (A with a colored line) to change the text color. You can choose from preset colors or create custom colors.</p>
+
+                <h4>Text Highlighting</h4>
+                <p>Use the Highlighting tool in the Home tab to add a colored background behind text, similar to using a highlighter pen on paper. This is useful for emphasizing important information.</p>
+
+                <h3>Paragraph Formatting</h3>
+
+                <h4>Alignment</h4>
+                <p>Click anywhere in a paragraph, then use alignment buttons in the Home tab to position text:</p>
+                <ul>
+                    <li><strong>Left Align:</strong> Text aligns to the left margin (default)</li>
+                    <li><strong>Center:</strong> Text is centered on the page</li>
+                    <li><strong>Right Align:</strong> Text aligns to the right margin</li>
+                    <li><strong>Justify:</strong> Text spreads evenly from left to right margin</li>
+                </ul>
+
+                <h4>Line Spacing</h4>
+                <p>Control the space between lines of text. Options include Single (1.0), 1.5 lines, Double (2.0), and custom spacing. Access this through Home tab → Line Spacing dropdown.</p>
+
+                <h4>Indentation</h4>
+                <p>Use indentation to move paragraphs away from the margins. You can increase or decrease indent using buttons in the Home tab or by dragging the indent markers on the ruler.</p>
+
+                <h4>Bullets and Numbering</h4>
+                <p>Create organized lists by clicking Bullets or Numbering in the Home tab. Useful for:</p>
+                <ul>
+                    <li>To-do lists</li>
+                    <li>Step-by-step instructions</li>
+                    <li>Key points in presentations</li>
+                </ul>
+
+                <h3>Using Styles</h3>
+                <p>Styles are pre-formatted collections of settings that you can apply to text instantly. The Styles gallery in the Home tab shows options like "Heading 1," "Heading 2," "Normal," and "Title."</p>
+
+                <div class="feature-example">
+                    <strong>Why Use Styles?</strong><br><br>
+                    • Apply consistent formatting throughout your document<br>
+                    • Change formatting globally (update one style, all instances update)<br>
+                    • Create automatic tables of contents<br>
+                    • Make your document look professional without manual formatting
+                </div>
+            </section>
+
+            <!-- Section 4: Intermediate Features -->
+            <section id="intermediate-features">
+                <h2>4. Intermediate Features and Tools</h2>
+
+                <h3>Working with Tables</h3>
+
+                <h4>Creating Tables</h4>
+                <p>Go to Insert tab → Table. You can specify the number of rows and columns. Word will insert a professionally formatted table into your document.</p>
+
+                <h4>Table Features</h4>
+                <div class="feature-example">
+                    <strong>Common Table Operations:</strong><br><br>
+                    • Add/delete rows and columns (right-click inside table)<br>
+                    • Merge cells to combine adjacent cells<br>
+                    • Split cells to divide a single cell<br>
+                    • Apply table styles for quick formatting<br>
+                    • Sort table data alphabetically or numerically<br>
+                    • Calculate sums in cells (basic math formulas)
+                </div>
+
+                <h4>Table Design</h4>
+                <p>When you click inside a table, the Table Design tab appears. Use it to apply pre-designed table styles with colors, borders, and shading that match your document theme.</p>
+
+                <h3>Inserting Images and Graphics</h3>
+
+                <h4>Adding Images</h4>
+                <p>Go to Insert tab → Pictures. You can insert images from your computer, stock images from Microsoft's library, or from online sources. Once inserted, you can:</p>
+                <ul>
+                    <li>Resize by dragging corner handles</li>
+                    <li>Crop to remove unwanted parts</li>
+                    <li>Add effects like shadows, borders, and reflections</li>
+                    <li>Wrap text around the image</li>
+                    <li>Adjust brightness and contrast</li>
+                </ul>
+
+                <h4>Shapes and Drawing Tools</h4>
+                <p>Insert tab → Shapes allows you to add rectangles, circles, arrows, callouts, and more. You can customize colors, add text, and arrange multiple shapes to create diagrams.</p>
+
+                <h4>SmartArt</h4>
+                <p>SmartArt creates professional diagrams automatically. Choose from layouts like process flows, organizational charts, pyramids, and timelines. Just add your text and Word handles the visual design.</p>
+
+                <h3>Headers and Footers</h3>
+
+                <h4>What They Are</h4>
+                <p>Headers appear at the top of every page, and footers appear at the bottom. They're commonly used for page numbers, document titles, dates, author names, and company information.</p>
+
+                <h4>Adding Headers/Footers</h4>
+                <p>Go to Insert tab → Header or Footer. Choose from pre-designed templates or create custom content. Headers and footers can be different on the first page or alternate between odd and even pages.</p>
+
+                <h4>Page Numbers</h4>
+                <p>Insert tab → Page Numbers lets you add automatically-numbered pages. Choose position (top, bottom, margins) and format (1, 2, 3 or i, ii, iii, etc.). Perfect for multi-page documents.</p>
+
+                <h3>Working with Page Setup</h3>
+
+                <h4>Page Size and Orientation</h4>
+                <p>Layout tab → Size lets you choose page dimensions. Options include Letter (8.5" × 11"), Legal (8.5" × 14"), A4 (international standard), and custom sizes.</p>
+
+                <p>Layout tab → Orientation switches between Portrait (tall) and Landscape (wide). Most documents use Portrait, but Landscape is useful for wide tables or charts.</p>
+
+                <h4>Margins</h4>
+                <p>Layout tab → Margins controls the white space around your document. Preset options: Normal (1"), Wide (1.5"), Narrow (0.5"), or create custom margins for specific requirements.</p>
+
+                <h4>Columns</h4>
+                <p>Layout tab → Columns divides your document into newspaper-style columns (2, 3, or more). Text flows from top to bottom in one column, then continues at the top of the next.</p>
+
+                <h3>Find and Replace</h3>
+
+                <h4>Finding Text</h4>
+                <p>Press <span class="keyboard-shortcut">Ctrl+F</span> to open the Find pane. Type the word or phrase you're looking for, and Word highlights all instances in your document. Useful for locating specific information in long documents.</p>
+
+                <h4>Replace Function</h4>
+                <p>Press <span class="keyboard-shortcut">Ctrl+H</span> to open Find and Replace. You can search for text and automatically replace it with different text. Options include:</p>
+                <ul>
+                    <li>Replace one instance at a time</li>
+                    <li>Replace all instances automatically</li>
+                    <li>Use special characters and formatting in searches</li>
+                    <li>Search in current document or all open documents</li>
+                </ul>
+
+                <h3>Proofing Tools</h3>
+
+                <h4>Spelling and Grammar</h4>
+                <p>Review tab → Spelling & Grammar checks your entire document. Word underlines potential errors with wavy lines (red for spelling, blue for grammar). You can accept suggestions or ignore them.</p>
+
+                <h4>Word Count</h4>
+                <p>Review tab → Word Count shows the number of words, characters, paragraphs, and lines in your document. Essential for documents with word limits (essays, applications, etc.).</p>
+
+                <h4>Thesaurus</h4>
+                <p>Review tab → Thesaurus helps you find synonyms (similar words) to make your writing more varied and interesting. Select a word and open the thesaurus to explore alternatives.</p>
+
+                <h3>Comments and Track Changes</h3>
+
+                <h4>Adding Comments</h4>
+                <p>Review tab → New Comment allows you to add feedback to specific parts of the document without changing the text. Useful for collaboration and peer review.</p>
+
+                <h4>Track Changes</h4>
+                <p>Review tab → Track Changes records every edit made to the document, showing who changed what and when. Changes appear with colored marks and can be accepted or rejected. Perfect for document review and approval processes.</p>
+
+                <h3>Saving and File Formats</h3>
+
+                <h4>Saving Your Document</h4>
+                <p>Press <span class="keyboard-shortcut">Ctrl+S</span> or use File → Save. The first time, choose a location and filename. Subsequently, it updates the existing file.</p>
+
+                <h4>File Formats</h4>
+                <div class="feature-example">
+                    <strong>Common Word Document Formats:</strong><br><br>
+                    • <strong>.docx</strong> — Modern Word format (2007 and later), default choice<br>
+                    • <strong>.doc</strong> — Older Word format (pre-2007), less common now<br>
+                    • <strong>.pdf</strong> — Universal format that preserves formatting perfectly<br>
+                    • <strong>.rtf</strong> — Rich Text Format, compatible with most programs<br>
+                    • <strong>.txt</strong> — Plain text, no formatting
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Pro Tip:</strong> Save important documents in PDF format to ensure formatting stays exactly as you designed it, regardless of what version of Word others have.
+                </div>
+
+                <h3>Templates</h3>
+
+                <h4>Using Built-in Templates</h4>
+                <p>File → New allows you to search and choose from thousands of templates. Options include:</p>
+                <ul>
+                    <li>Resumes and cover letters</li>
+                    <li>Business letters and proposals</li>
+                    <li>Reports and essays</li>
+                    <li>Brochures and newsletters</li>
+                    <li>Calendars and schedules</li>
+                    <li>Invoices and forms</li>
+                </ul>
+
+                <p>Templates provide pre-formatted structures and design elements, saving time and ensuring professional appearance without design work.</p>
+
+                <h3>Mail Merge</h3>
+
+                <h4>What Is Mail Merge?</h4>
+                <p>Mail Merge creates multiple personalized documents from a template and a data source (like an Excel spreadsheet). Commonly used for:</p>
+                <ul>
+                    <li>Sending personalized letters to many people</li>
+                    <li>Creating labels with different addresses</li>
+                    <li>Generating personalized emails</li>
+                    <li>Creating custom envelopes</li>
+                </ul>
+
+                <h4>Basic Mail Merge Steps</h4>
+                <div class="step-by-step">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p><strong>Prepare Data:</strong> Create or open a list of recipients in Excel or another data source</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <p><strong>Start Mail Merge:</strong> Go to Mailings tab → Start Mail Merge → Letters (or Labels, Email)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <p><strong>Select Recipients:</strong> Mailings → Select Recipients → Choose File and select your data source</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <p><strong>Insert Merge Fields:</strong> Click where you want personalized data (name, address, etc.) and select the matching field</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <p><strong>Preview Results:</strong> Check how the merged documents will look with actual data</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <p><strong>Complete Merge:</strong> Generate all documents or print them directly</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Advanced Intermediate Features -->
+            <section id="advanced-features">
+                <h2>5. Advanced Intermediate Features</h2>
+
+                <h3>Table of Contents</h3>
+
+                <h4>Automatic Table of Contents</h4>
+                <p>For longer documents with multiple sections, an automatic table of contents helps readers navigate. First, ensure your document uses heading styles properly (Heading 1, Heading 2, etc.).</p>
+
+                <h4>Generating a TOC</h4>
+                <p>References tab → Table of Contents → Choose a style. Word automatically extracts all headings and creates a clickable table of contents with page numbers. If you modify headings later, right-click the TOC to update it.</p>
+
+                <h3>Footnotes and Endnotes</h3>
+
+                <h4>What They Are</h4>
+                <p>Footnotes appear at the bottom of pages, while endnotes appear at the end of the document. Both allow you to add citations, explanations, or references without cluttering the main text.</p>
+
+                <h4>Adding Footnotes/Endnotes</h4>
+                <p>Click where you want the reference mark in your text, then References tab → Insert Footnote (or Endnote). The mark and corresponding note appear automatically with proper numbering.</p>
+
+                <h3>Citations and Bibliographies</h3>
+
+                <h4>Managing Sources</h4>
+                <p>References tab → Manage Sources lets you create and organize a list of sources for your document. Word supports various citation styles including APA, MLA, Chicago, and Harvard.</p>
+
+                <h4>Adding Citations</h4>
+                <p>At the point in your text where you want a citation, References tab → Insert Citation → Choose from your sources. The citation appears in the specified format automatically.</p>
+
+                <h4>Creating a Bibliography</h4>
+                <p>References tab → Bibliography inserts a formatted list of all sources you've cited. This is required for academic papers and research documents.</p>
+
+                <h3>Sections</h3>
+
+                <h4>What Are Sections?</h4>
+                <p>Sections allow different parts of your document to have different formatting. For example, you might have landscape pages for a wide table in the middle of a portrait document.</p>
+
+                <h4>Creating Sections</h4>
+                <p>Layout tab → Breaks → Section Breaks. You can create continuous sections or sections with page breaks. This lets you apply different margins, page numbers, headers/footers, and column layouts to different parts.</p>
+
+                <h3>Comments, Tracked Changes, and Collaboration</h3>
+
+                <h4>Using Comments Effectively</h4>
+                <p>Comments allow reviewers to suggest changes or ask questions without modifying the original text. Word displays comments in a sidebar with the commenter's name and date.</p>
+
+                <h4>Track Changes Workflow</h4>
+                <p>When Track Changes is on, every insertion, deletion, and formatting change is recorded with the editor's name and timestamp. Recipients can review changes one by one and accept or reject them.</p>
+
+                <h4>Co-Authoring in Word Online</h4>
+                <p>When documents are stored in OneDrive or SharePoint, multiple people can edit simultaneously. Changes appear in real-time, and Word tracks who made each change. Indicated by colored presence indicators showing active editors.</p>
+
+                <h3>Styles and Style Modification</h3>
+
+                <h4>Creating Custom Styles</h4>
+                <p>Right-click any style in the Styles gallery and select "Modify." You can change the font, size, color, spacing, and other attributes. The new style is saved for use throughout the document.</p>
+
+                <h4>Style Sets and Themes</h4>
+                <p>Design tab → Themes apply a coordinated set of colors, fonts, and effects to your entire document. Switching themes instantly changes the document's appearance while maintaining structure. Style Sets offer different formatting combinations.</p>
+
+                <h3>Watermarks and Page Backgrounds</h3>
+
+                <h4>Adding Watermarks</h4>
+                <p>Design tab → Watermark adds text or images behind your document content. Common examples: "DRAFT," "CONFIDENTIAL," or company logos. Watermarks appear on every page and are useful for document classification.</p>
+
+                <h4>Page Color and Borders</h4>
+                <p>Design tab → Page Color sets the background color of pages. Design tab → Page Borders adds decorative borders around page edges. Use these sparingly for professional documents.</p>
+
+                <h3>Building Blocks and AutoText</h3>
+
+                <h4>Building Blocks</h4>
+                <p>Insert tab → Quick Tables, Text Boxes, or other building block galleries provide pre-formatted elements. You can save frequently used text or formatting as building blocks for quick reuse.</p>
+
+                <h4>AutoCorrect</h4>
+                <p>File → Options → Proofing → AutoCorrect automatically fixes common typos and abbreviations. For example, typing "teh" automatically corrects to "the." You can add custom corrections.</p>
+
+                <h3>Forms and Protected Documents</h3>
+
+                <h4>Creating Forms</h4>
+                <p>You can create fillable forms with text boxes, checkboxes, dropdown lists, and date fields. These are useful for applications, surveys, and data collection. Users can fill the form and return it.</p>
+
+                <h4>Document Protection</h4>
+                <p>Review tab → Protect Document allows you to restrict editing, formatting, or even password-protect your document. Useful for templates and confidential documents.</p>
+            </section>
+
+            <!-- Section 6: Practical Tips and Best Practices -->
+            <section id="best-practices">
+                <h2>6. Best Practices and Pro Tips</h2>
+
+                <h3>Document Formatting Best Practices</h3>
+
+                <h4>Use Styles Instead of Manual Formatting</h4>
+                <p>Instead of manually formatting each heading, use predefined Heading styles. This ensures consistency and makes updating easier. If you change the Heading 1 style, all headings automatically update.</p>
+
+                <h4>Establish a Clear Hierarchy</h4>
+                <p>Use heading levels logically: Heading 1 for main sections, Heading 2 for subsections, Heading 3 for sub-subsections. This creates a logical structure and enables automatic table of contents generation.</p>
+
+                <h4>Maintain Consistent Spacing</h4>
+                <p>Use the built-in line spacing options rather than pressing Enter multiple times. This gives your document a professional appearance and makes it easier to format.</p>
+
+                <h4>Choose Professional Fonts</h4>
+                <p>Limit yourself to 2-3 fonts per document: one for headings and one for body text. Avoid decorative fonts for body text. Common professional choices: Calibri, Arial, Times New Roman, and Garamond.</p>
+
+                <h3>Writing Tips</h3>
+
+                <h4>Use Proper Punctuation</h4>
+                <p>Word's grammar checker helps, but it's not perfect. Proofread carefully, especially for punctuation, comma placement, and subject-verb agreement.</p>
+
+                <h4>Avoid Excessive Formatting</h4>
+                <p>Too many colors, fonts, and styles makes documents look unprofessional. Use bold and italics sparingly for emphasis. Avoid underlining (it's outdated). Use color purposefully, not decoratively.</p>
+
+                <h4>Check Spelling and Grammar</h4>
+                <p>Always run Review tab → Spelling & Grammar before finalizing. Also use Thesaurus to vary your vocabulary and make writing more engaging.</p>
+
+                <h3>Organization and Structure</h3>
+
+                <h4>Plan Before Writing</h4>
+                <p>Outline your document first. Know what sections you need and what each will contain. This prevents rambling and ensures logical flow.</p>
+
+                <h4>Use White Space Effectively</h4>
+                <p>Don't make pages look crowded. Use appropriate margins (usually 1"), spacing between sections, and paragraph breaks to make content readable and less intimidating.</p>
+
+                <h4>Page Numbers for Multi-Page Documents</h4>
+                <p>Always add page numbers to documents longer than one page. Readers need to know which page they're on, and it helps if pages get separated.</p>
+
+                <h3>Collaboration Tips</h3>
+
+                <h4>Use Track Changes When Reviewing</h4>
+                <p>Always enable Track Changes (Review → Track Changes) before making edits to others' documents. This shows exactly what changed and preserves the original.</p>
+
+                <h4>Use Comments for Feedback</h4>
+                <p>Instead of changing text directly, use comments to suggest improvements or ask clarifying questions. This keeps feedback constructive and non-destructive.</p>
+
+                <h4>Save in Compatible Formats</h4>
+                <p>When sharing with others, save as .docx for maximum compatibility. Older versions can't always read newer formats, but .docx has broad support.</p>
+
+                <h3>Efficiency Tips</h3>
+
+                <h4>Master Keyboard Shortcuts</h4>
+                <div class="feature-example">
+                    <strong>Essential Shortcuts:</strong><br><br>
+                    <span class="keyboard-shortcut">Ctrl+N</span> — New document<br>
+                    <span class="keyboard-shortcut">Ctrl+O</span> — Open document<br>
+                    <span class="keyboard-shortcut">Ctrl+S</span> — Save<br>
+                    <span class="keyboard-shortcut">Ctrl+P</span> — Print<br>
+                    <span class="keyboard-shortcut">Ctrl+F</span> — Find<br>
+                    <span class="keyboard-shortcut">Ctrl+H</span> — Find & Replace<br>
+                    <span class="keyboard-shortcut">Ctrl+Home</span> — Go to document start<br>
+                    <span class="keyboard-shortcut">Ctrl+End</span> — Go to document end
+                </div>
+
+                <h4>Use Templates to Save Time</h4>
+                <p>Don't start from scratch for similar documents. Create templates for documents you write regularly (letters, reports, proposals). Save as a template (.dotx file) for reuse.</p>
+
+                <h4>AutoSave for Peace of Mind</h4>
+                <p>If using Word with OneDrive or SharePoint, AutoSave is typically enabled and continuously saves your document. Check File → Account to ensure it's turned on.</p>
+
+                <h3>Common Mistakes to Avoid</h3>
+
+                <h4>Using Multiple Spaces</h4>
+                <p>Don't press the spacebar multiple times to align text. Use tabs, tables, or indentation instead. Multiple spaces create formatting problems when text is edited.</p>
+
+                <h4>Manually Creating Page Breaks</h4>
+                <p>Don't press Enter repeatedly to push content to the next page. Use Layout → Breaks → Page Break to create proper page breaks.</p>
+
+                <h4>Inconsistent Capitalization</h4>
+                <p>Maintain consistent capitalization for headings and proper nouns. Mixed capitalization looks unprofessional and confuses readers.</p>
+
+                <h4>Ignoring Spelling Errors</h4>
+                <p>Red squiggly underlines indicate potential spelling errors. Address them (especially in professional documents) rather than ignoring them.</p>
+
+                <h4>Not Saving Regularly</h4>
+                <p>Get in the habit of saving frequently (<span class="keyboard-shortcut">Ctrl+S</span>). Power failures and crashes happen; don't risk losing work.</p>
+            </section>
+
+            <!-- Section 7: Conclusion -->
+            <section id="conclusion">
+                <h2>7. Summary and Key Takeaways</h2>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0; color: #2b5278;">Essential Microsoft Word Concepts</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>The Ribbon</strong> is Word's main interface, organized into tabs with related tools grouped together</li>
+                        <li><strong>Styles</strong> provide consistent, manageable formatting throughout documents</li>
+                        <li><strong>Templates</strong> save time and ensure professional appearance for recurring document types</li>
+                        <li><strong>Tables</strong> organize complex information in a structured format</li>
+                        <li><strong>Track Changes and Comments</strong> facilitate collaboration and document review</li>
+                        <li><strong>Headers, Footers, and Page Numbers</strong> add professionalism to multi-page documents</li>
+                        <li><strong>Find and Replace</strong> quickly fix repetitive issues across entire documents</li>
+                        <li><strong>Proofing tools</strong> ensure documents are professional and error-free</li>
+                        <li><strong>Mail Merge</strong> automates creation of personalized mass communications</li>
+                        <li><strong>Save in appropriate formats</strong> (.docx for editing, .pdf for final distribution)</li>
+                    </ul>
+                </div>
+
+                <h3>Skill Progression Path</h3>
+                <ol>
+                    <li><strong>Basic Skills (Start Here):</strong> Typing, selecting, copying/pasting, basic formatting, saving files</li>
+                    <li><strong>Intermediate Skills:</strong> Styles, tables, headers/footers, page setup, Find & Replace, proofing tools</li>
+                    <li><strong>Advanced Skills:</strong> Track changes, mail merge, table of contents, citations, sections, forms</li>
+                    <li><strong>Expert Level:</strong> Custom styles, building blocks, macros, advanced document protection, complex merges</li>
+                </ol>
+
+                <h3>Practice Recommendations</h3>
+                <ul>
+                    <li>Create a resume or cover letter to practice formatting and styles</li>
+                    <li>Write a multi-page report with table of contents and headings</li>
+                    <li>Try mail merge with a contact list to create personalized letters</li>
+                    <li>Collaborate with someone using Track Changes to understand review workflows</li>
+                    <li>Build a template for a document you write regularly</li>
+                    <li>Explore different themes and see how design elements coordinate</li>
+                </ul>
+
+                <h3>Next Steps</h3>
+                <p>Now that you understand the fundamentals and intermediate features of Microsoft Word, you can:</p>
+                <ul>
+                    <li>Create professional-looking documents with confidence</li>
+                    <li>Collaborate effectively with others using review features</li>
+                    <li>Use automation (mail merge, templates) to work more efficiently</li>
+                    <li>Format documents for specific purposes (academic, business, creative)</li>
+                    <li>Help others learn Word by teaching them these concepts</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>💡 Remember:</strong> Microsoft Word is a tool for clear, effective communication. The best documents are those where content is organized logically, formatted consistently, and proofread carefully. Master these fundamentals, and you'll produce professional documents in any situation.
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Microsoft Word Learning Guide. Created by Juan Cloete as an educational resource for students and teachers.</p>
+            <p>Master Word, master professional communication.</p>
+        </footer>
+    </div>
+</body>
+</html>

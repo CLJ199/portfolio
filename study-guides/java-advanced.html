@@ -1,0 +1,3531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JGrasp & Java — Advanced Study Guide & Quiz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #2d3748;
+      line-height: 1.8;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 5px 18px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .info-bar {
+      background: white;
+      border-bottom: 3px solid #e53e3e;
+      padding: 14px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      justify-content: center;
+    }
+
+    .info-bar span strong { color: #c53030; }
+
+    .notice {
+      background: #fff5f5;
+      border-left: 5px solid #e53e3e;
+      border-radius: 8px;
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      font-size: 0.93rem;
+    }
+
+    .notice .notice-title {
+      font-weight: 700;
+      color: #c53030;
+      margin-bottom: 6px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section-block {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .section-label {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+      border-radius: 10px;
+      padding: 6px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 3px solid #feb2b2;
+      margin: 12px 0 20px;
+    }
+
+    .question-group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c53030;
+      background: #fff5f5;
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      border-left: 4px solid #e53e3e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .answer-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+
+    .answer-item:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+
+    .answer-number {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .answer-content { flex: 1; font-size: 0.97rem; padding-top: 5px; }
+
+    .answer-content .question-ref {
+      color: #718096; font-size: 0.85rem;
+      margin-bottom: 4px; font-style: italic;
+    }
+
+    .answer-content .answer-main {
+      font-weight: 700; color: #1a1a2e; font-size: 1rem;
+    }
+
+    .answer-content .answer-sub {
+      color: #4a5568; font-size: 0.88rem; margin-top: 4px;
+    }
+
+    .correct-tag {
+      display: inline-block;
+      background: #fed7d7; color: #1a1a2e;
+      border-radius: 6px; padding: 1px 10px;
+      font-size: 0.82rem; font-weight: 600; margin-left: 6px;
+    }
+
+    .reason-tag {
+      display: inline-block;
+      background: #fefcbf; color: #744210;
+      border: 1px solid #f6e05e; border-radius: 6px;
+      padding: 2px 10px; font-size: 0.82rem; margin-top: 6px;
+    }
+
+    .marks {
+      display: inline-block;
+      background: #fef3c7; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 10px;
+      padding: 1px 10px; font-size: 0.78rem;
+      font-weight: 700; margin-left: 8px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto; margin: 16px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+
+    thead tr {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+    }
+
+    thead th { padding: 13px 18px; text-align: left; font-weight: 600; }
+
+    tbody tr:nth-child(even) { background: #fff5f5; }
+    tbody tr:hover { background: #fed7d7; }
+
+    tbody td { padding: 12px 18px; border-bottom: 1px solid #feb2b2; }
+
+    .ans-cell { font-weight: 700; color: #1a1a2e; }
+
+    .code-block {
+      background: #0d0d1a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.9;
+      margin: 14px 0;
+      overflow-x: auto;
+      position: relative;
+      border-left: 4px solid #e53e3e;
+    }
+
+    .code-block .code-label {
+      position: absolute; top: 10px; right: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 2px 10px;
+      font-size: 0.75rem; color: #fc8181;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .kw   { color: #fc8181;  font-weight: 700; }
+    .cls  { color: #fbbf24;  font-weight: 700; }
+    .str  { color: #86efac; }
+    .com  { color: #6b7280;  font-style: italic; }
+    .num  { color: #c084fc; }
+    .met  { color: #67e8f9; }
+    .typ  { color: #34d399;  font-weight: 600; }
+    .ann  { color: #f9a8d4; }
+
+    .concept-card {
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+
+    .concept-card-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 10px;
+    }
+
+    .concept-icon { font-size: 1.6rem; }
+
+    .concept-title {
+      font-size: 1.1rem; font-weight: 700; color: #1a1a2e;
+    }
+
+    .concept-body { font-size: 0.95rem; color: #2d3748; line-height: 1.7; }
+
+    .concept-example {
+      background: white;
+      border-left: 4px solid #e53e3e;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px; margin-top: 10px;
+      font-size: 0.88rem; color: #4a5568;
+    }
+
+    .model-answer {
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      border-radius: 12px;
+      padding: 20px 22px; margin-bottom: 16px;
+    }
+
+    .model-body { padding-left: 48px; }
+    .model-body p { margin-bottom: 8px; font-size: 0.95rem; }
+
+    .model-body .highlight {
+      background: #fed7d7; color: #1a1a2e;
+      font-weight: 700; padding: 1px 5px; border-radius: 4px;
+    }
+
+    .rubric-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 12px 16px; margin-top: 12px;
+      font-size: 0.88rem; color: #92400e;
+    }
+
+    .rubric-box strong { color: #78350f; }
+
+    .marking-scheme {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white; border-radius: 12px;
+      padding: 24px 28px; margin-bottom: 36px;
+    }
+
+    .marking-scheme h3 {
+      font-size: 1.2rem; margin-bottom: 14px; text-align: center;
+    }
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .mark-item {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px; padding: 12px 16px; text-align: center;
+    }
+
+    .mark-item .sec { font-size: 0.82rem; opacity: 0.8; margin-bottom: 4px; }
+    .mark-item .val { font-size: 1.4rem; font-weight: 700; }
+    .mark-item .out { font-size: 0.82rem; opacity: 0.7; }
+
+    .total-bar {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 14px 20px;
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 16px;
+    }
+
+    .total-bar .t-label { font-size: 1rem; }
+
+    .total-bar .t-val {
+      font-size: 1.8rem; font-weight: 700;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 18px; border-radius: 8px;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .diff-hard {
+      background: #fed7d7; color: #c53030;
+      border: 1px solid #fc8181;
+    }
+
+    .diff-medium {
+      background: #fef3c7; color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .diff-analysis {
+      background: #e9d8fd; color: #553c9a;
+      border: 1px solid #d6bcfa;
+    }
+
+    .nav-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 28px; background: white;
+      padding: 12px 16px; border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-tab {
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; border: none;
+      background: #f0f4f8; color: #4a5568;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active,
+    .nav-tab:hover {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white;
+    }
+
+    /* ══ QUIZ STYLES ══ */
+    .quiz-progress-bar-container {
+      background: #e2e8f0; border-radius: 50px;
+      height: 10px; margin-bottom: 20px; overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      background: linear-gradient(90deg, #c53030, #e53e3e);
+      height: 100%; border-radius: 50px;
+      transition: width 0.5s ease; width: 0%;
+    }
+
+    .quiz-progress-label {
+      font-size: 0.82rem; color: #718096;
+      margin-bottom: 6px; text-align: right;
+    }
+
+    .score-tracker {
+      display: flex; gap: 16px;
+      flex-wrap: wrap; margin-bottom: 20px;
+    }
+
+    .score-box {
+      background: #fff5f5;
+      border: 2px solid #feb2b2;
+      border-radius: 10px; padding: 10px 20px;
+      text-align: center; flex: 1; min-width: 100px;
+    }
+
+    .score-box .sb-label {
+      font-size: 0.75rem; color: #718096;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .score-box .sb-val {
+      font-size: 1.6rem; font-weight: 700; color: #c53030;
+    }
+
+    .quiz-question-card {
+      background: white;
+      border: 1px solid #feb2b2;
+      border-radius: 14px; padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .quiz-q-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+
+    .quiz-q-num {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white; min-width: 40px; height: 40px;
+      border-radius: 10px; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+    }
+
+    .quiz-q-type {
+      background: #fff5f5; color: #c53030;
+      border: 1px solid #feb2b2; border-radius: 6px;
+      padding: 2px 10px; font-size: 0.78rem; font-weight: 600;
+    }
+
+    .quiz-q-text {
+      font-size: 1rem; font-weight: 600;
+      color: #1a1a2e; line-height: 1.7; margin-bottom: 16px;
+    }
+
+    .quiz-q-text code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 2px 7px; border-radius: 5px;
+      font-family: 'Courier New', monospace; font-size: 0.92rem;
+    }
+
+    .mc-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .mc-option {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; border: 2px solid #e2e8f0;
+      border-radius: 10px; cursor: pointer;
+      transition: all 0.2s; background: #f7fafc;
+    }
+
+    .mc-option:hover   { border-color: #e53e3e; background: #fff5f5; }
+    .mc-option.selected{ border-color: #c53030; background: #fff5f5; }
+    .mc-option.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .mc-option.incorrect{ border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    .mc-option input[type="radio"] {
+      accent-color: #c53030; width: 18px; height: 18px;
+      flex-shrink: 0; margin-top: 3px;
+    }
+
+    .mc-option label { cursor: pointer; font-size: 0.95rem; flex: 1; }
+
+    .mc-option label code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 1px 6px; border-radius: 4px;
+      font-family: 'Courier New', monospace; font-size: 0.88rem;
+    }
+
+    .tf-options { display: flex; gap: 12px; }
+
+    .tf-btn {
+      flex: 1; padding: 14px; border: 2px solid #e2e8f0;
+      border-radius: 10px; cursor: pointer;
+      font-size: 1rem; font-weight: 700;
+      background: #f7fafc; color: #4a5568;
+      transition: all 0.2s; text-align: center;
+    }
+
+    .tf-btn:hover    { border-color: #e53e3e; background: #fff5f5; }
+    .tf-btn.selected { border-color: #c53030; background: #fff5f5; color: #1a1a2e; }
+    .tf-btn.correct  { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+    .tf-btn.incorrect{ border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+
+    .fitb-wrapper {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 8px;
+      font-size: 0.97rem; line-height: 2.6;
+    }
+
+    .fitb-wrapper code {
+      background: #0d0d1a; color: #fc8181;
+      padding: 2px 7px; border-radius: 5px;
+      font-family: 'Courier New', monospace; font-size: 0.9rem;
+    }
+
+    .fitb-input {
+      border: 2px solid #feb2b2; border-radius: 8px;
+      padding: 6px 12px; font-size: 0.95rem;
+      font-family: 'Courier New', monospace;
+      color: #1a1a2e; min-width: 160px; outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .fitb-input:focus    { border-color: #c53030; }
+    .fitb-input.correct  { border-color: #22c55e; background: #dcfce7; }
+    .fitb-input.incorrect{ border-color: #ef4444; background: #fef2f2; }
+
+    .short-answer-textarea {
+      width: 100%; padding: 12px 16px;
+      border: 2px solid #feb2b2; border-radius: 10px;
+      font-family: inherit; font-size: 0.95rem;
+      color: #2d3748; resize: vertical; min-height: 110px;
+      outline: none; transition: border-color 0.2s; background: #f7fafc;
+    }
+
+    .short-answer-textarea:focus { border-color: #c53030; background: white; }
+
+    .short-answer-code {
+      font-family: 'Courier New', monospace; font-size: 0.88rem;
+    }
+
+    .match-select {
+      width: 100%; padding: 8px 12px;
+      border: 2px solid #feb2b2; border-radius: 8px;
+      font-family: inherit; font-size: 0.85rem;
+      color: #2d3748; background: white; outline: none;
+      cursor: pointer; transition: border-color 0.2s; margin-bottom: 4px;
+    }
+
+    .match-select:focus    { border-color: #c53030; }
+    .match-select.correct  { border-color: #22c55e; background: #dcfce7; }
+    .match-select.incorrect{ border-color: #ef4444; background: #fef2f2; }
+
+    .feedback-msg {
+      display: none; border-radius: 8px;
+      padding: 12px 16px; margin-top: 12px;
+      font-size: 0.9rem; font-weight: 600;
+      align-items: flex-start; gap: 8px;
+    }
+
+    .feedback-msg.show       { display: flex; }
+    .feedback-msg.correct-fb { background: #dcfce7; color: #14532d; border: 1px solid #22c55e; }
+    .feedback-msg.incorrect-fb{ background: #fef2f2; color: #991b1b; border: 1px solid #ef4444; }
+    .feedback-msg.info-fb    { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+
+    .quiz-btn-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
+    .btn-check {
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+      color: white; border: none; border-radius: 10px;
+      padding: 12px 28px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-check:hover   { opacity: 0.9; transform: translateY(-1px); }
+    .btn-check:active  { transform: translateY(0); }
+    .btn-check:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-hint {
+      background: #fffbeb; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+
+    .btn-hint:hover { opacity: 0.8; }
+
+    .btn-reset {
+      background: #f7fafc; color: #4a5568;
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 22px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+
+    .btn-reset:hover { background: #edf2f7; }
+
+    .hint-box {
+      display: none; background: #fffbeb;
+      border: 1px solid #fcd34d; border-radius: 8px;
+      padding: 10px 14px; font-size: 0.85rem;
+      color: #92400e; margin-top: 10px;
+    }
+
+    .hint-box.show { display: block; }
+
+    .quiz-results-panel {
+      display: none;
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: white; border-radius: 16px;
+      padding: 36px; margin-top: 28px; text-align: center;
+    }
+
+    .quiz-results-panel.show { display: block; }
+    .results-score { font-size: 4rem; font-weight: 700; margin: 16px 0; }
+    .results-label { font-size: 1rem; opacity: 0.8; }
+
+    .results-grade {
+      font-size: 1.4rem; font-weight: 700; margin: 10px 0;
+      background: rgba(255,255,255,0.15);
+      display: inline-block; padding: 6px 24px; border-radius: 10px;
+    }
+
+    .btn-submit-all {
+      background: white; color: #1a1a2e; border: none;
+      border-radius: 12px; padding: 16px 40px;
+      font-size: 1.05rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 20px; display: block; width: 100%;
+    }
+
+    .btn-submit-all:hover { background: #fed7d7; }
+
+    .btn-retake {
+      background: rgba(255,255,255,0.12); color: white;
+      border: 2px solid rgba(255,255,255,0.35); border-radius: 12px;
+      padding: 14px 36px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      margin-top: 14px; display: block; width: 100%;
+    }
+
+    .btn-retake:hover { background: rgba(255,255,255,0.22); }
+
+    footer {
+      text-align: center; padding: 30px 20px;
+      color: #718096; font-size: 0.88rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .section-block { padding: 20px; }
+      .results-score { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="badge">☕ ADVANCED — JGRASP & JAVA DOCUMENTATION GUIDE</div>
+  <h1>JGrasp In-Depth & Java Internals</h1>
+  <p>
+    JGrasp Features · Debugging · Control Structures · Methods · Arrays ·
+    OOP Foundations · Javadoc · Advanced Quiz
+  </p>
+</div>
+
+<!-- ══ INFO BAR ══ -->
+<div class="info-bar">
+  <span>📋 <strong>Level:</strong> Intermediate–Advanced</span>
+  <span>🛠️ <strong>IDE:</strong> JGrasp (in-depth)</span>
+  <span>⭐ <strong>Quiz Marks:</strong> 60</span>
+  <span>🎯 <strong>Focus:</strong> JGrasp docs, Java internals & analysis</span>
+</div>
+
+<div class="container">
+
+  <!-- ══ NOTICE ══ -->
+  <div class="notice">
+    <div class="notice-title">⚠️ Advanced Level — Prerequisites Required</div>
+    This guide assumes you already understand basic Java syntax, data types, variables,
+    and the structure of a Java program. The focus here is on <strong>JGrasp's advanced
+    features</strong>, <strong>Java control structures</strong>, <strong>methods</strong>,
+    <strong>arrays</strong>, <strong>OOP foundations</strong>, and
+    <strong>Javadoc documentation</strong>. Questions are intentionally challenging
+    and require analysis, application, and evaluation — not just recall.
+  </div>
+
+  <!-- ══ NAV TABS ══ -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollToSection('jgrasp-adv')">🛠️ JGrasp Advanced</button>
+    <button class="nav-tab" onclick="scrollToSection('debugger')">🐛 Debugger</button>
+    <button class="nav-tab" onclick="scrollToSection('control')">🔀 Control Structures</button>
+    <button class="nav-tab" onclick="scrollToSection('methods')">⚙️ Methods</button>
+    <button class="nav-tab" onclick="scrollToSection('arrays')">📐 Arrays</button>
+    <button class="nav-tab" onclick="scrollToSection('oop')">🧱 OOP Foundations</button>
+    <button class="nav-tab" onclick="scrollToSection('javadoc')">📄 Javadoc</button>
+    <button class="nav-tab" onclick="scrollToSection('quiz')">🎯 Advanced Quiz</button>
+  </div>
+
+  <!-- ══ MARK ALLOCATION ══ -->
+  <div class="marking-scheme">
+    <h3>📊 Advanced Quiz Mark Allocation</h3>
+    <div class="mark-grid">
+      <div class="mark-item">
+        <div class="sec">Section A</div>
+        <div class="val">12</div>
+        <div class="out">MCQ (harder)</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section B</div>
+        <div class="val">10</div>
+        <div class="out">True / False</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section C</div>
+        <div class="val">10</div>
+        <div class="out">Code Analysis</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section D</div>
+        <div class="val">10</div>
+        <div class="out">Matching</div>
+      </div>
+      <div class="mark-item">
+        <div class="sec">Section E</div>
+        <div class="val">18</div>
+        <div class="out">Extended Answer</div>
+      </div>
+    </div>
+    <div class="total-bar">
+      <div class="t-label">TOTAL</div>
+      <div class="t-val">60 marks</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       STUDY SECTION 1 — JGRASP ADVANCED FEATURES
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="jgrasp-adv">
+    <div class="section-header">
+      <div class="section-label">Section 1</div>
+      <div class="section-title">🛠️ JGrasp — Advanced Features & Documentation</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 JGrasp Workbench & Viewers</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🔭</span>
+        <span class="concept-title">Object Viewers & the Workbench</span>
+      </div>
+      <div class="concept-body">
+        JGrasp's <strong>Workbench</strong> is an interactive panel that allows you to
+        <strong>instantiate objects, call methods, and inspect their state in real time</strong>
+        — without writing a main method. The <strong>Object Viewer</strong> renders a live
+        visual representation of objects and data structures (arrays, linked lists, trees)
+        as your program runs. This is particularly powerful when learning how data structures
+        behave internally during execution.
+      </div>
+      <div class="concept-example">
+        💡 Example: You can drag a <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">Student</code>
+        object into the Workbench, call its <code style="background:#0d0d1a;color:#67e8f9;padding:1px 5px;border-radius:4px;font-family:monospace;">getName()</code>
+        method, and see its field values update live in the viewer — all interactively.
+      </div>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🖥️ JGrasp Window Panels — Advanced Overview</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Panel / Feature</th><th>Location</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CSD Panel</strong></td>
+            <td>Left of editor</td>
+            <td class="ans-cell">Displays Control Structure Diagram — visual map of loops, if-blocks, method bodies</td>
+          </tr>
+          <tr>
+            <td><strong>Debug Tab</strong></td>
+            <td>Bottom panel</td>
+            <td class="ans-cell">Shows variable values, call stack, and thread state during debugging</td>
+          </tr>
+          <tr>
+            <td><strong>Workbench</strong></td>
+            <td>Separate window</td>
+            <td class="ans-cell">Allows interactive object creation and method invocation without running main()</td>
+          </tr>
+          <tr>
+            <td><strong>Canvas</strong></td>
+            <td>Viewer window</td>
+            <td class="ans-cell">Renders visual representations of data structures (arrays, trees, linked lists)</td>
+          </tr>
+          <tr>
+            <td><strong>I/O Window</strong></td>
+            <td>Bottom panel</td>
+            <td class="ans-cell">Handles all System.out output and Scanner keyboard input at runtime</td>
+          </tr>
+          <tr>
+            <td><strong>Project Manager</strong></td>
+            <td>Left panel</td>
+            <td class="ans-cell">Organises source files, shows class hierarchy, manages multi-file projects</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">⚙️ JGrasp Compiler Settings & Flags</div>
+
+    <div class="answer-item">
+      <div class="answer-number">S1</div>
+      <div class="answer-content">
+        <div class="answer-main">Compiler: <code style="background:#0d0d1a;color:#fc8181;padding:2px 6px;border-radius:4px;font-family:monospace;">javac</code> with Debug Flag <code style="background:#0d0d1a;color:#fc8181;padding:2px 6px;border-radius:4px;font-family:monospace;">-g</code></div>
+        <div class="answer-sub">
+          JGrasp compiles Java source using
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">javac</code>
+          with the <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">-g</code>
+          flag by default. This flag instructs the compiler to include
+          <strong>full debug information</strong> (variable names, line numbers, source file name)
+          in the .class file — essential for the debugger to show meaningful variable names
+          rather than memory addresses.
+        </div>
+        <span class="reason-tag">💡 Without -g, the debugger can still run but local variable names are lost.</span>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">S2</div>
+      <div class="answer-content">
+        <div class="answer-main">Run Arguments & VM Arguments</div>
+        <div class="answer-sub">
+          JGrasp allows you to pass <strong>command-line arguments</strong> to your program
+          via <em>Run → Run Arguments</em>. These are passed as the
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">args</code>
+          array in
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">main(String[] args)</code>.
+          You can also set <strong>JVM arguments</strong> (e.g., heap size:
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">-Xmx512m</code>)
+          via <em>Settings → Compiler Settings</em>.
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">S3</div>
+      <div class="answer-content">
+        <div class="answer-main">UML Class Diagram Generation</div>
+        <div class="answer-sub">
+          JGrasp can automatically generate a <strong>UML Class Diagram</strong> from your
+          source files. Navigate to <em>Tools → Generate → UML Class Diagram</em>.
+          This shows all classes, their fields, methods, and relationships
+          (inheritance, association) — extremely useful for understanding object-oriented
+          program structure at a glance.
+        </div>
+        <span class="reason-tag">💡 UML = Unified Modelling Language — the standard notation for visualising OOP designs.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 2 — DEBUGGER
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="debugger">
+    <div class="section-header">
+      <div class="section-label">Section 2</div>
+      <div class="section-title">🐛 The JGrasp Debugger — In Depth</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Breakpoints, Stepping & Watch Expressions</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">🐛</span>
+        <span class="concept-title">What the Debugger Does</span>
+      </div>
+      <div class="concept-body">
+        The JGrasp debugger allows you to <strong>pause program execution at any line</strong>,
+        inspect the current value of every variable in scope, trace the method call stack,
+        and step through code one line at a time. It is the most powerful tool for
+        <strong>finding and fixing logic errors</strong> (bugs) that do not cause compile errors
+        but produce incorrect results.
+      </div>
+      <div class="concept-example">
+        💡 Key distinction: The compiler finds <strong>syntax errors</strong> (compile-time).
+        The debugger helps find <strong>logic errors</strong> (runtime) — where the program
+        runs but produces the wrong output.
+      </div>
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead>
+          <tr><th>Debug Control</th><th>JGrasp Button / Shortcut</th><th>What It Does</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Breakpoint</strong></td>
+            <td>Click left margin of line</td>
+            <td class="ans-cell">Marks a line where execution will pause automatically</td>
+          </tr>
+          <tr>
+            <td><strong>Resume</strong></td>
+            <td>▶ Resume button</td>
+            <td class="ans-cell">Continues execution until the next breakpoint or program end</td>
+          </tr>
+          <tr>
+            <td><strong>Step Over</strong></td>
+            <td>→ Step Over</td>
+            <td class="ans-cell">Executes the current line; if it calls a method, executes the entire method as one step</td>
+          </tr>
+          <tr>
+            <td><strong>Step Into</strong></td>
+            <td>↓ Step Into</td>
+            <td class="ans-cell">Steps INTO a called method, pausing at its first line</td>
+          </tr>
+          <tr>
+            <td><strong>Step Out</strong></td>
+            <td>↑ Step Out</td>
+            <td class="ans-cell">Finishes the current method and returns to the calling method</td>
+          </tr>
+          <tr>
+            <td><strong>Watch Expression</strong></td>
+            <td>Debug tab → Watch</td>
+            <td class="ans-cell">Monitors a specific variable or expression continuously as code executes</td>
+          </tr>
+          <tr>
+            <td><strong>Call Stack</strong></td>
+            <td>Debug tab</td>
+            <td class="ans-cell">Shows the chain of method calls that led to the current execution point</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">🔎 Types of Errors in Java</div>
+
+    <div class="answer-item">
+      <div class="answer-number">E1</div>
+      <div class="answer-content">
+        <div class="answer-main">Syntax Error (Compile-Time Error)</div>
+        <div class="answer-sub">
+          Violates Java's grammar rules — detected by
+          <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">javac</code>
+          before the program runs. The program cannot compile until fixed.
+        </div>
+        <div class="code-block" style="margin-top:8px; font-size:0.84rem; padding:12px 16px;">
+<span class="typ">int</span> x = <span class="num">5</span>   <span class="com">// ← Missing semicolon — SYNTAX ERROR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">E2</div>
+      <div class="answer-content">
+        <div class="answer-main">Runtime Error (Exception)</div>
+        <div class="answer-sub">
+          Occurs while the program is running. The program compiles fine but crashes
+          during execution, throwing an <strong>Exception</strong>.
+        </div>
+        <div class="code-block" style="margin-top:8px; font-size:0.84rem; padding:12px 16px;">
+<span class="typ">int</span>[] arr = <span class="kw">new</span> <span class="typ">int</span>[<span class="num">5</span>];
+arr[<span class="num">10</span>] = <span class="num">99</span>;  <span class="com">// ← Index 10 doesn't exist → ArrayIndexOutOfBoundsException</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">E3</div>
+      <div class="answer-content">
+        <div class="answer-main">Logic Error (Semantic Error)</div>
+        <div class="answer-sub">
+          The program compiles and runs without crashing but produces
+          <strong>incorrect results</strong>. These are the hardest errors to find
+          and require careful debugging.
+        </div>
+        <div class="code-block" style="margin-top:8px; font-size:0.84rem; padding:12px 16px;">
+<span class="com">// Intent: calculate area of rectangle</span>
+<span class="typ">int</span> area = length + width;  <span class="com">// ← Should be * not + — LOGIC ERROR</span>
+        </div>
+        <span class="reason-tag">⚠️ The JGrasp debugger is most useful for tracking down logic errors.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 3 — CONTROL STRUCTURES
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="control">
+    <div class="section-header">
+      <div class="section-label">Section 3</div>
+      <div class="section-title">🔀 Control Structures</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Selection & Iteration — Advanced Detail</div>
+
+    <div class="answer-item">
+      <div class="answer-number">①</div>
+      <div class="answer-content">
+        <div class="answer-main">if / else if / else — Selection</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Selection.java</span>
+<span class="typ">int</span> score = <span class="num">75</span>;
+<span class="kw">String</span> grade;
+
+<span class="kw">if</span> (score >= <span class="num">90</span>) {
+    grade = <span class="str">"A"</span>;
+} <span class="kw">else if</span> (score >= <span class="num">80</span>) {
+    grade = <span class="str">"B"</span>;
+} <span class="kw">else if</span> (score >= <span class="num">70</span>) {
+    grade = <span class="str">"C"</span>;       <span class="com">// ← This branch executes (score = 75)</span>
+} <span class="kw">else if</span> (score >= <span class="num">60</span>) {
+    grade = <span class="str">"D"</span>;
+} <span class="kw">else</span> {
+    grade = <span class="str">"F"</span>;
+}
+
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Grade: "</span> + grade);  <span class="com">// Output: Grade: C</span>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">②</div>
+      <div class="answer-content">
+        <div class="answer-main">switch Statement — Multi-branch Selection</div>
+        <div class="answer-sub">
+          More efficient than a long if-else chain when comparing one variable against
+          many specific values. Each <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">case</code>
+          must end with <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">break</code>
+          to prevent <strong>fall-through</strong> (executing subsequent cases).
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">SwitchDemo.java</span>
+<span class="typ">int</span> day = <span class="num">3</span>;
+<span class="kw">switch</span> (day) {
+    <span class="kw">case</span> <span class="num">1</span>:  <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Monday"</span>);    <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>:  <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Tuesday"</span>);   <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>:  <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Wednesday"</span>);  <span class="kw">break</span>;
+    <span class="kw">default</span>: <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Invalid day"</span>);
+}
+<span class="com">// Output: Wednesday</span>
+<span class="com">// Remove 'break' after case 3 → "Wednesday" AND "Invalid day" would both print (fall-through!)</span>
+    </div>
+
+    <div class="answer-item">
+      <div class="answer-number">③</div>
+      <div class="answer-content">
+        <div class="answer-main">Three Types of Loops — When to Use Each</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Loops.java</span>
+<span class="com">// ── for loop: use when the number of iterations is KNOWN ──────────</span>
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i < <span class="num">5</span>; i++) {
+    <span class="cls">System</span>.out.<span class="met">print</span>(i + <span class="str">" "</span>);   <span class="com">// Output: 0 1 2 3 4</span>
+}
+
+<span class="com">// ── while loop: use when iterations depend on a CONDITION ─────────</span>
+<span class="typ">int</span> count = <span class="num">0</span>;
+<span class="kw">while</span> (count < <span class="num">3</span>) {
+    <span class="cls">System</span>.out.<span class="met">print</span>(count + <span class="str">" "</span>);  <span class="com">// Output: 0 1 2</span>
+    count++;
+}
+
+<span class="com">// ── do-while loop: executes AT LEAST ONCE before checking ─────────</span>
+<span class="typ">int</span> x = <span class="num">10</span>;
+<span class="kw">do</span> {
+    <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Runs once even though x > 5"</span>);
+} <span class="kw">while</span> (x < <span class="num">5</span>);  <span class="com">// condition is false but body ran once!</span>
+
+<span class="com">// ── for-each loop: iterates over arrays/collections cleanly ───────</span>
+<span class="typ">int</span>[] scores = {<span class="num">80</span>, <span class="num">90</span>, <span class="num">75</span>};
+<span class="kw">for</span> (<span class="typ">int</span> s : scores) {
+    <span class="cls">System</span>.out.<span class="met">print</span>(s + <span class="str">" "</span>);    <span class="com">// Output: 80 90 75</span>
+}
+    </div>
+
+    <div class="rubric-box">
+      <strong>⚠️ Common Loop Pitfall — Off-By-One Error:</strong>
+      Using <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">i &lt;= 5</code>
+      vs <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">i &lt; 5</code>
+      changes the number of iterations from 6 to 5. Always trace through
+      your loop boundary conditions carefully.
+      <br><strong>⚠️ Infinite Loop:</strong> Forgetting to increment the counter
+      (e.g., <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">count++</code>)
+      inside a while loop causes it to run forever. JGrasp will appear to hang —
+      use the Stop button (■) to terminate it.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 4 — METHODS
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="methods">
+    <div class="section-header">
+      <div class="section-label">Section 4</div>
+      <div class="section-title">⚙️ Methods — Advanced</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Method Anatomy, Overloading & Scope</div>
+
+    <div class="code-block">
+      <span class="code-label">MethodsDemo.java</span>
+<span class="kw">public class</span> <span class="cls">MethodsDemo</span> {
+
+    <span class="com">// ── Static method: returnType methodName(paramType paramName) ──</span>
+    <span class="kw">public static</span> <span class="typ">int</span> <span class="met">add</span>(<span class="typ">int</span> a, <span class="typ">int</span> b) {
+        <span class="kw">return</span> a + b;   <span class="com">// returns an int value to the caller</span>
+    }
+
+    <span class="com">// ── void method: no return value ───────────────────────────────</span>
+    <span class="kw">public static void</span> <span class="met">printGreeting</span>(<span class="cls">String</span> name) {
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Hello, "</span> + name + <span class="str">"!"</span>);
+    }
+
+    <span class="com">// ── Method OVERLOADING: same name, different parameters ────────</span>
+    <span class="kw">public static</span> <span class="typ">double</span> <span class="met">add</span>(<span class="typ">double</span> a, <span class="typ">double</span> b) {
+        <span class="kw">return</span> a + b;   <span class="com">// Java picks correct version based on argument types</span>
+    }
+
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+        <span class="typ">int</span>    r1 = <span class="met">add</span>(<span class="num">3</span>, <span class="num">4</span>);          <span class="com">// calls int version → 7</span>
+        <span class="typ">double</span> r2 = <span class="met">add</span>(<span class="num">3.5</span>, <span class="num">2.1</span>);      <span class="com">// calls double version → 5.6</span>
+        <span class="met">printGreeting</span>(<span class="str">"Alice"</span>);          <span class="com">// Hello, Alice!</span>
+        <span class="cls">System</span>.out.<span class="met">println</span>(r1 + <span class="str">" "</span> + r2);
+    }
+}
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead>
+          <tr><th>Concept</th><th>Definition</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Parameter</strong></td>
+            <td>Variable declared in the method signature (receives data)</td>
+            <td class="ans-cell"><code style="font-family:monospace;">int a</code> in <code style="font-family:monospace;">add(int a, int b)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Argument</strong></td>
+            <td>Actual value passed when calling the method</td>
+            <td class="ans-cell"><code style="font-family:monospace;">3</code> and <code style="font-family:monospace;">4</code> in <code style="font-family:monospace;">add(3, 4)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Return type</strong></td>
+            <td>The data type of the value the method sends back</td>
+            <td class="ans-cell"><code style="font-family:monospace;">int</code> — the method returns a whole number</td>
+          </tr>
+          <tr>
+            <td><strong>void</strong></td>
+            <td>Keyword meaning the method returns nothing</td>
+            <td class="ans-cell"><code style="font-family:monospace;">public static void printGreeting()</code></td>
+          </tr>
+          <tr>
+            <td><strong>Overloading</strong></td>
+            <td>Multiple methods with the same name but different parameter lists</td>
+            <td class="ans-cell"><code style="font-family:monospace;">add(int,int)</code> and <code style="font-family:monospace;">add(double,double)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Scope</strong></td>
+            <td>Where a variable is accessible — limited to the block it was declared in</td>
+            <td class="ans-cell">A variable declared inside a loop only exists inside that loop</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="answer-item" style="margin-top:14px;">
+      <div class="answer-number">⚠️</div>
+      <div class="answer-content">
+        <div class="answer-main">Pass by Value in Java</div>
+        <div class="answer-sub">
+          Java is <strong>strictly pass-by-value</strong>. When you pass a primitive to a method,
+          a <em>copy</em> of the value is passed. Changing the parameter inside the method
+          does <strong>NOT</strong> affect the original variable.
+        </div>
+        <div class="code-block" style="margin-top:8px; font-size:0.84rem; padding:14px 18px;">
+<span class="kw">public static void</span> <span class="met">doubleIt</span>(<span class="typ">int</span> x) {
+    x = x * <span class="num">2</span>;   <span class="com">// changes the LOCAL copy only</span>
+}
+
+<span class="typ">int</span> num = <span class="num">10</span>;
+<span class="met">doubleIt</span>(num);
+<span class="cls">System</span>.out.<span class="met">println</span>(num);  <span class="com">// Still prints 10 — original unchanged!</span>
+        </div>
+        <span class="reason-tag">⚠️ Reference types (objects/arrays) pass the reference by value — the object CAN be modified but not replaced.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 5 — ARRAYS
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="arrays">
+    <div class="section-header">
+      <div class="section-label">Section 5</div>
+      <div class="section-title">📐 Arrays — Declaration, Traversal & 2D Arrays</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Arrays In Depth</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">📐</span>
+        <span class="concept-title">What is an Array?</span>
+      </div>
+      <div class="concept-body">
+        An <strong>array</strong> is a fixed-size, ordered collection of elements that are
+        all of the <strong>same data type</strong>. Arrays are stored in
+        <strong>contiguous memory</strong> and accessed via a zero-based index.
+        Once created, the <strong>size of an array cannot be changed</strong>.
+        In JGrasp, the Object Viewer renders arrays visually as indexed boxes,
+        making it easy to see element values during debugging.
+      </div>
+      <div class="concept-example">
+        💡 Index starts at <strong>0</strong>, not 1. An array of size 5 has indices
+        0, 1, 2, 3, 4. Accessing index 5 throws an
+        <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">ArrayIndexOutOfBoundsException</code>.
+      </div>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">ArraysDemo.java</span>
+<span class="com">// ── Declaration & Initialisation ─────────────────────────────────</span>
+<span class="typ">int</span>[] scores = <span class="kw">new</span> <span class="typ">int</span>[<span class="num">5</span>];          <span class="com">// creates array of 5 ints, all default to 0</span>
+<span class="typ">int</span>[] marks  = {<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>, <span class="num">90</span>, <span class="num">88</span>}; <span class="com">// initialiser list — size inferred = 5</span>
+
+<span class="com">// ── Accessing elements ────────────────────────────────────────────</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(marks[<span class="num">0</span>]);     <span class="com">// 85 (first element)</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(marks[<span class="num">4</span>]);     <span class="com">// 88 (last element)</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(marks.length);  <span class="com">// 5 (number of elements)</span>
+
+<span class="com">// ── Traversal with for loop ───────────────────────────────────────</span>
+<span class="typ">int</span> total = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i < marks.length; i++) {
+    total += marks[i];
+}
+<span class="typ">double</span> average = (<span class="typ">double</span>) total / marks.length;
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Average: "</span> + average);   <span class="com">// 86.6</span>
+
+<span class="com">// ── Enhanced for-each loop ────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="typ">int</span> m : marks) {
+    <span class="cls">System</span>.out.<span class="met">print</span>(m + <span class="str">" "</span>);      <span class="com">// 85 92 78 90 88</span>
+}
+
+<span class="com">// ── Sorting with Arrays utility class ────────────────────────────</span>
+java.util.<span class="cls">Arrays</span>.<span class="met">sort</span>(marks);
+<span class="cls">System</span>.out.<span class="met">println</span>(java.util.<span class="cls">Arrays</span>.<span class="met">toString</span>(marks));
+<span class="com">// Output: [78, 85, 88, 90, 92]</span>
+    </div>
+
+    <div class="question-group-title" style="margin-top:16px;">📐 2D Arrays</div>
+
+    <div class="code-block">
+      <span class="code-label">TwoDArrays.java</span>
+<span class="com">// ── 2D Array: array of arrays (rows × columns) ───────────────────</span>
+<span class="typ">int</span>[][] grid = <span class="kw">new</span> <span class="typ">int</span>[<span class="num">3</span>][<span class="num">4</span>];   <span class="com">// 3 rows, 4 columns</span>
+
+<span class="typ">int</span>[][] matrix = {
+    {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>},
+    {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>},
+    {<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>}
+};
+
+<span class="cls">System</span>.out.<span class="met">println</span>(matrix[<span class="num">1</span>][<span class="num">2</span>]);  <span class="com">// row 1, col 2 → 6</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(matrix.length);         <span class="com">// 3 (rows)</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(matrix[<span class="num">0</span>].length);      <span class="com">// 3 (columns in row 0)</span>
+
+<span class="com">// ── Nested loop traversal ─────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="typ">int</span> row = <span class="num">0</span>; row < matrix.length; row++) {
+    <span class="kw">for</span> (<span class="typ">int</span> col = <span class="num">0</span>; col < matrix[row].length; col++) {
+        <span class="cls">System</span>.out.<span class="met">print</span>(matrix[row][col] + <span class="str">" "</span>);
+    }
+    <span class="cls">System</span>.out.<span class="met">println</span>();  <span class="com">// new line after each row</span>
+}
+<span class="com">// Output:
+// 1 2 3
+// 4 5 6
+// 7 8 9</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 6 — OOP FOUNDATIONS
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="oop">
+    <div class="section-header">
+      <div class="section-label">Section 6</div>
+      <div class="section-title">🧱 OOP Foundations</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Classes, Objects, Constructors & Encapsulation</div>
+
+    <div class="code-block">
+      <span class="code-label">Student.java</span>
+<span class="com">/**
+ * Represents a student in the system.
+ * Demonstrates encapsulation, constructors, and methods.
+ */</span>
+<span class="kw">public class</span> <span class="cls">Student</span> {
+
+    <span class="com">// ── Fields (private = encapsulated) ──────────────────────────</span>
+    <span class="kw">private</span> <span class="cls">String</span> name;
+    <span class="kw">private</span> <span class="typ">int</span>    studentId;
+    <span class="kw">private</span> <span class="typ">double</span> gpa;
+
+    <span class="com">// ── Constructor: called with 'new Student(...)' ───────────────</span>
+    <span class="kw">public</span> <span class="cls">Student</span>(<span class="cls">String</span> name, <span class="typ">int</span> studentId, <span class="typ">double</span> gpa) {
+        <span class="kw">this</span>.name      = name;        <span class="com">// 'this' refers to the current object</span>
+        <span class="kw">this</span>.studentId = studentId;
+        <span class="kw">this</span>.gpa       = gpa;
+    }
+
+    <span class="com">// ── No-argument (default) constructor ────────────────────────</span>
+    <span class="kw">public</span> <span class="cls">Student</span>() {
+        <span class="kw">this</span>(<span class="str">"Unknown"</span>, <span class="num">0</span>, <span class="num">0.0</span>);   <span class="com">// delegates to parameterised constructor</span>
+    }
+
+    <span class="com">// ── Getters (accessor methods) ────────────────────────────────</span>
+    <span class="kw">public</span> <span class="cls">String</span> <span class="met">getName</span>()      { <span class="kw">return</span> name;      }
+    <span class="kw">public</span> <span class="typ">int</span>    <span class="met">getStudentId</span>() { <span class="kw">return</span> studentId; }
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">getGpa</span>()       { <span class="kw">return</span> gpa;       }
+
+    <span class="com">// ── Setter (mutator method) ───────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="met">setGpa</span>(<span class="typ">double</span> gpa) {
+        <span class="kw">if</span> (gpa >= <span class="num">0.0</span> && gpa <= <span class="num">4.0</span>) {
+            <span class="kw">this</span>.gpa = gpa;            <span class="com">// validation before setting</span>
+        }
+    }
+
+    <span class="com">// ── toString: returns a String representation of the object ──</span>
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">String</span> <span class="met">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Student["</span> + name + <span class="str">", ID:"</span> + studentId + <span class="str">", GPA:"</span> + gpa + <span class="str">"]"</span>;
+    }
+}
+    </div>
+
+    <div class="code-block" style="margin-top:4px;">
+      <span class="code-label">Main.java — Using the Student class</span>
+<span class="kw">public class</span> <span class="cls">Main</span> {
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+
+        <span class="com">// Instantiate objects using 'new'</span>
+        <span class="cls">Student</span> s1 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Alice"</span>, <span class="num">1001</span>, <span class="num">3.8</span>);
+        <span class="cls">Student</span> s2 = <span class="kw">new</span> <span class="cls">Student</span>();   <span class="com">// uses no-arg constructor</span>
+
+        <span class="cls">System</span>.out.<span class="met">println</span>(s1.getName());        <span class="com">// Alice</span>
+        <span class="cls">System</span>.out.<span class="met">println</span>(s1);                  <span class="com">// calls toString()</span>
+        <span class="com">// Output: Student[Alice, ID:1001, GPA:3.8]</span>
+
+        s1.<span class="met">setGpa</span>(<span class="num">5.0</span>);   <span class="com">// rejected — validation fails (5.0 > 4.0)</span>
+        s1.<span class="met">setGpa</span>(<span class="num">3.9</span>);   <span class="com">// accepted</span>
+        <span class="cls">System</span>.out.<span class="met">println</span>(s1.getGpa());         <span class="com">// 3.9</span>
+    }
+}
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead>
+          <tr><th>OOP Concept</th><th>Definition</th><th>Java Mechanism</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Encapsulation</strong></td>
+            <td>Bundling data + methods; restricting direct field access</td>
+            <td class="ans-cell"><code style="font-family:monospace;">private</code> fields + <code style="font-family:monospace;">public</code> getters/setters</td>
+          </tr>
+          <tr>
+            <td><strong>Abstraction</strong></td>
+            <td>Exposing only necessary details; hiding implementation</td>
+            <td class="ans-cell">Methods hide internal logic from the caller</td>
+          </tr>
+          <tr>
+            <td><strong>Inheritance</strong></td>
+            <td>A subclass acquires fields/methods from a superclass</td>
+            <td class="ans-cell"><code style="font-family:monospace;">extends</code> keyword</td>
+          </tr>
+          <tr>
+            <td><strong>Polymorphism</strong></td>
+            <td>One interface, many implementations</td>
+            <td class="ans-cell">Method overriding + overloading</td>
+          </tr>
+          <tr>
+            <td><strong>Constructor</strong></td>
+            <td>Special method called when an object is created with <code style="font-family:monospace;">new</code></td>
+            <td class="ans-cell">Same name as class, no return type</td>
+          </tr>
+          <tr>
+            <td><strong>this keyword</strong></td>
+            <td>Refers to the current object instance inside a method/constructor</td>
+            <td class="ans-cell"><code style="font-family:monospace;">this.name = name;</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Override</strong></td>
+            <td>Annotation indicating a method replaces its parent's version</td>
+            <td class="ans-cell">Used with <code style="font-family:monospace;">toString()</code>, <code style="font-family:monospace;">equals()</code>, etc.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SECTION 7 — JAVADOC
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="javadoc">
+    <div class="section-header">
+      <div class="section-label">Section 7</div>
+      <div class="section-title">📄 Javadoc — Documentation Standards</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="question-group-title">📌 Writing & Generating Javadoc in JGrasp</div>
+
+    <div class="concept-card">
+      <div class="concept-card-header">
+        <span class="concept-icon">📄</span>
+        <span class="concept-title">What is Javadoc?</span>
+      </div>
+      <div class="concept-body">
+        <strong>Javadoc</strong> is Java's official documentation system. It reads
+        specially formatted <strong>/** ... */</strong> comments and generates
+        professional HTML documentation pages (similar to the official Java API docs).
+        In JGrasp, you can generate Javadoc via <em>Tools → Javadoc</em>.
+        Well-documented code is a professional requirement — not optional.
+      </div>
+    </div>
+
+    <div class="code-block" style="margin-top:14px;">
+      <span class="code-label">Javadoc Example</span>
+<span class="com">/**
+ * Calculates the area of a rectangle.
+ *
+ * &lt;p&gt;Both dimensions must be positive. If either value is
+ * negative or zero, the method returns -1 as an error indicator.&lt;/p&gt;
+ *
+ * @param  length  the length of the rectangle in centimetres (must be &gt; 0)
+ * @param  width   the width  of the rectangle in centimetres (must be &gt; 0)
+ * @return         the area in square centimetres, or -1 if inputs are invalid
+ * @author         J. Smith
+ * @version        1.0
+ * @since          2024
+ */</span>
+<span class="kw">public static</span> <span class="typ">double</span> <span class="met">calculateArea</span>(<span class="typ">double</span> length, <span class="typ">double</span> width) {
+    <span class="kw">if</span> (length <= <span class="num">0</span> || width <= <span class="num">0</span>) <span class="kw">return</span> <span class="num">-1</span>;
+    <span class="kw">return</span> length * width;
+}
+    </div>
+
+    <div class="table-wrapper" style="margin-top:14px;">
+      <table>
+        <thead>
+          <tr><th>Javadoc Tag</th><th>Purpose</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="font-family:monospace;">@param</code></td>
+            <td class="ans-cell">Describes a method parameter</td>
+            <td><code style="font-family:monospace;">@param length the length value</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@return</code></td>
+            <td class="ans-cell">Describes the return value</td>
+            <td><code style="font-family:monospace;">@return the computed area</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@throws</code></td>
+            <td class="ans-cell">Documents exceptions the method may throw</td>
+            <td><code style="font-family:monospace;">@throws IllegalArgumentException if input negative</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@author</code></td>
+            <td class="ans-cell">Names the author of the class/method</td>
+            <td><code style="font-family:monospace;">@author J. Smith</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@version</code></td>
+            <td class="ans-cell">States the version of the code</td>
+            <td><code style="font-family:monospace;">@version 2.1</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@since</code></td>
+            <td class="ans-cell">States when the feature was introduced</td>
+            <td><code style="font-family:monospace;">@since 2024</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@see</code></td>
+            <td class="ans-cell">References related classes or methods</td>
+            <td><code style="font-family:monospace;">@see Math#sqrt(double)</code></td>
+          </tr>
+          <tr>
+            <td><code style="font-family:monospace;">@deprecated</code></td>
+            <td class="ans-cell">Marks code as outdated and not recommended for use</td>
+            <td><code style="font-family:monospace;">@deprecated Use newMethod() instead</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rubric-box">
+      <strong>📌 JGrasp Javadoc Generation:</strong>
+      In JGrasp, go to <em>Tools → Javadoc</em>. You can configure the output directory
+      and choose which files to document. The result is a set of linked HTML files —
+      open <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">index.html</code>
+      in a browser to view the generated documentation.
+      <strong>Note:</strong> Javadoc comments use <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">/**</code>
+      (double star) — regular multi-line comments <code style="background:#0d0d1a;color:#fc8181;padding:1px 4px;border-radius:3px;font-family:monospace;">/*</code>
+      are NOT processed by the Javadoc tool.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       INTERACTIVE QUIZ — ADVANCED
+  ════════════════════════════════════════════ -->
+  <div class="section-block" id="quiz">
+    <div class="section-header">
+      <div class="section-label">Advanced Quiz</div>
+      <div class="section-title">🎯 JGrasp & Java — Advanced Interactive Quiz</div>
+    </div>
+    <hr class="section-divider"/>
+
+    <div class="quiz-progress-label" id="progressLabel">Progress: 0 / 33 attempted (0%)</div>
+    <div class="quiz-progress-bar-container">
+      <div class="quiz-progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="score-tracker">
+      <div class="score-box">
+        <div class="sb-label">Score</div>
+        <div class="sb-val" id="liveScore">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Correct</div>
+        <div class="sb-val" id="liveCorrect" style="color:#16a34a;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Incorrect</div>
+        <div class="sb-val" id="liveIncorrect" style="color:#dc2626;">0</div>
+      </div>
+      <div class="score-box">
+        <div class="sb-label">Remaining</div>
+        <div class="sb-val" id="liveRemaining">33</div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION A: Multiple Choice (12 marks) ══ -->
+    <div class="question-group-title" style="margin-top:20px;">
+      📝 Section A — Multiple Choice
+      <span class="marks">1 mark each = 12 marks</span>
+      <span class="difficulty-badge diff-hard">Advanced</span>
+    </div>
+
+    <!-- A1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A1</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        In JGrasp, what is the primary purpose of the <strong>CSD (Control Structure Diagram)</strong>?
+      </div>
+      <div class="mc-options" id="q1-options">
+        <div class="mc-option" onclick="selectMC('q1','A',this)">
+          <input type="radio" name="q1" id="q1a">
+          <label for="q1a">A) It compiles the Java source code into bytecode automatically</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','B',this)">
+          <input type="radio" name="q1" id="q1b">
+          <label for="q1b">B) It visually renders the control flow structure of code alongside the editor in real time</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','C',this)">
+          <input type="radio" name="q1" id="q1c">
+          <label for="q1c">C) It generates Javadoc HTML pages from comment tags</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q1','D',this)">
+          <input type="radio" name="q1" id="q1d">
+          <label for="q1d">D) It shows a UML diagram of all classes in the project</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q1-feedback"></div>
+      <div class="hint-box" id="q1-hint">💡 Hint: The CSD appears in the left margin of the editor and draws shapes around structural blocks like loops and if-statements.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q1','B','The CSD automatically generates a visual diagram of loops, if-blocks, and method bodies alongside your source code — making program structure immediately visible without running the program.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A2</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        A learner sets a breakpoint on line 8 and uses <strong>Step Into</strong> when
+        execution reaches a method call on that line. What happens next?
+      </div>
+      <div class="mc-options" id="q2-options">
+        <div class="mc-option" onclick="selectMC('q2','A',this)">
+          <input type="radio" name="q2" id="q2a">
+          <label for="q2a">A) The entire method executes as a single step and returns to line 9</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','B',this)">
+          <input type="radio" name="q2" id="q2b">
+          <label for="q2b">B) The debugger jumps to the first line INSIDE the called method</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','C',this)">
+          <input type="radio" name="q2" id="q2c">
+          <label for="q2c">C) The program resumes and runs until the next breakpoint</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q2','D',this)">
+          <input type="radio" name="q2" id="q2d">
+          <label for="q2d">D) The method is skipped entirely and execution moves to line 9</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q2-feedback"></div>
+      <div class="hint-box" id="q2-hint">💡 Hint: "Step Into" literally steps INTO the called method — contrast with "Step Over" which treats the method as one step.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q2','B','Step Into enters the called method and pauses at its first line, allowing you to debug the method internally. Step Over executes the whole method and returns to the next line in the caller.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A3</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        Consider the following code:
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="typ">int</span>[] data = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
+<span class="typ">int</span> result = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">1</span>; i < data.length; i += <span class="num">2</span>) {
+    result += data[i];
+}
+<span class="cls">System</span>.out.<span class="met">println</span>(result);
+        </div>
+        What is the output of this code?
+      </div>
+      <div class="mc-options" id="q3-options">
+        <div class="mc-option" onclick="selectMC('q3','A',this)">
+          <input type="radio" name="q3" id="q3a"><label for="q3a">A) 60</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','B',this)">
+          <input type="radio" name="q3" id="q3b"><label for="q3b">B) 150</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','C',this)">
+          <input type="radio" name="q3" id="q3c"><label for="q3c">C) 90</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q3','D',this)">
+          <input type="radio" name="q3" id="q3d"><label for="q3d">D) 30</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q3-feedback"></div>
+      <div class="hint-box" id="q3-hint">💡 Hint: i starts at 1 and increments by 2. Trace: i=1 (data[1]=20), i=3 (data[3]=40), i=5 — stops (5 is NOT less than 5).</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q3','A','i starts at 1, increments by 2: i=1→data[1]=20, i=3→data[3]=40, i=5→loop ends (5 is not < 5). result = 20 + 40 = 60.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A4</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the output of the following method call?
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="kw">public static</span> <span class="typ">int</span> <span class="met">mystery</span>(<span class="typ">int</span> n) {
+    <span class="kw">if</span> (n <= <span class="num">1</span>) <span class="kw">return</span> n;
+    <span class="kw">return</span> <span class="met">mystery</span>(n - <span class="num">1</span>) + <span class="met">mystery</span>(n - <span class="num">2</span>);
+}
+<span class="com">// In main:</span>
+<span class="cls">System</span>.out.<span class="met">println</span>(<span class="met">mystery</span>(<span class="num">6</span>));
+        </div>
+      </div>
+      <div class="mc-options" id="q4-options">
+        <div class="mc-option" onclick="selectMC('q4','A',this)">
+          <input type="radio" name="q4" id="q4a"><label for="q4a">A) 8</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','B',this)">
+          <input type="radio" name="q4" id="q4b"><label for="q4b">B) 13</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','C',this)">
+          <input type="radio" name="q4" id="q4c"><label for="q4c">C) 21</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q4','D',this)">
+          <input type="radio" name="q4" id="q4d"><label for="q4d">D) 6</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q4-feedback"></div>
+      <div class="hint-box" id="q4-hint">💡 Hint: This is a recursive Fibonacci sequence. F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q4','A','This is the Fibonacci sequence. mystery(6) = mystery(5) + mystery(4) = 5 + 3 = 8. Fibonacci sequence: 0,1,1,2,3,5,8,13... so F(6) = 8.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A5</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-medium">Medium</span>
+      </div>
+      <div class="quiz-q-text">
+        Which Javadoc tag is used to describe <strong>each parameter</strong> of a method?
+      </div>
+      <div class="mc-options" id="q5-options">
+        <div class="mc-option" onclick="selectMC('q5','A',this)">
+          <input type="radio" name="q5" id="q5a"><label for="q5a">A) <code>@return</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','B',this)">
+          <input type="radio" name="q5" id="q5b"><label for="q5b">B) <code>@param</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','C',this)">
+          <input type="radio" name="q5" id="q5c"><label for="q5c">C) <code>@throws</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q5','D',this)">
+          <input type="radio" name="q5" id="q5d"><label for="q5d">D) <code>@author</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q5-feedback"></div>
+      <div class="hint-box" id="q5-hint">💡 Hint: This tag is followed by the parameter name and then its description.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q5','B','@param is used once per parameter. Example: @param length the length of the rectangle. @return describes the return value. @throws documents exceptions.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A6</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        What will the following code print?
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="kw">public static void</span> <span class="met">changeValue</span>(<span class="typ">int</span> x) {
+    x = x * <span class="num">10</span>;
+}
+
+<span class="typ">int</span> num = <span class="num">5</span>;
+<span class="met">changeValue</span>(num);
+<span class="cls">System</span>.out.<span class="met">println</span>(num);
+        </div>
+      </div>
+      <div class="mc-options" id="q6-options">
+        <div class="mc-option" onclick="selectMC('q6','A',this)">
+          <input type="radio" name="q6" id="q6a"><label for="q6a">A) 50</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','B',this)">
+          <input type="radio" name="q6" id="q6b"><label for="q6b">B) 10</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','C',this)">
+          <input type="radio" name="q6" id="q6c"><label for="q6c">C) 5</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q6','D',this)">
+          <input type="radio" name="q6" id="q6d"><label for="q6d">D) A compile error</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q6-feedback"></div>
+      <div class="hint-box" id="q6-hint">💡 Hint: Java is pass-by-value for primitives — the method receives a COPY of num, not num itself.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q6','C','Java passes primitives by value. changeValue() receives a copy of num (value 5). Multiplying the copy by 10 changes the local copy to 50 but the original num variable in main remains 5.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A7</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        A switch statement is missing a <code>break</code> after <code>case 2</code>.
+        If the input value is <code>2</code>, what happens?
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="kw">switch</span> (value) {
+    <span class="kw">case</span> <span class="num">1</span>: <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"One"</span>);   <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>: <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Two"</span>);
+    <span class="kw">case</span> <span class="num">3</span>: <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Three"</span>); <span class="kw">break</span>;
+    <span class="kw">default</span>: <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Other"</span>);
+}
+        </div>
+      </div>
+      <div class="mc-options" id="q7-options">
+        <div class="mc-option" onclick="selectMC('q7','A',this)">
+          <input type="radio" name="q7" id="q7a"><label for="q7a">A) Only "Two" is printed</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','B',this)">
+          <input type="radio" name="q7" id="q7b"><label for="q7b">B) "Two" and "Three" are both printed (fall-through)</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','C',this)">
+          <input type="radio" name="q7" id="q7c"><label for="q7c">C) A compile error occurs because break is missing</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q7','D',this)">
+          <input type="radio" name="q7" id="q7d"><label for="q7d">D) "Two", "Three", and "Other" are all printed</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q7-feedback"></div>
+      <div class="hint-box" id="q7-hint">💡 Hint: Without a break, execution "falls through" into the next case — but stops at the NEXT break.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q7','B','Fall-through: case 2 prints Two then continues into case 3 (no break to stop it), printing Three. Execution stops at the break after case 3. Missing break is NOT a compile error — it is a logic issue.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A8</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-medium">Medium</span>
+      </div>
+      <div class="quiz-q-text">
+        In the JGrasp <strong>Workbench</strong>, what can a developer do that is
+        <em>not</em> possible in the standard Run window?
+      </div>
+      <div class="mc-options" id="q8-options">
+        <div class="mc-option" onclick="selectMC('q8','A',this)">
+          <input type="radio" name="q8" id="q8a"><label for="q8a">A) Compile a Java file</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','B',this)">
+          <input type="radio" name="q8" id="q8b"><label for="q8b">B) Instantiate objects and call their methods interactively without writing a main() method</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','C',this)">
+          <input type="radio" name="q8" id="q8c"><label for="q8c">C) View the bytecode of the .class file</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q8','D',this)">
+          <input type="radio" name="q8" id="q8d"><label for="q8d">D) Generate a UML class diagram automatically</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q8-feedback"></div>
+      <div class="hint-box" id="q8-hint">💡 Hint: The Workbench is described as an interactive testing environment — you drag classes in and play with them.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q8','B','The Workbench allows you to create object instances, call their methods, and observe results interactively — without needing a main() method. This makes it ideal for testing individual classes in isolation.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A9</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        Given the following class, which statement about <strong>encapsulation</strong>
+        is MOST accurate?
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="kw">public class</span> <span class="cls">BankAccount</span> {
+    <span class="kw">private</span> <span class="typ">double</span> balance;
+
+    <span class="kw">public void</span> <span class="met">deposit</span>(<span class="typ">double</span> amount) {
+        <span class="kw">if</span> (amount > <span class="num">0</span>) balance += amount;
+    }
+
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">getBalance</span>() { <span class="kw">return</span> balance; }
+}
+        </div>
+      </div>
+      <div class="mc-options" id="q9-options">
+        <div class="mc-option" onclick="selectMC('q9','A',this)">
+          <input type="radio" name="q9" id="q9a"><label for="q9a">A) Encapsulation is violated because the balance is not public</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','B',this)">
+          <input type="radio" name="q9" id="q9b"><label for="q9b">B) Encapsulation is properly applied — balance is private and can only be modified through the validated deposit() method</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','C',this)">
+          <input type="radio" name="q9" id="q9c"><label for="q9c">C) Encapsulation requires that ALL methods be private</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q9','D',this)">
+          <input type="radio" name="q9" id="q9d"><label for="q9d">D) The class cannot be used because it has no constructor</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q9-feedback"></div>
+      <div class="hint-box" id="q9-hint">💡 Hint: Encapsulation = private fields + public controlled access methods. The validation in deposit() is a key benefit.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q9','B','Encapsulation is correctly applied. balance is private (protected from direct external access), and deposit() validates the amount before modifying it — preventing invalid states like negative deposits.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A10</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the value of <code>matrix[2][0]</code> after the following code executes?
+        <div class="code-block" style="margin-top:12px; font-size:0.85rem; padding:14px 18px;">
+<span class="typ">int</span>[][] matrix = <span class="kw">new</span> <span class="typ">int</span>[<span class="num">3</span>][<span class="num">3</span>];
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i < <span class="num">3</span>; i++) {
+    <span class="kw">for</span> (<span class="typ">int</span> j = <span class="num">0</span>; j < <span class="num">3</span>; j++) {
+        matrix[i][j] = (i + <span class="num">1</span>) * (j + <span class="num">1</span>);
+    }
+}
+        </div>
+      </div>
+      <div class="mc-options" id="q10-options">
+        <div class="mc-option" onclick="selectMC('q10','A',this)">
+          <input type="radio" name="q10" id="q10a"><label for="q10a">A) 2</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','B',this)">
+          <input type="radio" name="q10" id="q10b"><label for="q10b">B) 6</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','C',this)">
+          <input type="radio" name="q10" id="q10c"><label for="q10c">C) 3</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q10','D',this)">
+          <input type="radio" name="q10" id="q10d"><label for="q10d">D) 0</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q10-feedback"></div>
+      <div class="hint-box" id="q10-hint">💡 Hint: matrix[i][j] = (i+1) * (j+1). For [2][0]: i=2, j=0 → (2+1) * (0+1) = ?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q10','C','matrix[2][0] = (2+1) * (0+1) = 3 * 1 = 3. The formula is (row+1) * (column+1) for each element.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A11 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A11</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-medium">Medium</span>
+      </div>
+      <div class="quiz-q-text">
+        The JGrasp compiler uses <code>javac -g</code> by default. What does the
+        <code>-g</code> flag specifically add to the compiled <code>.class</code> file?
+      </div>
+      <div class="mc-options" id="q11-options">
+        <div class="mc-option" onclick="selectMC('q11','A',this)">
+          <input type="radio" name="q11" id="q11a"><label for="q11a">A) Graphics support for GUI applications</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','B',this)">
+          <input type="radio" name="q11" id="q11b"><label for="q11b">B) Full debug information — variable names, line numbers, and source file name</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','C',this)">
+          <input type="radio" name="q11" id="q11c"><label for="q11c">C) Garbage collection optimisation metadata</label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q11','D',this)">
+          <input type="radio" name="q11" id="q11d"><label for="q11d">D) Generic type parameter information at runtime</label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q11-feedback"></div>
+      <div class="hint-box" id="q11-hint">💡 Hint: Without this flag, the debugger would lose the ability to display meaningful variable names.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q11','B','The -g flag embeds full debug information into the .class file — including local variable names, line numbers, and the source filename. This is what allows the JGrasp debugger to show you variable names rather than memory addresses.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q11')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q11')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- A12 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">A12</div>
+        <span class="quiz-q-type">Multiple Choice</span>
+        <span class="marks">1 mark</span>
+        <span class="difficulty-badge diff-hard">Hard</span>
+      </div>
+      <div class="quiz-q-text">
+        Which of the following correctly demonstrates <strong>method overloading</strong>?
+      </div>
+      <div class="mc-options" id="q12-options">
+        <div class="mc-option" onclick="selectMC('q12','A',this)">
+          <input type="radio" name="q12" id="q12a">
+          <label for="q12a">A) <code>public int calc(int a)</code> and <code>public double calc(int a)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','B',this)">
+          <input type="radio" name="q12" id="q12b">
+          <label for="q12b">B) <code>public int calc(int a)</code> and <code>public int calc(double a)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','C',this)">
+          <input type="radio" name="q12" id="q12c">
+          <label for="q12c">C) <code>public int calc(int a)</code> and <code>public int calculate(int a)</code></label>
+        </div>
+        <div class="mc-option" onclick="selectMC('q12','D',this)">
+          <input type="radio" name="q12" id="q12d">
+          <label for="q12d">D) <code>public void calc()</code> and <code>private void calc()</code></label>
+        </div>
+      </div>
+      <div class="feedback-msg" id="q12-feedback"></div>
+      <div class="hint-box" id="q12-hint">💡 Hint: Overloading requires the SAME name but DIFFERENT parameter lists (type, number, or order). Return type alone is NOT enough.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMC('q12','B','Option B is valid overloading — same method name calc, but different parameter types (int vs double). Option A is invalid (return type alone does not constitute overloading). Option C uses different names. Option D uses different access modifiers only.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('q12')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMC('q12')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION B: True or False (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      ✅ Section B — True or False
+      <span class="marks">1 mark each = 10 marks</span>
+      <span class="difficulty-badge diff-medium">Analysis Required</span>
+    </div>
+
+    <!-- B1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B1</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">In Java, a <code>do-while</code> loop is guaranteed to execute its body at least once, even if its condition is false from the very beginning.</div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf1-true" onclick="selectTF('tf1','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf1-false" onclick="selectTF('tf1','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf1-feedback"></div>
+      <div class="hint-box" id="tf1-hint">💡 Hint: In a do-while, the body executes FIRST — then the condition is checked.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf1','true','TRUE — A do-while loop checks its condition AFTER executing the body. Therefore, the body always runs at least once, regardless of whether the condition is initially true or false.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf1')">↺ Reset</button>
+      </div>
+    
+    </div>
+
+    <!-- B2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B2</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In JGrasp, setting a <strong>Watch Expression</strong> during debugging allows
+        you to monitor a specific variable or expression continuously as execution steps
+        through your code.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf2-true" onclick="selectTF('tf2','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf2-false" onclick="selectTF('tf2','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf2-feedback"></div>
+      <div class="hint-box" id="tf2-hint">💡 Hint: Watch expressions appear in the Debug tab and update every time execution pauses.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf2','true','TRUE — Watch Expressions in JGrasp continuously display the current value of a chosen variable or expression each time the debugger pauses, making it easy to track how a value changes over time.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf2')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B3</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In Java, two methods in the same class can have the same name as long as
+        their <strong>return types</strong> are different — even if their parameter
+        lists are identical.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf3-true" onclick="selectTF('tf3','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf3-false" onclick="selectTF('tf3','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf3-feedback"></div>
+      <div class="hint-box" id="tf3-hint">💡 Hint: Method overloading is determined by the parameter list — not the return type.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf3','false','FALSE — Method overloading requires different parameter lists (different types, number, or order). The return type alone is NOT sufficient to distinguish overloaded methods. Identical parameter lists with only different return types cause a compile error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B4</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The <code>@Override</code> annotation in Java is <strong>required</strong>
+        for a method to successfully override a superclass method — without it,
+        the override will not take effect.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf4-true" onclick="selectTF('tf4','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf4-false" onclick="selectTF('tf4','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf4-feedback"></div>
+      <div class="hint-box" id="tf4-hint">💡 Hint: @Override is an annotation — what do annotations generally do in Java?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf4','false','FALSE — @Override is optional but strongly recommended. The override will work without it. However, @Override is valuable because it tells the compiler to verify you are correctly overriding a method — catching typos in method names that would otherwise create a new method silently.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B5</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Javadoc comments must use <code>/**</code> (double star) to be processed
+        by the Javadoc tool. Regular multi-line comments starting with <code>/*</code>
+        are ignored by the Javadoc generator.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf5-true" onclick="selectTF('tf5','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf5-false" onclick="selectTF('tf5','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf5-feedback"></div>
+      <div class="hint-box" id="tf5-hint">💡 Hint: The Javadoc tool specifically looks for the /** opening — a single * is not enough.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf5','true','TRUE — The Javadoc tool only processes comments that begin with /** (double star). Regular /* ... */ multi-line comments are completely ignored by javadoc, even if they contain @param or @return tags.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B6</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        An <code>ArrayIndexOutOfBoundsException</code> in Java is a
+        <strong>compile-time error</strong> — the compiler will catch it
+        before the program runs.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf6-true" onclick="selectTF('tf6','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf6-false" onclick="selectTF('tf6','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf6-feedback"></div>
+      <div class="hint-box" id="tf6-hint">💡 Hint: The word "Exception" in Java usually signals something that occurs at... what time?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf6','false','FALSE — ArrayIndexOutOfBoundsException is a RUNTIME error (exception). The compiler cannot always know if an index is valid because it may depend on user input or calculated values. The program compiles fine but crashes when the invalid index is accessed during execution.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B7</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In Java, a variable declared inside a <code>for</code> loop (e.g.,
+        <code>int i</code>) is accessible after the loop has finished executing.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf7-true" onclick="selectTF('tf7','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf7-false" onclick="selectTF('tf7','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf7-feedback"></div>
+      <div class="hint-box" id="tf7-hint">💡 Hint: Think about variable scope — a variable only exists within the block it was declared in.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf7','false','FALSE — A variable declared in a for loop header (like int i) has scope limited to the loop body. Once the loop ends, i is out of scope and cannot be accessed. Attempting to use it outside the loop causes a compile error.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B8</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        JGrasp can automatically generate a <strong>UML Class Diagram</strong>
+        from your Java source files via the Tools menu, showing class fields,
+        methods, and relationships.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf8-true" onclick="selectTF('tf8','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf8-false" onclick="selectTF('tf8','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf8-feedback"></div>
+      <div class="hint-box" id="tf8-hint">💡 Hint: This feature is one of JGrasp's distinguishing tools for teaching OOP concepts visually.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf8','true','TRUE — JGrasp can generate UML Class Diagrams from source files via Tools → Generate → UML Class Diagram. The diagram displays class names, fields, methods, and inter-class relationships such as inheritance and association.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B9</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Once an array is created in Java with a fixed size (e.g.,
+        <code>new int[5]</code>), it is possible to resize it later by
+        assigning a new size to the same variable.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf9-true" onclick="selectTF('tf9','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf9-false" onclick="selectTF('tf9','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf9-feedback"></div>
+      <div class="hint-box" id="tf9-hint">💡 Hint: Arrays in Java are fixed in size. If you need a resizable collection, you would use ArrayList instead.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf9','false','FALSE — Java arrays are FIXED in size once created. You cannot resize them. You can assign a brand new array to the variable (losing the old data), but the original array object cannot grow or shrink. Use ArrayList for dynamic resizing.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- B10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">B10</div>
+        <span class="quiz-q-type">True / False</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        The <code>this</code> keyword inside a constructor can be used to
+        call another constructor in the same class — this is known as
+        <strong>constructor chaining</strong>.
+      </div>
+      <div class="tf-options">
+        <div class="tf-btn" id="tf10-true" onclick="selectTF('tf10','true',this)">✅ True</div>
+        <div class="tf-btn" id="tf10-false" onclick="selectTF('tf10','false',this)">❌ False</div>
+      </div>
+      <div class="feedback-msg" id="tf10-feedback"></div>
+      <div class="hint-box" id="tf10-hint">💡 Hint: In the Student example, the no-arg constructor used this("Unknown", 0, 0.0) to delegate to the parameterised constructor.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkTF('tf10','true','TRUE — this(...) inside a constructor calls another constructor of the same class. This is called constructor chaining and must be the FIRST statement in the constructor. It avoids duplicating initialisation logic across multiple constructors.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('tf10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetTF('tf10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION C: Code Analysis Fill-in (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔍 Section C — Code Analysis: Fill in the Blank
+      <span class="marks">1 mark each = 10 marks</span>
+      <span class="difficulty-badge diff-analysis">Analysis</span>
+    </div>
+
+    <!-- C1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C1</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">What is the output of the following code?</div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="typ">int</span> x = <span class="num">10</span>;
+<span class="kw">while</span> (x > <span class="num">0</span>) {
+    x -= <span class="num">3</span>;
+}
+<span class="cls">System</span>.out.<span class="met">println</span>(x);
+      </div>
+      <div class="fitb-wrapper">
+        <span>The output is:</span>
+        <input type="text" class="fitb-input" id="fitb1" placeholder="type here…" style="min-width:80px; max-width:100px;">
+      </div>
+      <div class="feedback-msg" id="fitb1-feedback"></div>
+      <div class="hint-box" id="fitb1-hint">💡 Hint: Trace x: 10 → 7 → 4 → 1 → -2. The loop stops when x is no longer > 0.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb1',['-2'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb1')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb1')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C2</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">What is the output of the following code?</div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="cls">String</span> s1 = <span class="str">"Java"</span>;
+<span class="cls">String</span> s2 = <span class="str">"Java"</span>;
+<span class="cls">System</span>.out.<span class="met">println</span>(s1 == s2);
+<span class="cls">System</span>.out.<span class="met">println</span>(s1.<span class="met">equals</span>(s2));
+      </div>
+      <div class="fitb-wrapper">
+        <span>Line 1 output:</span>
+        <input type="text" class="fitb-input" id="fitb2a" placeholder="true/false" style="min-width:90px; max-width:110px;">
+        <span>Line 2 output:</span>
+        <input type="text" class="fitb-input" id="fitb2b" placeholder="true/false" style="min-width:90px; max-width:110px;">
+      </div>
+      <div class="feedback-msg" id="fitb2-feedback"></div>
+      <div class="hint-box" id="fitb2-hint">💡 Hint: == compares object references; .equals() compares content. String literals may be interned by the JVM.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITBDouble('fitb2','fitb2a','fitb2b',['true'],['true'],'Both are true: string literals with the same value are interned by the JVM (pointing to the same object), so == returns true. .equals() compares content and also returns true.')">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb2')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITBDouble('fitb2','fitb2a','fitb2b')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C3</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Fill in the blank to complete the Javadoc tag that documents
+        what a method <strong>returns</strong>:
+      </div>
+      <div class="fitb-wrapper">
+        <code>/**</code>
+        <input type="text" class="fitb-input" id="fitb3" placeholder="@______" style="min-width:120px; max-width:140px;">
+        <span>the calculated total price</span>
+        <code>*/</code>
+      </div>
+      <div class="feedback-msg" id="fitb3-feedback"></div>
+      <div class="hint-box" id="fitb3-hint">💡 Hint: This Javadoc tag is followed by a description of the value the method sends back to the caller.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb3',['@return','return'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb3')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb3')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C4</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">What does the following code print?</div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="typ">int</span>[] nums = {<span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span>, <span class="num">20</span>};
+<span class="cls">System</span>.out.<span class="met">println</span>(nums[nums.length - <span class="num">1</span>]);
+      </div>
+      <div class="fitb-wrapper">
+        <span>Output:</span>
+        <input type="text" class="fitb-input" id="fitb4" placeholder="type here…" style="min-width:80px; max-width:100px;">
+      </div>
+      <div class="feedback-msg" id="fitb4-feedback"></div>
+      <div class="hint-box" id="fitb4-hint">💡 Hint: nums.length is 4. What is the index of the last element in a 4-element array?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb4',['20'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb4')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb4')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C5</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        In the following OOP code, what does <code>this.name = name</code>
+        inside the constructor accomplish? Fill in the blank:
+      </div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="kw">public</span> <span class="cls">Product</span>(<span class="cls">String</span> name, <span class="typ">double</span> price) {
+    <span class="kw">this</span>.name  = name;
+    <span class="kw">this</span>.price = price;
+}
+      </div>
+      <div class="fitb-wrapper">
+        <span><code>this.name</code> refers to the</span>
+        <input type="text" class="fitb-input" id="fitb5" placeholder="type here…" style="min-width:160px;">
+        <span>field, while <code>name</code> refers to the constructor parameter.</span>
+      </div>
+      <div class="feedback-msg" id="fitb5-feedback"></div>
+      <div class="hint-box" id="fitb5-hint">💡 Hint: The "this" keyword always refers to the current object — so this.name refers to the object's own ____.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb5',['instance','instance field','object field','object\'s field','class field','field'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb5')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb5')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C6 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C6</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What type of error does the following code contain, and what is its name?
+      </div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="com">// Intended: calculate average of 3 numbers</span>
+<span class="typ">int</span> a = <span class="num">10</span>, b = <span class="num">20</span>, c = <span class="num">30</span>;
+<span class="typ">double</span> avg = a + b + c / <span class="num">3</span>;
+<span class="cls">System</span>.out.<span class="met">println</span>(avg);  <span class="com">// prints 40.0, not 20.0</span>
+      </div>
+      <div class="fitb-wrapper">
+        <span>This is a</span>
+        <input type="text" class="fitb-input" id="fitb6" placeholder="type of error…" style="min-width:140px;">
+        <span>error — specifically caused by missing parentheses (operator precedence).</span>
+      </div>
+      <div class="feedback-msg" id="fitb6-feedback"></div>
+      <div class="hint-box" id="fitb6-hint">💡 Hint: The program runs and compiles fine — but gives the wrong answer. Which type of error is that?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb6',['logic','logical','logic error','logical error','semantic'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb6')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb6')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C7 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C7</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What is the value of <code>total</code> after this code executes?
+      </div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="typ">int</span> total = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">1</span>; i <= <span class="num">5</span>; i++) {
+    <span class="kw">if</span> (i % <span class="num">2</span> == <span class="num">0</span>) {
+        total += i;
+    }
+}
+      </div>
+      <div class="fitb-wrapper">
+        <span>Value of <code>total</code>:</span>
+        <input type="text" class="fitb-input" id="fitb7" placeholder="type here…" style="min-width:80px; max-width:100px;">
+      </div>
+      <div class="feedback-msg" id="fitb7-feedback"></div>
+      <div class="hint-box" id="fitb7-hint">💡 Hint: i % 2 == 0 checks for even numbers. Which numbers from 1 to 5 are even?</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb7',['6'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb7')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb7')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C8 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C8</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Complete the blank with the correct keyword to make the field
+        <code>MAX_SIZE</code> a constant that cannot be changed:
+      </div>
+      <div class="code-block" style="font-size:0.85rem; padding:14px 18px; margin-bottom:12px;">
+<span class="kw">public static</span> ______ <span class="typ">int</span> MAX_SIZE = <span class="num">100</span>;
+      </div>
+      <div class="fitb-wrapper">
+        <span>Missing keyword:</span>
+        <input type="text" class="fitb-input" id="fitb8" placeholder="type here…" style="min-width:100px; max-width:120px;">
+      </div>
+      <div class="feedback-msg" id="fitb8-feedback"></div>
+      <div class="hint-box" id="fitb8-hint">💡 Hint: This keyword means the value is fixed and unchangeable after initialisation.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb8',['final'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb8')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb8')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C9 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C9</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        Given a 2D array <code>int[][] grid = new int[4][6]</code>,
+        what is the value of <code>grid[0].length</code>?
+      </div>
+      <div class="fitb-wrapper">
+        <span><code>grid[0].length</code> =</span>
+        <input type="text" class="fitb-input" id="fitb9" placeholder="type here…" style="min-width:80px; max-width:100px;">
+      </div>
+      <div class="feedback-msg" id="fitb9-feedback"></div>
+      <div class="hint-box" id="fitb9-hint">💡 Hint: grid.length gives the number of rows (4). grid[0].length gives the number of columns in row 0.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb9',['6'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb9')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb9')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- C10 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header"><div class="quiz-q-num">C10</div>
+        <span class="quiz-q-type">Code Analysis</span><span class="marks">1 mark</span>
+      </div>
+      <div class="quiz-q-text">
+        What JGrasp debug action would you choose if you are paused inside
+        a helper method and want to <strong>finish executing it and return
+        to the calling method</strong> in one step?
+      </div>
+      <div class="fitb-wrapper">
+        <span>The correct debug action is:</span>
+        <input type="text" class="fitb-input" id="fitb10" placeholder="type here…" style="min-width:160px;">
+      </div>
+      <div class="feedback-msg" id="fitb10-feedback"></div>
+      <div class="hint-box" id="fitb10-hint">💡 Hint: It's the opposite of "Step Into" — it takes you OUT of the current method.</div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkFITB('fitb10',['step out','step-out','stepout'])">Check Answer</button>
+        <button class="btn-hint" onclick="toggleHint('fitb10')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetFITB('fitb10')">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION D: Matching (10 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      🔗 Section D — Match the Term to its Description
+      <span class="marks">1 mark each = 10 marks</span>
+    </div>
+
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">D1–10</div>
+        <span class="quiz-q-type">Matching</span>
+        <span class="marks">10 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Match each advanced Java / JGrasp term to its correct description.
+      </div>
+      <div class="table-wrapper" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Term</th><th>Select the Matching Description</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>D1</strong></td>
+              <td class="ans-cell">Step Into</td>
+              <td>
+                <select class="match-select" id="match1">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D2</strong></td>
+              <td class="ans-cell">Step Over</td>
+              <td>
+                <select class="match-select" id="match2">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D3</strong></td>
+              <td class="ans-cell">Step Out</td>
+              <td>
+                <select class="match-select" id="match3">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D4</strong></td>
+              <td class="ans-cell">Watch Expression</td>
+              <td>
+                <select class="match-select" id="match4">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D5</strong></td>
+              <td class="ans-cell">Call Stack</td>
+              <td>
+                <select class="match-select" id="match5">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D6</strong></td>
+              <td class="ans-cell">@return</td>
+              <td>
+                <select class="match-select" id="match6">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D7</strong></td>
+              <td class="ans-cell">Method Overloading</td>
+              <td>
+                <select class="match-select" id="match7">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D8</strong></td>
+              <td class="ans-cell">Breakpoint</td>
+              <td>
+                <select class="match-select" id="match8">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D9</strong></td>
+              <td class="ans-cell">Encapsulation</td>
+              <td>
+                <select class="match-select" id="match9">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>D10</strong></td>
+              <td class="ans-cell">ArrayIndexOutOfBoundsException</td>
+              <td>
+                <select class="match-select" id="match10">
+                  <option value="">— Select —</option>
+                  <option value="A">A) Enters a called method and pauses at its first line</option>
+                  <option value="B">B) Executes the called method as one step without entering it</option>
+                  <option value="C">C) Finishes the current method and returns to the caller</option>
+                  <option value="D">D) Monitors a variable or expression continuously during debugging</option>
+                  <option value="E">E) The chain of active method calls at a given point in execution</option>
+                  <option value="F">F) A Javadoc tag that documents a method's return value</option>
+                  <option value="G">G) Multiple methods with the same name but different parameter lists</option>
+                  <option value="H">H) A line where the debugger will automatically pause execution</option>
+                  <option value="I">I) An OOP principle of hiding fields behind private access and public methods</option>
+                  <option value="J">J) A runtime error caused by accessing an invalid array index</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="feedback-msg" id="match-feedback"></div>
+      <div class="hint-box" id="match-hint">
+        💡 Hint: Review the JGrasp Debugger and OOP sections carefully.
+        Each term maps to exactly one description.
+      </div>
+      <div class="quiz-btn-row">
+        <button class="btn-check" onclick="checkMatching()">Check All Matches</button>
+        <button class="btn-hint" onclick="toggleHint('match')">💡 Hint</button>
+        <button class="btn-reset" onclick="resetMatching()">↺ Reset All</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION E: Extended Answer (18 marks) ══ -->
+    <div class="question-group-title" style="margin-top:28px;">
+      📝 Section E — Extended Answer Questions
+      <span class="marks">6 marks each = 18 marks</span>
+      <span class="difficulty-badge diff-analysis">Extended</span>
+    </div>
+
+    <!-- E1 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E1</div>
+        <span class="quiz-q-type">Extended Answer</span>
+        <span class="marks">6 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        A learner writes the following Java program in JGrasp. The program compiles
+        successfully but produces incorrect output.
+        <div class="code-block" style="margin-top:14px;">
+          <span class="code-label">GradeCalculator.java</span>
+<span class="kw">public class</span> <span class="cls">GradeCalculator</span> {
+
+    <span class="kw">public static</span> <span class="typ">double</span> <span class="met">calculateAverage</span>(<span class="typ">int</span>[] scores) {
+        <span class="typ">int</span> total = <span class="num">0</span>;
+        <span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i <= scores.length; i++) {   <span class="com">// Line 5</span>
+            total += scores[i];
+        }
+        <span class="kw">return</span> total / scores.length;                   <span class="com">// Line 8</span>
+    }
+
+    <span class="kw">public static void</span> <span class="met">main</span>(<span class="cls">String</span>[] args) {
+        <span class="typ">int</span>[] marks = {<span class="num">70</span>, <span class="num">80</span>, <span class="num">90</span>};
+        <span class="cls">System</span>.out.<span class="met">println</span>(<span class="met">calculateAverage</span>(marks));
+    }
+}
+        </div>
+        <br>
+        <strong>(a)</strong> Identify and explain ALL errors in this program.<br>
+        <strong>(b)</strong> Rewrite the corrected method.<br>
+        <strong>(c)</strong> Explain how you would use the JGrasp debugger to locate
+        these errors step by step.
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa1"
+        placeholder="(a) Identify all errors with explanations…&#10;&#10;(b) Write the corrected calculateAverage method…&#10;&#10;(c) Explain your debugger strategy step by step…"
+        rows="14"
+        oninput="updateSAWordCount('sa1','sa1-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa1-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (6 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Error 1 identified: Loop condition <code>i &lt;= scores.length</code>
+        should be <code>i &lt; scores.length</code> — causes
+        <code>ArrayIndexOutOfBoundsException</code> (runtime error) when i equals
+        scores.length (index 3 in a size-3 array)<br>
+        <strong>• 1 mark</strong> — Error 2 identified: <code>total / scores.length</code>
+        performs integer division (both int values) — result is truncated.
+        Should be <code>(double) total / scores.length</code> or
+        <code>total / (double) scores.length</code><br>
+        <strong>• 1 mark</strong> — Corrected method written with BOTH fixes applied and
+        compiling correctly<br>
+        <strong>• 1 mark</strong> — Debugger strategy: set breakpoint on Line 5,
+        use Step Over each iteration to watch <code>i</code> and <code>total</code><br>
+        <strong>• 1 mark</strong> — Mentions using Watch Expression to monitor
+        <code>i</code> and spot when it reaches <code>scores.length</code><br>
+        <strong>• 1 mark</strong> — Mentions that integer division issue requires
+        watching the return value of Line 8 and comparing against expected result
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#c53030;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p><strong>(a) Errors:</strong></p>
+            <p>
+              <strong>Error 1 — Off-by-one in loop condition (Runtime Error):</strong><br>
+              Line 5: <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">i &lt;= scores.length</code>
+              should be
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">i &lt; scores.length</code>.
+              Array indices run from 0 to length-1. When i equals scores.length (3),
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">scores[3]</code>
+              does not exist → throws <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">ArrayIndexOutOfBoundsException</code>.
+            </p>
+            <p>
+              <strong>Error 2 — Integer division truncates result (Logic Error):</strong><br>
+              Line 8: <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">total / scores.length</code>
+              — both operands are int, so the result is truncated.
+              For {70, 80, 90}: total=240, 240/3=80 (correct here by chance),
+              but {70, 80, 85}: total=235, 235/3=78 (should be 78.33...).
+              Fix: cast one operand to double.
+            </p>
+            <p><strong>(b) Corrected Method:</strong></p>
+            <div class="code-block" style="font-size:0.84rem; padding:14px 18px;">
+<span class="kw">public static</span> <span class="typ">double</span> <span class="met">calculateAverage</span>(<span class="typ">int</span>[] scores) {
+    <span class="typ">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i < scores.length; i++) {   <span class="com">// Fixed: < not <=</span>
+        total += scores[i];
+    }
+    <span class="kw">return</span> (<span class="typ">double</span>) total / scores.length;         <span class="com">// Fixed: cast to double</span>
+}
+            </div>
+            <p><strong>(c) JGrasp Debugger Strategy:</strong></p>
+            <p>
+              1. Set a <strong>breakpoint</strong> on Line 5 (the for loop header).<br>
+              2. Click the <strong>Debug</strong> button — execution pauses at line 5.<br>
+              3. Add <strong>Watch Expressions</strong> for <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">i</code>,
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">total</code>, and
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">scores.length</code>
+              in the Debug tab.<br>
+              4. Use <strong>Step Over</strong> each iteration — observe i incrementing.
+              When i reaches 3 (equal to scores.length), the next iteration
+              attempts <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">scores[3]</code>
+              and the exception is thrown — confirming Error 1.<br>
+              5. After fixing Error 1, run again, then add a Watch on the
+              return expression <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">total / scores.length</code>
+              — observe that with {70, 80, 85} it returns 78 instead of 78.33 —
+              confirming the integer division Error 2.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- E2 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E2</div>
+        <span class="quiz-q-type">Extended Answer</span>
+        <span class="marks">6 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Design and write a <strong>fully documented Java class</strong> called
+        <code>Rectangle</code> that satisfies all of the following requirements:<br><br>
+        • Two <strong>private</strong> fields: <code>length</code> and <code>width</code>
+        (both <code>double</code>)<br>
+        • A <strong>parameterised constructor</strong> that validates inputs
+        (both must be &gt; 0; if not, default both to 1.0)<br>
+        • A <strong>no-argument constructor</strong> that defaults both to 1.0<br>
+        • <strong>Getter</strong> methods for both fields<br>
+        • A <code>calculateArea()</code> method returning a <code>double</code><br>
+        • A <code>calculatePerimeter()</code> method returning a <code>double</code><br>
+        • A properly formatted <strong>toString()</strong> method<br>
+        • Full <strong>Javadoc comments</strong> on all methods using correct tags
+      </div>
+      <textarea
+        class="short-answer-textarea short-answer-code"
+        id="sa2"
+        placeholder="// Write your fully documented Rectangle class here…&#10;&#10;/**&#10; * Represents a rectangle shape.&#10; * @author Your Name&#10; */&#10;public class Rectangle {&#10;    &#10;}"
+        rows="24"
+        oninput="updateSAWordCount('sa2','sa2-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Lines: <span id="sa2-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (6 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Private fields and parameterised constructor with
+        correct validation (defaults to 1.0 if invalid)<br>
+        <strong>• 1 mark</strong> — No-arg constructor correctly implemented
+        (using this(1.0, 1.0) or direct assignment)<br>
+        <strong>• 1 mark</strong> — Correct getter methods for both fields<br>
+        <strong>• 1 mark</strong> — calculateArea() and calculatePerimeter() correctly
+        implemented with correct return types<br>
+        <strong>• 1 mark</strong> — toString() returns a well-formatted String
+        representation of the object<br>
+        <strong>• 1 mark</strong> — Javadoc comments use <code>/**</code> and include
+        at least <code>@param</code>, <code>@return</code> where appropriate;
+        class-level comment includes description
+      </div>
+      <details style="margin-top:        <summary style="cursor:pointer;color:#c53030;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <div class="code-block" style="font-size:0.84rem; padding:14px 18px;">
+<span class="com">/**
+ * Represents a rectangle shape with length and width dimensions.
+ *
+ * @author Your Name
+ * @version 1.0
+ * @since 2024
+ */</span>
+<span class="kw">public class</span> <span class="cls">Rectangle</span> {
+
+    <span class="com">// ── Private fields ────────────────────────────────────────────</span>
+    <span class="kw">private</span> <span class="typ">double</span> length;
+    <span class="kw">private</span> <span class="typ">double</span> width;
+
+    <span class="com">/**
+     * Constructs a Rectangle with specified dimensions.
+     * If either value is invalid (≤ 0), both default to 1.0.
+     *
+     * @param length the length of the rectangle (must be &gt; 0)
+     * @param width  the width of the rectangle (must be &gt; 0)
+     */</span>
+    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="typ">double</span> length, <span class="typ">double</span> width) {
+        <span class="kw">if</span> (length > <span class="num">0</span> && width > <span class="num">0</span>) {
+            <span class="kw">this</span>.length = length;
+            <span class="kw">this</span>.width  = width;
+        } <span class="kw">else</span> {
+            <span class="kw">this</span>.length = <span class="num">1.0</span>;
+            <span class="kw">this</span>.width  = <span class="num">1.0</span>;
+        }
+    }
+
+    <span class="com">/**
+     * Constructs a default Rectangle with length and width both set to 1.0.
+     */</span>
+    <span class="kw">public</span> <span class="cls">Rectangle</span>() {
+        <span class="kw">this</span>(<span class="num">1.0</span>, <span class="num">1.0</span>);
+    }
+
+    <span class="com">/**
+     * Returns the length of this rectangle.
+     *
+     * @return the length value
+     */</span>
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">getLength</span>() { <span class="kw">return</span> length; }
+
+    <span class="com">/**
+     * Returns the width of this rectangle.
+     *
+     * @return the width value
+     */</span>
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">getWidth</span>() { <span class="kw">return</span> width; }
+
+    <span class="com">/**
+     * Calculates and returns the area of this rectangle.
+     *
+     * @return the area (length × width) as a double
+     */</span>
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">calculateArea</span>() {
+        <span class="kw">return</span> length * width;
+    }
+
+    <span class="com">/**
+     * Calculates and returns the perimeter of this rectangle.
+     *
+     * @return the perimeter (2 × (length + width)) as a double
+     */</span>
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">calculatePerimeter</span>() {
+        <span class="kw">return</span> <span class="num">2</span> * (length + width);
+    }
+
+    <span class="com">/**
+     * Returns a String representation of this Rectangle.
+     *
+     * @return formatted string showing length, width, area and perimeter
+     */</span>
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">String</span> <span class="met">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Rectangle[length="</span> + length +
+               <span class="str">", width="</span>  + width  +
+               <span class="str">", area="</span>   + <span class="met">calculateArea</span>() +
+               <span class="str">", perimeter="</span> + <span class="met">calculatePerimeter</span>() + <span class="str">"]"</span>;
+    }
+}
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- E3 -->
+    <div class="quiz-question-card">
+      <div class="quiz-q-header">
+        <div class="quiz-q-num">E3</div>
+        <span class="quiz-q-type">Extended Answer</span>
+        <span class="marks">6 marks</span>
+      </div>
+      <div class="quiz-q-text">
+        Explain the concept of <strong>encapsulation</strong> in Java OOP.
+        Your answer must include:<br><br>
+        <strong>(a)</strong> A clear definition of encapsulation and why it is important<br>
+        <strong>(b)</strong> A practical example using a <code>BankAccount</code> class
+        that demonstrates encapsulation with at least two private fields,
+        a validated setter, and a getter<br>
+        <strong>(c)</strong> An explanation of what could go wrong if encapsulation
+        were <em>not</em> used (i.e., if all fields were public)
+      </div>
+      <textarea
+        class="short-answer-textarea"
+        id="sa3"
+        placeholder="(a) Define encapsulation and explain its importance…&#10;&#10;(b) Write a BankAccount class demonstrating encapsulation…&#10;&#10;(c) Explain the risks of not using encapsulation…"
+        rows="14"
+        oninput="updateSAWordCount('sa3','sa3-wc')"
+      ></textarea>
+      <div style="font-size:0.8rem;color:#718096;margin-top:4px;text-align:right;">
+        Words: <span id="sa3-wc">0</span>
+      </div>
+      <div class="feedback-msg info-fb show" style="margin-top:12px;display:flex;">
+        📋 <strong style="margin-left:4px;">Marking Guide (6 marks):</strong>
+      </div>
+      <div class="rubric-box" style="margin-top:0;">
+        <strong>• 1 mark</strong> — Clear definition: encapsulation bundles data (fields)
+        and behaviour (methods) together and restricts direct access to fields using
+        <code>private</code><br>
+        <strong>• 1 mark</strong> — Explains the benefit: controlled access through
+        public methods allows validation and prevents invalid states<br>
+        <strong>• 1 mark</strong> — BankAccount class with at least two
+        <code>private</code> fields correctly declared<br>
+        <strong>• 1 mark</strong> — Validated setter correctly implemented
+        (e.g., deposit rejects negative amounts)<br>
+        <strong>• 1 mark</strong> — Getter method correctly implemented<br>
+        <strong>• 1 mark</strong> — Clear explanation of risk without encapsulation
+        (e.g., any external code could set balance to a negative value directly,
+        bypassing all validation)
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;color:#c53030;font-weight:700;font-size:0.9rem;">
+          👁️ View Model Answer
+        </summary>
+        <div class="model-answer" style="margin-top:10px;">
+          <div class="model-body" style="padding-left:0;">
+            <p><strong>(a) Definition:</strong></p>
+            <p>
+              Encapsulation is the OOP principle of bundling an object's
+              <strong>data (fields)</strong> and <strong>behaviour (methods)</strong>
+              into a single unit (a class), and restricting direct external access
+              to the data by declaring fields <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">private</code>.
+              Access is provided only through controlled
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">public</code>
+              methods (getters and setters), which can validate inputs before
+              modifying the object's state. This protects the integrity of data
+              and makes code easier to maintain.
+            </p>
+            <p><strong>(b) BankAccount Example:</strong></p>
+            <div class="code-block" style="font-size:0.84rem; padding:14px 18px;">
+<span class="kw">public class</span> <span class="cls">BankAccount</span> {
+
+    <span class="kw">private</span> <span class="cls">String</span> owner;
+    <span class="kw">private</span> <span class="typ">double</span> balance;
+
+    <span class="kw">public</span> <span class="cls">BankAccount</span>(<span class="cls">String</span> owner, <span class="typ">double</span> initialBalance) {
+        <span class="kw">this</span>.owner   = owner;
+        <span class="kw">this</span>.balance = (initialBalance >= <span class="num">0</span>) ? initialBalance : <span class="num">0.0</span>;
+    }
+
+    <span class="kw">public</span> <span class="typ">double</span> <span class="met">getBalance</span>() { <span class="kw">return</span> balance; }
+    <span class="kw">public</span> <span class="cls">String</span> <span class="met">getOwner</span>()   { <span class="kw">return</span> owner;   }
+
+    <span class="kw">public void</span> <span class="met">deposit</span>(<span class="typ">double</span> amount) {
+        <span class="kw">if</span> (amount > <span class="num">0</span>) {
+            balance += amount;
+        } <span class="kw">else</span> {
+            <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Invalid deposit amount."</span>);
+        }
+    }
+
+    <span class="kw">public void</span> <span class="met">withdraw</span>(<span class="typ">double</span> amount) {
+        <span class="kw">if</span> (amount > <span class="num">0</span> && amount <= balance) {
+            balance -= amount;
+        } <span class="kw">else</span> {
+            <span class="cls">System</span>.out.<span class="met">println</span>(<span class="str">"Invalid or insufficient funds."</span>);
+        }
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">String</span> <span class="met">toString</span>() {
+        <span class="kw">return</span> <span class="str">"BankAccount["</span> + owner + <span class="str">", balance=R"</span> + balance + <span class="str">"]"</span>;
+    }
+}
+            </div>
+            <p><strong>(c) Risks Without Encapsulation:</strong></p>
+            <p>
+              If <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">balance</code>
+              were declared <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">public</code>,
+              any external code could write:
+            </p>
+            <div class="code-block" style="font-size:0.84rem; padding:14px 18px;">
+<span class="cls">BankAccount</span> acc = <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"Alice"</span>, <span class="num">1000.0</span>);
+acc.balance = <span class="num">-99999</span>;  <span class="com">// No validation — corrupts the object state!</span>
+            </div>
+            <p>
+              This bypasses all validation, allowing the balance to be set to
+              an impossible negative value. With encapsulation, this is prevented
+              because <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">balance</code>
+              is <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">private</code>
+              and can only be modified through the validated
+              <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">deposit()</code>
+              and <code style="background:#0d0d1a;color:#fc8181;padding:1px 5px;border-radius:4px;font-family:monospace;">withdraw()</code>
+              methods.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- ══ SUBMIT ALL ══ -->
+    <button class="btn-submit-all" onclick="submitAll()">
+      🎯 Submit Quiz & See Final Score
+    </button>
+
+    <!-- ══ RESULTS PANEL ══ -->
+    <div class="quiz-results-panel" id="resultsPanel">
+      <div style="font-size:2rem;">🎓</div>
+      <div class="results-label">Your Final Score</div>
+      <div class="results-score" id="finalScore">0 / 60</div>
+      <div class="results-grade" id="finalGrade">—</div>
+      <div style="opacity:0.8; font-size:0.9rem; margin-top:8px;" id="resultsBreakdown"></div>
+      <button class="btn-retake" onclick="retakeQuiz()">↺ Retake Quiz</button>
+    </div>
+
+  </div><!-- end #quiz section-block -->
+</div><!-- end .container -->
+
+<footer>
+  <p>☕ JGrasp &amp; Java Advanced Study Guide &amp; Quiz — Interactive Learning Tool</p>
+  <p style="margin-top:6px;">Built for intermediate-to-advanced Java learners | JGrasp IDE Focus</p>
+</footer>
+
+<script>
+  /* ══════════════════════════════════════════════════
+     STATE
+  ══════════════════════════════════════════════════ */
+  const TOTAL_QUESTIONS = 33;
+  const TOTAL_MARKS     = 60;
+
+  const state = {
+    attempted : 0,
+    correct   : 0,
+    incorrect : 0,
+    score     : 0,
+    answered  : {}   // questionId → true/false
+  };
+
+  /* ══════════════════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════════════════ */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  /* ══════════════════════════════════════════════════
+     PROGRESS & SCORE
+  ══════════════════════════════════════════════════ */
+  function updateProgress() {
+    const pct = Math.round((state.attempted / TOTAL_QUESTIONS) * 100);
+    document.getElementById('progressBar').style.width    = pct + '%';
+    document.getElementById('progressLabel').textContent  =
+      `Progress: ${state.attempted} / ${TOTAL_QUESTIONS} attempted (${pct}%)`;
+    document.getElementById('liveScore').textContent     = state.score;
+    document.getElementById('liveCorrect').textContent   = state.correct;
+    document.getElementById('liveIncorrect').textContent = state.incorrect;
+    document.getElementById('liveRemaining').textContent =
+      TOTAL_QUESTIONS - state.attempted;
+  }
+
+  function recordAnswer(qId, isCorrect, marks) {
+    if (state.answered[qId]) return;
+    state.answered[qId] = true;
+    state.attempted++;
+    if (isCorrect) { state.correct++;  state.score += marks; }
+    else           { state.incorrect++;                       }
+    updateProgress();
+  }
+
+  /* ══════════════════════════════════════════════════
+     MULTIPLE CHOICE
+  ══════════════════════════════════════════════════ */
+  function selectMC(qId, val, el) {
+    if (state.answered[qId]) return;
+    document.querySelectorAll(`#${qId}-options .mc-option`)
+      .forEach(o => { o.classList.remove('selected'); o.querySelector('input').checked = false; });
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+    el.dataset.val = val;
+  }
+
+  function checkMC(qId, correct, explanation) {
+    if (state.answered[qId]) return;
+    const opts    = document.querySelectorAll(`#${qId}-options .mc-option`);
+    const selEl   = document.querySelector(`#${qId}-options .mc-option.selected`);
+    if (!selEl) { showFeedback(qId, 'info-fb', '⚠️ Please select an answer first.'); return; }
+
+    const chosen  = selEl.dataset.val;
+    const isRight = chosen === correct;
+
+    opts.forEach(o => {
+      const letter = o.dataset.val || o.onclick?.toString().match(/'([A-Z])'/)?.[1];
+      if (o.dataset.val === correct) o.classList.add('correct');
+      else if (o === selEl && !isRight) o.classList.add('incorrect');
+      o.classList.remove('selected');
+    });
+
+    const fb = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight ? '✅ Correct! ' : `❌ Incorrect. The correct answer was ${correct}. `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+    disableOptions(qId);
+  }
+
+  function resetMC(qId) {
+    if (state.answered[qId]) return;
+    document.querySelectorAll(`#${qId}-options .mc-option`)
+      .forEach(o => {
+        o.classList.remove('selected','correct','incorrect');
+        o.querySelector('input').checked = false;
+      });
+    hideFeedback(qId);
+  }
+
+  function disableOptions(qId) {
+    document.querySelectorAll(`#${qId}-options .mc-option`)
+      .forEach(o => { o.style.pointerEvents = 'none'; });
+  }
+
+  /* ══════════════════════════════════════════════════
+     TRUE / FALSE
+  ══════════════════════════════════════════════════ */
+  function selectTF(qId, val, el) {
+    if (state.answered[qId]) return;
+    document.getElementById(`${qId}-true`).classList.remove('selected');
+    document.getElementById(`${qId}-false`).classList.remove('selected');
+    el.classList.add('selected');
+    el.dataset.val = val;
+  }
+
+  function checkTF(qId, correct, explanation) {
+    if (state.answered[qId]) return;
+    const trueBtn  = document.getElementById(`${qId}-true`);
+    const falseBtn = document.getElementById(`${qId}-false`);
+    const selBtn   = trueBtn.classList.contains('selected')  ? trueBtn  :
+                     falseBtn.classList.contains('selected') ? falseBtn : null;
+
+    if (!selBtn) { showFeedback(qId, 'info-fb', '⚠️ Please select True or False first.'); return; }
+
+    const chosen  = selBtn.dataset.val;
+    const isRight = chosen === correct;
+
+    [trueBtn, falseBtn].forEach(btn => {
+      btn.classList.remove('selected');
+      if (btn.dataset.val === correct)         btn.classList.add('correct');
+      else if (btn === selBtn && !isRight)     btn.classList.add('incorrect');
+      btn.style.pointerEvents = 'none';
+    });
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight ? '✅ Correct! ' : `❌ Incorrect. The answer is ${correct.toUpperCase()}. `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function resetTF(qId) {
+    if (state.answered[qId]) return;
+    ['true','false'].forEach(v => {
+      const btn = document.getElementById(`${qId}-${v}`);
+      btn.classList.remove('selected','correct','incorrect');
+      btn.style.pointerEvents = '';
+    });
+    hideFeedback(qId);
+  }
+
+  /* ══════════════════════════════════════════════════
+     FILL IN THE BLANK
+  ══════════════════════════════════════════════════ */
+  function checkFITB(inputId, acceptedAnswers) {
+    const qId   = inputId;
+    if (state.answered[qId]) return;
+    const input = document.getElementById(inputId);
+    const val   = input.value.trim().toLowerCase();
+    if (!val) { showFeedback(qId, 'info-fb', '⚠️ Please enter an answer first.'); return; }
+
+    const isRight = acceptedAnswers.map(a => a.toLowerCase()).includes(val);
+    input.classList.add(isRight ? 'correct' : 'incorrect');
+    input.disabled = true;
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight ? '✅ Correct! ' :
+      `❌ Incorrect. Accepted answer(s): ${acceptedAnswers.join(' / ')}. `;
+    showFeedback(qId, fb, prefix);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function checkFITBDouble(qId, id1, id2, acc1, acc2, explanation) {
+    if (state.answered[qId]) return;
+    const i1 = document.getElementById(id1);
+    const i2 = document.getElementById(id2);
+    const v1 = i1.value.trim().toLowerCase();
+    const v2 = i2.value.trim().toLowerCase();
+    if (!v1 || !v2) { showFeedback(qId, 'info-fb', '⚠️ Please fill in both blanks.'); return; }
+
+    const r1 = acc1.map(a => a.toLowerCase()).includes(v1);
+    const r2 = acc2.map(a => a.toLowerCase()).includes(v2);
+    const isRight = r1 && r2;
+
+    i1.classList.add(r1 ? 'correct' : 'incorrect'); i1.disabled = true;
+    i2.classList.add(r2 ? 'correct' : 'incorrect'); i2.disabled = true;
+
+    const fb     = isRight ? 'correct-fb' : 'incorrect-fb';
+    const prefix = isRight ? '✅ Correct! ' :
+      `❌ Not quite. Line 1: ${acc1[0]}, Line 2: ${acc2[0]}. `;
+    showFeedback(qId, fb, prefix + explanation);
+    recordAnswer(qId, isRight, 1);
+  }
+
+  function resetFITB(inputId) {
+    if (state.answered[inputId]) return;
+    const input = document.getElementById(inputId);
+    input.value = '';
+    input.classList.remove('correct','incorrect');
+    input.disabled = false;
+    hideFeedback(inputId);
+  }
+
+  function resetFITBDouble(qId, id1, id2) {
+    if (state.answered[qId]) return;
+    [id1, id2].forEach(id => {
+      const el = document.getElementById(id);
+      el.value = '';
+      el.classList.remove('correct','incorrect');
+      el.disabled = false;
+    });
+    hideFeedback(qId);
+  }
+
+  /* ══════════════════════════════════════════════════
+     MATCHING
+  ══════════════════════════════════════════════════ */
+  const MATCH_ANSWERS = {
+    match1:'A', match2:'B', match3:'C', match4:'D', match5:'E',
+    match6:'F', match7:'G', match8:'H', match9:'I', match10:'J'
+  };
+
+  function checkMatching() {
+    if (state.answered['matching']) return;
+    let correct = 0;
+    const total = Object.keys(MATCH_ANSWERS).length;
+
+    Object.entries(MATCH_ANSWERS).forEach(([id, ans]) => {
+      const sel = document.getElementById(id);
+      if (sel.value === ans) {
+        sel.classList.add('correct');
+        correct++;
+      } else {
+        sel.classList.add('incorrect');
+      }
+      sel.disabled = true;
+    });
+
+    const isRight = correct === total;
+    const fb      = correct >= total * 0.6 ? 'correct-fb' : 'incorrect-fb';
+    showFeedback('match', fb,
+      `You matched ${correct} / ${total} correctly. Score: ${correct} mark(s).`);
+
+    state.answered['matching'] = true;
+    state.attempted++;
+    state.correct   += correct;
+    state.score     += correct;
+    state.incorrect += (total - correct);
+    updateProgress();
+  }
+
+  function resetMatching() {
+    if (state.answered['matching']) return;
+    Object.keys(MATCH_ANSWERS).forEach(id => {
+      const sel = document.getElementById(id);
+      sel.value = '';
+      sel.classList.remove('correct','incorrect');
+      sel.disabled = false;
+    });
+    hideFeedback('match');
+  }
+
+  /* ══════════════════════════════════════════════════
+     SHORT ANSWER — WORD / LINE COUNT
+  ══════════════════════════════════════════════════ */
+  function updateSAWordCount(textareaId, counterId) {
+    const ta  = document.getElementById(textareaId);
+    const ctr = document.getElementById(counterId);
+    if (!ta || !ctr) return;
+    if (textareaId === 'sa2') {
+      ctr.textContent = ta.value.split('\n').length;
+    } else {
+      const words = ta.value.trim().split(/\s+/).filter(w => w.length > 0);
+      ctr.textContent = words.length;
+    }
+  }
+
+  /* ══════════════════════════════════════════════════
+     HINT
+  ══════════════════════════════════════════════════ */
+  function toggleHint(qId) {
+    const hintBox = document.getElementById(`${qId}-hint`);
+    if (hintBox) hintBox.classList.toggle('show');
+  }
+
+  /* ══════════════════════════════════════════════════
+     FEEDBACK HELPERS
+  ══════════════════════════════════════════════════ */
+  function showFeedback(qId, type, msg) {
+    const fb = document.getElementById(`${qId}-feedback`);
+    if (!fb) return;
+    fb.className = `feedback-msg ${type} show`;
+    fb.innerHTML = msg;
+  }
+
+  function hideFeedback(qId) {
+    const fb = document.getElementById(`${qId}-feedback`);
+    if (fb) { fb.className = 'feedback-msg'; fb.innerHTML = ''; }
+  }
+
+  /* ══════════════════════════════════════════════════
+     SUBMIT ALL & RESULTS
+  ══════════════════════════════════════════════════ */
+  function submitAll() {
+    const panel = document.getElementById('resultsPanel');
+    panel.classList.add('show');
+
+    const score = state.score;
+    const pct   = Math.round((score / TOTAL_MARKS) * 100);
+
+    document.getElementById('finalScore').textContent = `${score} / ${TOTAL_MARKS}`;
+
+    let grade, msg;
+    if      (pct >= 80) { grade = '🏆 Distinction';  msg = 'Outstanding performance!'; }
+    else if (pct >= 70) { grade = '⭐ Merit';          msg = 'Excellent work!'; }
+    else if (pct >= 60) { grade = '✅ Pass';           msg = 'Well done — you passed!'; }
+    else if (pct >= 50) { grade = '📚 Near Pass';      msg = 'Review the sections you found difficult.'; }
+    else                { grade = '🔄 Needs Review';   msg = 'Revisit the study guide and try again.'; }
+
+    document.getElementById('finalGrade').textContent = `${grade} (${pct}%)`;
+    document.getElementById('resultsBreakdown').innerHTML =
+      `${msg}<br><br>` +
+      `Correct: ${state.correct} &nbsp;|&nbsp; ` +
+      `Incorrect: ${state.incorrect} &nbsp;|&nbsp; ` +
+      `Attempted: ${state.attempted} / ${TOTAL_QUESTIONS}`;
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function retakeQuiz() {
+    location.reload();
+  }
+
+  /* ══════════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════════ */
+  updateProgress();
+</script>
+</body>
+</html>
